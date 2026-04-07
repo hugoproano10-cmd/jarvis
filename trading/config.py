@@ -46,9 +46,13 @@ MAX_POSICIONES = 8               # Máximo posiciones abiertas simultáneas (amp
 UMBRAL_COMPRA = 3                # Puntuación mínima de indicadores para comprar
 
 # ── Modelos de IA ───────────────────────────────────────────
-OLLAMA_URL = "http://localhost:11434/api/chat"
-MODEL_DEEP = "deepseek-r1:32b"   # Análisis profundo y decisiones de trading
-MODEL_FAST = "deepseek-r1:7b"    # Alertas rápidas y conversación
+# jarvis-core  (localhost:11434)         → Nemotron 3 Super 120B (análisis profundo)
+# jarvis-power (192.168.208.80:11435)    → DeepSeek R1 70B (veto rápido)
+OLLAMA_URL_CORE = "http://localhost:11434/api/chat"
+OLLAMA_URL_POWER = "http://192.168.208.80:11435/api/chat"
+OLLAMA_URL = OLLAMA_URL_CORE                             # default
+MODEL_DEEP = "nemotron-3-super:latest"                   # Nemotron 120B (jarvis-core)
+MODEL_FAST = "deepseek-r1:70b"                           # DeepSeek 70B (jarvis-power)
 
 # ── Indicadores técnicos ────────────────────────────────────
 PERIODO_HISTORICO_MESES = 6      # Meses de datos para indicadores

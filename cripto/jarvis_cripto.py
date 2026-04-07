@@ -15,9 +15,18 @@ import time
 import importlib.util as ilu
 from datetime import datetime
 
+import logging
 import requests
 
 PROYECTO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+
+# Logging explícito para diagnosticar fallos en cron
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+log = logging.getLogger("jarvis_cripto")
 
 # Cargar config y alertas
 def _load(name, path):
@@ -26,8 +35,12 @@ def _load(name, path):
     spec.loader.exec_module(mod)
     return mod
 
-_alertas = _load("alertas", os.path.join(PROYECTO, "config", "alertas.py"))
-enviar_telegram = _alertas.enviar_telegram
+try:
+    _alertas = _load("alertas", os.path.join(PROYECTO, "config", "alertas.py"))
+    enviar_telegram = _alertas.enviar_telegram
+except Exception as e:
+    log.error(f"No se pudo cargar módulo de alertas: {e}")
+    enviar_telegram = lambda msg: None
 
 from dotenv import load_dotenv
 load_dotenv(os.path.join(PROYECTO, ".env"))
@@ -36,6 +49,20 @@ load_dotenv(os.path.join(PROYECTO, ".env"))
 
 BINANCE_KEY = os.getenv("BINANCE_TESTNET_API_KEY", "")
 BINANCE_SECRET = os.getenv("BINANCE_TESTNET_SECRET", "")
+
+# Validar variables de entorno al inicio
+_env_ok = True
+if not BINANCE_KEY or "your_" in BINANCE_KEY:
+    log.warning("BINANCE_TESTNET_API_KEY no configurada o tiene placeholder")
+    _env_ok = False
+if not BINANCE_SECRET or "your_" in BINANCE_SECRET:
+    log.warning("BINANCE_TESTNET_SECRET no configurada o tiene placeholder")
+    _env_ok = False
+if not _env_ok:
+    try:
+        enviar_telegram("⚠️ JARVIS Cripto: API key de Binance no configurada, revisar .env")
+    except Exception:
+        pass
 TESTNET_BASE = os.getenv("BINANCE_TESTNET_URL", "https://testnet.binance.vision") + "/api/v3"
 
 PARES = ["BTCUSDT", "ETHUSDT", "ADAUSDT", "BNBUSDT"]
@@ -348,9 +375,25 @@ def notificar_resumen(senales, estado):
 
 def run(dry_run=False):
     ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log.info(f"=== JARVIS Cripto iniciando — {ahora} ===")
+    log.info(f"  API Key: {'OK (' + BINANCE_KEY[:8] + '...)' if BINANCE_KEY and 'your_' not in BINANCE_KEY else 'NO CONFIGURADA'}")
+    log.info(f"  Testnet URL: {TESTNET_BASE}")
+    log.info(f"  Pares: {', '.join(PARES)}")
     print(f"JARVIS Cripto — {ahora}")
     if dry_run:
         print("  Modo: DRY-RUN (no ejecuta órdenes)\n")
+
+    # Verificar conexión a Binance testnet
+    try:
+        binance_get("/ping")
+        log.info("  Conexión Binance testnet: OK")
+    except Exception as e:
+        log.error(f"  Conexión Binance testnet FALLIDA: {e}")
+        try:
+            enviar_telegram(f"⚠️ JARVIS Cripto: No se puede conectar a Binance testnet — {e}")
+        except Exception:
+            pass
+        return
 
     estado = cargar_estado()
 

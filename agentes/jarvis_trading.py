@@ -56,8 +56,12 @@ _cfg_spec.loader.exec_module(_cfg)
 ACTIVOS_OPERABLES = _cfg.ACTIVOS_OPERABLES
 PRIORIDAD_SHARPE = _cfg.PRIORIDAD_SHARPE
 OLLAMA_URL = _cfg.OLLAMA_URL
+OLLAMA_URL_CORE = _cfg.OLLAMA_URL_CORE
+OLLAMA_URL_POWER = _cfg.OLLAMA_URL_POWER
 MODEL_DEEP = _cfg.MODEL_DEEP
 MODEL_FAST = _cfg.MODEL_FAST
+# Mapeo modelo → URL del nodo correcto
+_MODEL_URL = {MODEL_DEEP: OLLAMA_URL_CORE, MODEL_FAST: OLLAMA_URL_POWER}
 MAX_POR_OPERACION = _cfg.MAX_POR_OPERACION
 MAX_POSICIONES = _cfg.MAX_POSICIONES
 STOP_LOSS_PCT = _cfg.STOP_LOSS_PCT
@@ -69,16 +73,33 @@ TAKE_PROFIT_PCT = _cfg.TAKE_PROFIT_PCT
 JARVIS_LIVE_CAPITAL = float(os.getenv("JARVIS_LIVE_CAPITAL", "2000"))
 JARVIS_LIVE_HASTA = os.getenv("JARVIS_LIVE_HASTA", "2026-04-10")
 POSICIONES_PROTEGIDAS = {"AMD", "NVDA"}  # No vender/comprar — son del usuario
-ACTIVOS_DEFENSIVOS = ["JNJ", "GLD", "HYG", "AGG", "IEF"]
+ACTIVOS_DEFENSIVOS = ["JNJ", "GLD", "HYG", "AGG", "IEF", "KO", "VZ", "XLU", "T", "D", "IBM"]
 ACTIVOS_REFUGIO = {"GLD", "IEF", "AGG"}  # Safe-haven en modo pánico
 
-# Overrides: $500/trade, 6 posiciones max, stop-loss 3%
-MAX_POR_OPERACION = 500.0
+# Universo completo de config.py (22 activos) para BULL/LATERAL
+_UNIVERSO_COMPLETO = _cfg.ACTIVOS_OPERABLES
+_PRIORIDAD_COMPLETA = _cfg.PRIORIDAD_SHARPE
+
+# Overrides: $750/trade, 6 posiciones max
+MAX_POR_OPERACION = 750.0
 MAX_POR_TRADE = MAX_POR_OPERACION
 MAX_POSICIONES = 6
-SIMBOLOS_OPERABLES = set(ACTIVOS_DEFENSIVOS)
-ACTIVOS_OPERABLES = ACTIVOS_DEFENSIVOS
-PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_DEFENSIVOS)}
+
+# Determinar régimen al inicio para seleccionar universo de activos
+try:
+    _regimen_inicial = get_regimen_actual().get("regimen", "LATERAL")
+except Exception:
+    _regimen_inicial = "LATERAL"
+
+if _regimen_inicial == "BEAR":
+    ACTIVOS_OPERABLES = ACTIVOS_DEFENSIVOS
+    SIMBOLOS_OPERABLES = set(ACTIVOS_DEFENSIVOS)
+    PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_DEFENSIVOS)}
+else:
+    # BULL o LATERAL: universo completo de config.py
+    ACTIVOS_OPERABLES = _UNIVERSO_COMPLETO
+    SIMBOLOS_OPERABLES = set(_UNIVERSO_COMPLETO)
+    PRIORIDAD_SHARPE = _PRIORIDAD_COMPLETA
 
 JARVIS_EXCLUIR = POSICIONES_PROTEGIDAS  # {"AMD", "NVDA"} — nunca tocar
 MAX_POSICIONES_JARVIS = MAX_POSICIONES  # 6
@@ -167,6 +188,14 @@ PALABRAS_NEGATIVAS = [
 LOG_DECISIONES = os.path.join(PROYECTO, "logs", "trading_decisiones.log")
 
 
+def _log_wa_warning(msg):
+    """Escribe warning de WhatsApp en trading_decisiones.log."""
+    os.makedirs(os.path.dirname(LOG_DECISIONES), exist_ok=True)
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_DECISIONES, "a") as f:
+        f.write(f"{ts} | WARNING | {msg}\n")
+
+
 def _notificar(mensaje):
     """Envía notificación a Telegram (HTML) + WhatsApp (texto plano)."""
     enviar_telegram(mensaje)
@@ -176,10 +205,11 @@ def _notificar(mensaje):
                    .replace('&amp;', '&').replace('&lt;', '<')
                    .replace('&gt;', '>').replace('&#39;', "'"))
     try:
-        requests.post("http://localhost:8000/send_message",
-                       json={"message": texto_plano}, timeout=5)
-    except Exception:
-        pass
+        resp = requests.post("http://localhost:8000/mensaje",
+                       json={"mensaje": texto_plano}, timeout=5)
+        resp.raise_for_status()
+    except Exception as e:
+        _log_wa_warning(f"WhatsApp no disponible — {e}")
 
 
 def _log_decision(simbolo, accion, precio_actual=None, precio_entrada=None,
@@ -870,19 +900,38 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
 # ══════════════════════════════════════════════════════════════
 
 def llamar_ollama(modelo, system_prompt, user_message, temperature=0.4):
-    """Llama a Ollama API local y retorna el contenido de la respuesta."""
-    payload = {
-        "model": modelo,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_message},
-        ],
-        "stream": False,
-        "options": {"temperature": temperature},
-    }
-    resp = requests.post(OLLAMA_URL, json=payload, timeout=300)
-    resp.raise_for_status()
-    return resp.json()["message"]["content"]
+    """Llama a Ollama API en el nodo correcto según el modelo.
+    Timeouts: 60s para Nemotron (core), 30s para DeepSeek 70B (power).
+    Fallback: si el nodo primario falla, intenta el otro con su modelo.
+    """
+    url_primario = _MODEL_URL.get(modelo, OLLAMA_URL)
+    timeout = 60 if url_primario == OLLAMA_URL_CORE else 30
+
+    # Definir fallback: core↔power
+    if url_primario == OLLAMA_URL_CORE:
+        fallback_url, fallback_model, fallback_timeout = OLLAMA_URL_POWER, MODEL_FAST, 30
+    else:
+        fallback_url, fallback_model, fallback_timeout = OLLAMA_URL_CORE, MODEL_DEEP, 60
+
+    def _call(url, mdl, tout):
+        payload = {
+            "model": mdl,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
+            "stream": False,
+            "options": {"temperature": temperature},
+        }
+        resp = requests.post(url, json=payload, timeout=tout)
+        resp.raise_for_status()
+        return resp.json()["message"]["content"]
+
+    try:
+        return _call(url_primario, modelo, timeout)
+    except Exception as e:
+        print(f"   LLM fallback: {modelo} falló ({e}), intentando {fallback_model}...")
+        return _call(fallback_url, fallback_model, fallback_timeout)
 
 
 def limpiar_think(texto):
@@ -1387,6 +1436,20 @@ def main():
         print(f"  >>> EXPIRADO: hoy {hoy} > límite {fecha_limite} — solo análisis")
         solo_analisis = True
     print("=" * 70)
+
+    # Health check WhatsApp server
+    wa_ok = False
+    try:
+        r = requests.get("http://localhost:8000/health", timeout=3)
+        wa_ok = r.status_code == 200
+    except Exception:
+        pass
+    if wa_ok:
+        print(f"  WhatsApp server: OK")
+    else:
+        print(f"  WARNING: WhatsApp server no disponible")
+        _log_wa_warning("WhatsApp server no disponible al inicio del ciclo")
+
     print()
 
     # 1) Contexto de mercado (noticias, VIX, F&G, earnings)
