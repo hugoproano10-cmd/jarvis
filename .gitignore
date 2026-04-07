@@ -205,3 +205,21 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+.env
+
+# Cache Python
+**/__pycache__/
+*.pyc
+
+# Logs
+logs/
+
+# Base de datos ChromaDB (memoria)
+datos/memoria/
+
+# Sesión WhatsApp
+whatsapp/.wwebjs_auth/
+whatsapp/.wwebjs_cache/
+
+# Estado cripto (temporal)
+cripto/estado_cripto.json
