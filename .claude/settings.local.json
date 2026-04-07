@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Bash(/home/hproano/asistente_env/bin/pip show:*)",
+      "Bash(/home/hproano/asistente_env/bin/pip install:*)",
+      "Bash(chmod +x /home/hproano/asistente/trading/monitor_mercado.py)",
+      "Bash(/home/hproano/asistente_env/bin/python /home/hproano/asistente/trading/monitor_mercado.py)",
+      "Read(//usr/bin/**)",
+      "Bash(/home/hproano/asistente_env/bin/pip list:*)",
+      "Bash(/home/hproano/asistente_env/bin/python /home/hproano/asistente/config/alertas.py --prueba 2>&1)",
+      "Bash(/home/hproano/asistente_env/bin/python /home/hproano/asistente/config/alertas.py 2>&1)",
+      "Bash(timedatectl)",
+      "Bash(crontab -l)",
+      "Bash(chmod:*)",
+      "Bash(crontab -)",
+      "Bash(curl -s http://localhost:18789/v1/models)",
+      "Bash(grep -E '\\\\.\\(txt|cfg|conf|yml|config\\)$')",
+      "Bash(/home/hproano/asistente_env/bin/python /home/hproano/asistente/agentes/jarvis_mercado.py 2>&1)",
+      "Bash(systemctl list-units:*)",
+      "Bash(docker ps:*)",
+      "Bash(curl -s --connect-timeout 5 http://localhost:8080/v1/models)",
+      "Bash(curl -s --connect-timeout 5 http://localhost:8080/v1/chat/completions -X POST -H \"Content-Type: application/json\" -d '{\"\"\"\"messages\"\"\"\":[{\"\"\"\"role\"\"\"\":\"\"\"\"user\"\"\"\",\"\"\"\"content\"\"\"\":\"\"\"\"ping\"\"\"\"}]}')",
+      "Bash(curl -sv --connect-timeout 5 http://localhost:8080/v1/models)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\)[0]; print\\(''''Ports:'''', json.dumps\\(d[''''NetworkSettings''''][''''Ports''''],indent=2\\)\\); print\\(''''Env:''''\\); [print\\(f''''  {e}''''\\) for e in d[''''Config''''][''''Env''''] if any\\(k in e.lower\\(\\) for k in [''''port'''',''''url'''',''''host'''',''''api'''',''''claw'''',''''model'''']\\)]\")",
+      "Bash(/home/hproano/asistente_env/bin/python /home/hproano/asistente/agentes/jarvis_mercado.py --test 2>&1)",
+      "WebSearch",
+      "WebFetch(domain:documentation.tradier.com)",
+      "WebFetch(domain:docs.tradier.com)",
+      "Bash(/home/hproano/asistente_env/bin/python:*)",
+      "Bash(systemctl --user list-units 'jarvis*' --no-pager)",
+      "Bash(systemctl --user restart jarvis-bot)",
+      "Bash(systemctl --user status jarvis-bot --no-pager)",
+      "Bash(journalctl:*)"
+    ]
+  }
+}

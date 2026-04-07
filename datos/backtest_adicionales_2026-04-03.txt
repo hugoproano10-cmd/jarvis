@@ -1,0 +1,16 @@
+Backtest Criptos Adicionales — Momentum+Volumen
+03/04/2026 19:25
+SL -6% / TP +10% | Capital $10,000 | Periodo 2 anos
+
+Cripto         Ret%     B&H%     Alfa  Trades    Win%   Sharpe      DD%      PF Decision    
+------------------------------------------------------------------------------------------
+ADA          +38.04   -58.10   +96.14      15   53.3%    +0.80  -22.94%    1.59 AGREGAR     
+BNB          +13.74    +3.76    +9.98       3   66.7%    +0.73   -8.91%    3.08 AGREGAR     
+AVAX          +8.00   -80.95   +88.95      14   42.9%    +0.30  -26.65%    1.15 CONSIDERAR  
+DOT           +1.18   -85.34   +86.52      10   40.0%    +0.12  -24.04%    1.03 CONSIDERAR  
+SOL           -2.31   -57.38   +55.07       8   37.5%    +0.03  -26.61%    0.93 CONSIDERAR  
+
+Referencia: BTC ret +37.63% sharpe 1.27 | ETH ret +21.61% sharpe 0.75
+
+RECOMENDACION: Agregar ADA, BNB
+CONSIDERAR: AVAX, DOT, SOL

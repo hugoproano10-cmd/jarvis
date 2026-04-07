@@ -1,0 +1,77 @@
+Reporte matutino — 07/04/2026 07:30
+
+💼 <b>PORTAFOLIO</b>
+  Equity: $99,922.95
+  Cash: $37,532.60
+  Valor portafolio: $99,922.95
+  Posiciones abiertas: 8/8
+  🔴 AGG: 101 acc @ $99.10 → $98.99 | P&L: $-11.24 (-0.1%)
+  🔴 D: 160 acc @ $62.77 → $62.30 | P&L: $-75.29 (-0.7%)
+  🔴 GLD: 23 acc @ $428.75 → $428.69 | P&L: $-1.40 (-0.0%)
+  ✅ HYG: 126 acc @ $79.61 → $79.64 | P&L: $+3.40 (+0.0%)
+  ✅ IEF: 105 acc @ $94.99 → $95.04 | P&L: $+5.48 (+0.1%)
+  🔴 JNJ: 41 acc @ $242.33 → $239.03 | P&L: $-136.00 (-1.4%)
+  ✅ KO: 26 acc @ $76.90 → $77.13 | P&L: $+5.99 (+0.3%)
+  ✅ NVDA: 3 acc @ $168.46 → $175.50 | P&L: $+21.11 (+4.2%)
+  P&L total abierto: $-187.94
+
+🌍 <b>CONTEXTO DE MERCADO</b>
+  Fear &amp; Greed: 11/100 — Miedo Extremo
+  Mercado en pánico. Históricamente, zona de oportunidad de compra.
+  VIX: 25.92 (+7.3%) — Alto
+  Mercado nervioso. Stops más amplios recomendados.
+
+📋 <b>PLAN DE HOY</b>
+  Modo: F&G en pánico → modo oportunidad
+  1. **Activos Priorizar**: GLD, HYG, IEF (seguros más estables).  
+2. **Sesgo**: TSLA (sensible al riesgo, pero puede subir si se prontifican las ganancias), AAPL (neutral o bAJa si se previe un cambio en la trend).  
+3. **Precauciones**: Monitorear activos sensible al VIX, no rriesgar todo capital en inversiones altas riesgo, y tener planes para hedge con activos seguros.
+
+📊 <b>RESUMEN DE AYER (2026-04-06)</b>
+  Trades ejecutados: 45
+  Compras: 24 | Ventas: 21
+  ✅ BUY 100.91 AGG @ $99.09 [filled]
+  ✅ BUY 125.58 HYG @ $79.65 [filled]
+  ✅ BUY 23.4 GLD @ $427.42 [filled]
+  🔴 SELL 125.58 HYG @ $79.62 [filled]
+  🔴 SELL 23.34 GLD @ $427.79 [filled]
+  🔴 SELL 100.86 AGG @ $99.08 [filled]
+  ✅ BUY 100.86 AGG @ $99.13 [filled]
+  ✅ BUY 125.58 HYG @ $79.61 [filled]
+  ✅ BUY 23.34 GLD @ $428.01 [filled]
+  🔴 SELL 125.62 HYG @ $79.56 [filled]
+  🔴 SELL 23.38 GLD @ $427.33 [filled]
+  🔴 SELL 100.94 AGG @ $99.04 [filled]
+  ✅ BUY 100.94 AGG @ $99.07 [filled]
+  ✅ BUY 125.62 HYG @ $79.61 [filled]
+  ✅ BUY 23.38 GLD @ $428.11 [filled]
+  🔴 SELL 125.6 HYG @ $79.57 [filled]
+  🔴 SELL 23.33 GLD @ $427.75 [filled]
+  🔴 SELL 100.86 AGG @ $99.07 [filled]
+  ✅ BUY 100.86 AGG @ $99.14 [filled]
+  ✅ BUY 125.6 HYG @ $79.63 [filled]
+  ✅ BUY 23.33 GLD @ $428.78 [filled]
+  🔴 SELL 125.62 HYG @ $79.61 [filled]
+  🔴 SELL 23.31 GLD @ $428.65 [filled]
+  🔴 SELL 100.92 AGG @ $99.13 [filled]
+  ✅ BUY 100.92 AGG @ $99.09 [filled]
+  ✅ BUY 125.62 HYG @ $79.60 [filled]
+  ✅ BUY 23.31 GLD @ $428.80 [filled]
+  🔴 SELL 125.56 HYG @ $79.64 [filled]
+  🔴 SELL 23.22 GLD @ $428.82 [filled]
+  🔴 SELL 100.83 AGG @ $99.12 [filled]
+  ✅ BUY 100.83 AGG @ $99.16 [filled]
+  ✅ BUY 125.56 HYG @ $79.63 [filled]
+  ✅ BUY 23.22 GLD @ $431.20 [filled]
+  🔴 SELL 125.74 HYG @ $79.53 [filled]
+  🔴 SELL 23.29 GLD @ $429.07 [filled]
+  🔴 SELL 100.98 AGG @ $99.02 [filled]
+  ✅ BUY 105.25 IEF @ $94.99 [filled]
+  ✅ BUY 160.17 D @ $62.77 [filled]
+  ✅ BUY 100.98 AGG @ $99.03 [filled]
+  ✅ BUY 125.74 HYG @ $79.56 [filled]
+  ✅ BUY 23.29 GLD @ $428.97 [filled]
+  ✅ BUY 41.22 JNJ @ $242.33 [filled]
+  🔴 SELL 5.88 SOXX @ $343.92 [filled]
+  🔴 SELL 5.62 META @ $577.27 [filled]
+  🔴 SELL 3.22 MCD @ $307.22 [filled]

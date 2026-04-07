@@ -1,0 +1,83 @@
+{
+  "fecha": "2026-03-28 17:57:13",
+  "activos": [
+    {
+      "simbolo": "SPY",
+      "precio": 634.09,
+      "senal": "MANTENER",
+      "puntuacion": 2,
+      "razones": [
+        "RSI en sobreventa (29)",
+        "MACD bajista con histograma decreciente",
+        "Precio en banda inferior de Bollinger (soporte)",
+        "Golden cross (SMA50 > SMA200)",
+        "Precio bajo SMA50"
+      ],
+      "indicadores": {
+        "rsi_14": 28.53,
+        "macd": -9.8549,
+        "macd_signal": -7.3926,
+        "macd_hist": -2.4623,
+        "bb_upper": 691.86,
+        "bb_mid": 664.71,
+        "bb_lower": 637.56,
+        "sma_50": 677.89,
+        "sma_200": 634.09,
+        "volumen": 102725900,
+        "vol_promedio_20d": 99244555
+      }
+    },
+    {
+      "simbolo": "AAPL",
+      "precio": 248.8,
+      "senal": "MANTENER",
+      "puntuacion": 0,
+      "razones": [
+        "RSI bajo (38)",
+        "MACD bajista con histograma decreciente",
+        "Precio debajo de media de Bollinger",
+        "Golden cross (SMA50 > SMA200)",
+        "Precio bajo SMA50"
+      ],
+      "indicadores": {
+        "rsi_14": 37.97,
+        "macd": -3.6411,
+        "macd_signal": -3.4468,
+        "macd_hist": -0.1944,
+        "bb_upper": 266.27,
+        "bb_mid": 255.38,
+        "bb_lower": 244.48,
+        "sma_50": 260.21,
+        "sma_200": 248.8,
+        "volumen": 47842500,
+        "vol_promedio_20d": 40546695
+      }
+    },
+    {
+      "simbolo": "TSLA",
+      "precio": 361.83,
+      "senal": "MANTENER",
+      "puntuacion": 1,
+      "razones": [
+        "RSI bajo (34)",
+        "MACD bajista con histograma decreciente",
+        "Precio en banda inferior de Bollinger (soporte)",
+        "Golden cross (SMA50 > SMA200)",
+        "Precio bajo SMA50"
+      ],
+      "indicadores": {
+        "rsi_14": 33.86,
+        "macd": -10.7396,
+        "macd_signal": -8.9761,
+        "macd_hist": -1.7635,
+        "bb_upper": 416.67,
+        "bb_mid": 390.78,
+        "bb_lower": 364.89,
+        "sma_50": 408.64,
+        "sma_200": 361.83,
+        "volumen": 61869200,
+        "vol_promedio_20d": 60949305
+      }
+    }
+  ]
+}

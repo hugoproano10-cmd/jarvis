@@ -1,0 +1,1237 @@
+=== 09:02:04 ===
+Análisis JARVIS:
+LÍNEA 1: El mercado está en tendencia alcista debido a la mayoría de activos al alza y una variación promedio positiva.
+
+LÍNEA 2: Los activos que destacan son META (+4.39%), SOXX (+4.34%) y GLD (+2.10%). Las acciones estánperformando mejor que las criptomonedas.
+
+LÍNEA 3: Mantener posiciones actuales y considerar comprar SPY y SOXX con momentum suficiente.
+
+LÍNEA 4:
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"momentum <1.5%"},{"simbolo":"JNJ","accion":"MANTENER","razon":"momentum <1.5%"},{"simbolo":"GLD","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"VZ","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"META","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"SOXX","accion":"COMPRAR","razon":"momentum >1.0%"},{"simbolo":"MCD","accion":"MANTENER","razon":"momentum <1.5%"},{"simbolo":"KO","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"XLE","accion":"MANTENER","razon":"momentum <1.5%"},{"simbolo":"SPY","accion":"COMPRAR","razon":"momentum >1.0%"},{"simbolo":"TSLA","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"AAPL","accion":"MANTENER","razon":"momentum <1.5%"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "momentum <1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "momentum <1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "momentum <1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "momentum <1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "momentum <1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100134.57",
+  "cash": "93505.14",
+  "buying_power": "193639.71",
+  "portfolio_value": "100134.57",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 09:32:06 ===
+Análisis JARVIS:
+LÍNEA 1: Evaluación general del mercado (alcista/bajista/mixto y por qué)
+ALCISTA. El mercado muestra fortaleza con una variación promedio de +1.47% y 12 activos al alza frente a solo 3 a la baja.
+
+LÍNEA 2: Qué activos destacan y relación acciones vs criptos
+Los activos que más suben son SOXX (+4.35%), META (+4.05%) y GLD (+2.38%). Las criptomonedas también tienen un desempeño positivo, con Bitcoin +0.60% y Ethereum +1.65%.
+
+LÍNEA 3: Recomendación general breve
+MANTENER posiciones abiertas. El mercado está alcista pero no hay oportunidades claras de compra con el momentum requerido.
+
+LÍNEA 4: JSON con decisiones
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"momentum < +1.5%"},{"simbolo":"JNJ","accion":"MANTENER","razon":"momentum < +1.5%"},{"simbolo":"GLD","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"VZ","accion":"MANTENER","razon":"momentum negativo pero no supera -3%"},{"simbolo":"META","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"SOXX","accion":"MANTENER","razon":"no operamos criptos"},{"simbolo":"MCD","accion":"MANTENER","razon":"momentum < +1.5%"},{"simbolo":"KO","accion":"MANTENER","razon":"momentum negativo pero no supera -3%"},{"simbolo":"XLE","accion":"MANTENER","razon":"momentum < +1.5%"},{"simbolo":"SPY","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"TSLA","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"AAPL","accion":"MANTENER","razon":"posición abierta"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "momentum < +1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "momentum < +1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "momentum negativo pero no supera -3%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "no operamos criptos",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "momentum < +1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "momentum negativo pero no supera -3%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "momentum < +1.5%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100143.77",
+  "cash": "93505.14",
+  "buying_power": "193648.91",
+  "portfolio_value": "100143.77",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 10:02:11 ===
+Análisis JARVIS:
+Sesión alcista en los mercados. SOXX muestra momentum con +3.50%, oportunidad de entrada. TSLA muestra momentum con +3.11%, oportunidad de entrada. Operando con cautela dentro del límite de $500 por trade.
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100125.63",
+  "cash": "93505.14",
+  "buying_power": "193630.77",
+  "portfolio_value": "100125.63",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 10:32:48 ===
+Análisis JARVIS:
+Línea 1: El mercado muestra una tendencia alcista debido a la mayoría de los activos en alza y un sentimiento positivo general.  
+Línea 2: Los activos que destacan son META (+4.39%), SOXX (+3.84%) y TSLA (+3.38%). Las acciones lideran sobre las criptomonedas, que están bajando.  
+Línea 3: Recomendación general: aprovechar el miedo extremo para comprar activos con momentum positivo.  
+Línea 4: {"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"momentum bajo"},{"simbolo":"JNJ","accion":"MANTENER","razon":"momentum bajo"},{"simbolo":"GLD","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"VZ","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"META","accion":"COMPRAR","razon":"momentum +4.39%"},{"simbolo":"SOXX","accion":"MANTENER","razon":"no operamos criptomonedas"},{"simbolo":"MCD","accion":"MANTENER","razon":"momentum bajo"},{"simbolo":"KO","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"XLE","accion":"MANTENER","razon":"momentum bajo"},{"simbolo":"SPY","accion":"COMPRAR","razon":"momentum +1.59%"},{"simbolo":"TSLA","accion":"MANTENER","razon":"no operamos criptomonedas"},{"simbolo":"AAPL","accion":"COMPRAR","razon":"momentum +1.30%"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "momentum bajo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "momentum bajo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "no operamos criptomonedas",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "momentum bajo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "momentum bajo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "no operamos criptomonedas",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100138.69",
+  "cash": "93505.14",
+  "buying_power": "193643.83",
+  "portfolio_value": "100138.69",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 11:02:01 ===
+Análisis JARVIS:
+LÍNEA 1: El mercado muestra una tendencia alcista debido a que la mayoría de los activos están al alza y el sentimiento general es positivo.
+
+LÍNEA 2: Los activos destacados son META (+4.19%), SOXX (+3.32%) y GLD (+2.16%). En acciones, META lidera las ganancias, mientras que en criptomonedas, Bitcoin y Ethereum están bajando.
+
+LÍNEA 3: Mantener posiciones abiertas y considerar comprar SOXX si cumple con el momentum >+1%.
+
+LÍNEA 4: {"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"momentum +0.65%"},{"simbolo":"JNJ","accion":"MANTENER","razon":"momentum +0.52%"},{"simbolo":"GLD","accion":"MANTENER","razon":"momentum +2.16%"},{"simbolo":"VZ","accion":"MANTENER","razon":"momentum -1.04%"},{"simbolo":"META","accion":"MANTENER","razon":"momentum +4.19%"},{"simbolo":"SOXX","accion":"COMPRAR","razon":"momentum +3.32%"},{"simbolo":"MCD","accion":"MANTENER","razon":"momentum +0.56%"},{"simbolo":"KO","accion":"MANTENER","razon":"momentum -0.96%"},{"simbolo":"XLE","accion":"MANTENER","razon":"momentum +0.52%"},{"simbolo":"SPY","accion":"MANTENER","razon":"momentum +1.43%"},{"simbolo":"TSLA","accion":"MANTENER","razon":"momentum +2.92%"},{"simbolo":"AAPL","accion":"MANTENER","razon":"excluido de compra"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "momentum +0.65%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "momentum +0.52%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "momentum +2.16%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "momentum -1.04%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "momentum +4.19%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "momentum +0.56%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "momentum -0.96%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "momentum +0.52%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "momentum +1.43%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "momentum +2.92%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "excluido de compra",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100152.97",
+  "cash": "93505.14",
+  "buying_power": "193658.11",
+  "portfolio_value": "100152.97",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 11:32:22 ===
+Análisis JARVIS:
+Sesión alcista en los mercados. SOXX muestra momentum con +3.94%, oportunidad de entrada. SPY muestra momentum con +1.81%, oportunidad de entrada. TSLA muestra momentum con +3.68%, oportunidad de entrada. AAPL muestra momentum con +2.08%, oportunidad de entrada. Operando con cautela dentro del límite de $500 por trade.
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100168.68",
+  "cash": "93505.14",
+  "buying_power": "193673.82",
+  "portfolio_value": "100168.68",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 12:02:11 ===
+Análisis JARVIS:
+LÍNEA 1: El mercado muestra una tendencia alcista debido a la mayoría de activos en alza y un sentimiento positivo general.
+
+LÍNEA 2: Los activos que destacan son META (+6.17%), SOXX (+5.66%) y TSLA (+5.30%). Las acciones presentan una mejor performance que las criptomonedas.
+
+LÍNEA 3: Mantener posiciones abiertas, especialmente en META y GLD, dada la fortaleza del mercado y el sentimiento alcista.
+
+LÍNEA 4:
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"JNJ","accion":"MANTENER","razon":"momentum insuficiente"},{"simbolo":"GLD","accion":"MANTENER","razon":"posición abierta con ganancias"},{"simbolo":"VZ","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"META","accion":"MANTENER","razon":"posición abierta con ganancias"},{"simbolo":"SOXX","accion":"MANTENER","razon":"momentum positivo"},{"simbolo":"MCD","accion":"MANTENER","razon":"momentum insuficiente"},{"simbolo":"KO","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"XLE","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"SPY","accion":"MANTENER","razon":"momentum positivo"},{"simbolo":"TSLA","accion":"MANTENER","razon":"momentum positivo"},{"simbolo":"AAPL","accion":"MANTENER","razon":"noticias negativas"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "momentum insuficiente",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "momentum positivo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "momentum insuficiente",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "momentum positivo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "momentum positivo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "noticias negativas",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100204.46",
+  "cash": "93505.14",
+  "buying_power": "193709.6",
+  "portfolio_value": "100204.46",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 12:33:05 ===
+Análisis JARVIS:
+**LÍNEA 1:** Evaluación general del mercado: **Alcista**, ya que la mayoría de los activos (11/15) están en positivo y el promedio de variación es +1.73%. Además, el Índice de Miedo y Codicia está en niveles extremadamente bajos, indicando una posible oportunidad de compra.
+
+**LÍNEA 2:** Los activos que destacan son **META (+6.73%)**, **SOXX (+6.04%)**, **TSLA (+5.13%)**, **SPY (+2.64%)** y **AAPL (+3.31%)**. En comparación con las criptomonedas, que también están en positivo pero con menores variaciones.
+
+**LÍNEA 3:** Recomendación general breve: **Comprar META**, **SOXX**, **SPY**, **TSLA** y **AAPL** debido a su fuerte momentum. Mantener las posiciones actuales y monitorear el mercado por cambios en el sentimiento.
+
+```json
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"Variación negativa (-2.70%)"},{"simbolo":"JNJ","accion":"MANTENER","razon":"Variación positiva pero baja (+0.21%)"},{"simbolo":"GLD","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"VZ","accion":"MANTENER","razon":"Variación negativa (-0.89%)"},{"simbolo":"META","accion":"COMPRAR","razon":"Fuerte momentum (+6.73%)"},{"simbolo":"SOXX","accion":"COMPRAR","razon":"Momentum positivo (+6.04%)"},{"simbolo":"MCD","accion":"MANTENER","razon":"Variación positiva pero baja (+0.30%)"},{"simbolo":"KO","accion":"MANTENER","razon":"Variación negativa (-0.99%)"},{"simbolo":"XLE","accion":"MANTENER","razon":"Variación negativa (-2.45%)"},{"simbolo":"SPY","accion":"COMPRAR","razon":"Momentum positivo (+2.64%)"},{"simbolo":"TSLA","accion":"COMPRAR","razon":"Fuerte momentum (+5.13%)"},{"simbolo":"AAPL","accion":"COMPRAR","razon":"Momentum positivo (+3.31%)"}]}
+```
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "Variación negativa (-2.70%)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "Variación positiva pero baja (+0.21%)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "Variación negativa (-0.89%)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "Variación positiva pero baja (+0.30%)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "Variación negativa (-0.99%)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "Variación negativa (-2.45%)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100203.45",
+  "cash": "93505.14",
+  "buying_power": "193708.59",
+  "portfolio_value": "100203.45",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 14:02:57 ===
+Análisis JARVIS:
+Sesión alcista en los mercados. SOXX muestra momentum con +6.75%, oportunidad de entrada. SPY muestra momentum con +2.87%, oportunidad de entrada. TSLA muestra momentum con +5.72%, oportunidad de entrada. AAPL muestra momentum con +3.49%, oportunidad de entrada. Operando con cautela dentro del límite de $500 por trade.
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "sin señal clara",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100215.5",
+  "cash": "93505.14",
+  "buying_power": "193720.64",
+  "portfolio_value": "100215.5",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 14:32:32 ===
+Análisis JARVIS:
+Línea 1: Evaluación general del mercado (alcista/bajista/mixto y por qué)
+El mercado está en tendencia alcista debido a la mayoría de los activos que muestran variaciones positivas y el sentimiento general muy alcista.
+
+Línea 2: Qué activos destacan y relación acciones vs criptos
+Los activos que más destacan son SOXX (+7.08%), META (+6.74%) y GLD (+3.60%). Las acciones tienen un promedio de +2.18% frente a las criptomonedas con +2.52%.
+
+Línea 3: Recomendación general breve
+Recomiendo mantener posiciones abiertas, ya que el mercado está alcista y no hay activos que cumplan con las condiciones de venta.
+
+Línea 4: JSON con decisiones
+
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"Variación diaria -2.02%"},{"simbolo":"JNJ","accion":"MANTENER","razon":"Variación diaria +0.67%"},{"simbolo":"GLD","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"VZ","accion":"MANTENER","razon":"Variación diaria -0.87%"},{"simbolo":"META","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"SOXX","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"MCD","accion":"MANTENER","razon":"Variación diaria +0.88%"},{"simbolo":"KO","accion":"MANTENER","razon":"Variación diaria -0.33%"},{"simbolo":"XLE","accion":"MANTENER","razon":"Variación diaria -1.76%"},{"simbolo":"SPY","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"TSLA","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"AAPL","accion":"MANTENER","razon":"Posición abierta con ganancias"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -2.02%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "Variación diaria +0.67%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -0.87%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "Variación diaria +0.88%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -0.33%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -1.76%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100227.22",
+  "cash": "93505.14",
+  "buying_power": "193732.36",
+  "portfolio_value": "100227.22",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 15:02:08 ===
+Análisis JARVIS:
+Línea 1: Evaluación general del mercado (alcista/bajista/mixto y por qué)
+Alcista, debido a la mayoría de activos al alza y el sentimiento general muy alcista.
+
+Línea 2: Qué activos destacan y relación acciones vs criptos
+Los activos que más destacan son SOXX (+7.26%), META (+7.10%) y GLD (+3.81%). Las acciones estánperformando mejor que las criptomonedas, con un promedio de +2.37% frente a +2.18%.
+
+Línea 3: Recomendación general breve
+Mantener posiciones abiertas y considerar comprar JNJ y MCD en modo oportunidad.
+
+Línea 4: JSON con decisiones
+
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"JNJ","accion":"COMPRAR","razon":"momentum +0.86% en modo oportunidad"},{"simbolo":"GLD","accion":"MANTENER","razon":"posicion abierta"},{"simbolo":"VZ","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"META","accion":"MANTENER","razon":"posicion abierta"},{"simbolo":"SOXX","accion":"MANTENER","razon":"momentum positivo pero sin posicion"},{"simbolo":"MCD","accion":"COMPRAR","razon":"momentum +0.87% en modo oportunidad"},{"simbolo":"KO","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"XLE","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"SPY","accion":"MANTENER","razon":"momentum positivo pero sin posicion"},{"simbolo":"TSLA","accion":"MANTENER","razon":"momentum positivo pero sin posicion"},{"simbolo":"AAPL","accion":"MANTENER","razon":"momentum positivo pero sin posicion"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "posicion abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "posicion abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "momentum positivo pero sin posicion",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "momentum positivo pero sin posicion",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "momentum positivo pero sin posicion",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "momentum positivo pero sin posicion",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100239.56",
+  "cash": "93505.14",
+  "buying_power": "193744.7",
+  "portfolio_value": "100239.56",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 15:33:02 ===
+Análisis JARVIS:
+Línea 1: Evaluación general del mercado (alcista/bajista/mixto y por qué)
+Alcista. El mercado muestra una tendencia alcista con un sentimiento general muy al alza, variación promedio positiva y la mayoría de los activos subiendo.
+
+Línea 2: Qué activos destacan y relación acciones vs criptos
+Los activos que destacan son SOXX (+7.21%), META (+7.12%), GLD (+3.83%) y TSLA (+5.57%). Las acciones estánperformando ligeramente mejor que las criptomonedas, con un promedio similar.
+
+Línea 3: Recomendación general breve
+Compra activos con momentum > +1.0% dada la baja del Fear & Greed Index y el mercado en modo oportunidad.
+
+Línea 4: JSON con decisiones
+
+```json
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"JNJ","accion":"MANTENER","razon":"momentum bajo"},{"simbolo":"GLD","accion":"COMPRAR","razon":"momentum >+1.0%"},{"simbolo":"VZ","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"META","accion":"MANTENER","razon":"posición abierta"},{"simbolo":"SOXX","accion":"COMPRAR","razon":"momentum >+1.0%"},{"simbolo":"MCD","accion":"MANTENER","razon":"momentum bajo"},{"simbolo":"KO","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"XLE","accion":"MANTENER","razon":"momentum negativo"},{"simbolo":"SPY","accion":"MANTENER","razon":"momentum positivo pero no cumple umbral"},{"simbolo":"TSLA","accion":"COMPRAR","razon":"momentum >+1.0%"},{"simbolo":"AAPL","accion":"COMPRAR","razon":"momentum >+1.0%"}]}
+```
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "momentum bajo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "posición abierta",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "momentum bajo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "momentum negativo",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "momentum positivo pero no cumple umbral",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100246.57",
+  "cash": "93505.14",
+  "buying_power": "193751.71",
+  "portfolio_value": "100246.57",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+
+=== 16:02:22 ===
+Análisis JARVIS:
+Evaluación general del mercado: Alcista, debido al rally generalizado y la mayoría de los activos subiendo.  
+Qué activos destacan: SOXX (+7.21%), META (+7.12%), SPY (+3.14%). Relación acciones vs criptos: Ambas suben, peroacciones tienen mejor desempeño.  
+Recomendación general breve: Comprar activos con momentum positivo, especialmente en la zona de miedo extremo.  
+
+{"decisiones":[{"simbolo":"XOM","accion":"MANTENER","razon":"Variación diaria -1.50%"},{"simbolo":"JNJ","accion":"MANTENER","razon":"Variación diaria +0.90%"},{"simbolo":"GLD","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"VZ","accion":"MANTENER","razon":"Variación diaria -0.38%"},{"simbolo":"META","accion":"MANTENER","razon":"Posición abierta con ganancias"},{"simbolo":"SOXX","accion":"COMPRAR","razon":"Momento +7.21%"},{"simbolo":"MCD","accion":"MANTENER","razon":"Variación diaria +0.88%"},{"simbolo":"KO","accion":"MANTENER","razon":"Variación diaria -0.46%"},{"simbolo":"XLE","accion":"MANTENER","razon":"Variación diaria -1.35%"},{"simbolo":"SPY","accion":"COMPRAR","razon":"Momento +3.14%"},{"simbolo":"TSLA","accion":"COMPRAR","razon":"Momento +5.57%"},{"simbolo":"AAPL","accion":"COMPRAR","razon":"Momento +3.50%"}]}
+
+Resultados de órdenes:
+[
+  {
+    "simbolo": "XOM",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -1.50%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "Variación diaria +0.90%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "VZ",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -0.38%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "META",
+    "accion": "MANTENER",
+    "razon": "Posición abierta con ganancias",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "MCD",
+    "accion": "MANTENER",
+    "razon": "Variación diaria +0.88%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "KO",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -0.46%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "XLE",
+    "accion": "MANTENER",
+    "razon": "Variación diaria -1.35%",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SOXX",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "SPY",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "TSLA",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AAPL",
+    "accion": "MANTENER",
+    "razon": "señal de compra pero sin slot (5 máx)",
+    "ejecutada": false
+  }
+]
+
+Balance: {
+  "equity": "100237.67",
+  "cash": "93505.14",
+  "buying_power": "193742.81",
+  "portfolio_value": "100237.67",
+  "currency": "USD",
+  "status": "ACTIVE"
+}
+

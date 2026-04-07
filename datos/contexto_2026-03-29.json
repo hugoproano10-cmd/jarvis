@@ -1,0 +1,149 @@
+{
+  "fecha": "2026-03-29 09:05:10",
+  "fear_greed": {
+    "valor": 9,
+    "clasificacion": "Miedo Extremo",
+    "nota": "Mercado en pánico. Históricamente, zona de oportunidad de compra."
+  },
+  "vix": {
+    "precio": 31.05,
+    "variacion": 13.32,
+    "nivel": "Muy Alto",
+    "nota": "Volatilidad extrema. Considerar reducir exposición."
+  },
+  "earnings": [],
+  "noticias": {
+    "AAPL": [
+      {
+        "titulo": "Consumer Tech News (March 23-27): Netflix & Sony Hikes Prices, OpenAI Flags Microsoft Dependency Risk & More",
+        "resumen": "Apple launches 13-inch MacBook Neo priced at $599 ($499 for students). Netflix hikes all streaming plan prices, Sony raises PlayStation hardware prices, Semiconductor stocks gain a",
+        "fuente": "benzinga",
+        "fecha": "2026-03-29 12:32"
+      },
+      {
+        "titulo": "Is Trump's Deadline Extension A Red Flag? China Strikes At A Preoccupied US; Turkey Sells Gold",
+        "resumen": "Trade Probe",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 18:16"
+      },
+      {
+        "titulo": "How To Trade SPY, QQQ, AAPL, MSFT, NVDA, GOOGL, META, TSLA Using Technical Analysis",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 14:17"
+      }
+    ],
+    "META": [
+      {
+        "titulo": "Consumer Tech News (March 23-27): Netflix & Sony Hikes Prices, OpenAI Flags Microsoft Dependency Risk & More",
+        "resumen": "Apple launches 13-inch MacBook Neo priced at $599 ($499 for students). Netflix hikes all streaming plan prices, Sony raises PlayStation hardware prices, Semiconductor stocks gain a",
+        "fuente": "benzinga",
+        "fecha": "2026-03-29 12:32"
+      },
+      {
+        "titulo": "Benzinga Bulls And Bears: Arm, Destiny Tech, Salesforce — And Nasdaq Enters Correction",
+        "resumen": "Benzinga examined the prospects for many investors&#39; favorite stocks over the last week — here&#39;s a look at some of our top stories.",
+        "fuente": "benzinga",
+        "fecha": "2026-03-28 12:31"
+      },
+      {
+        "titulo": "Robinhood, Netflix, Arm Holdings, And More: 5 Stocks Investors Couldn't Stop Buzzing About This Week",
+        "resumen": "Retail investors talked up five hot stocks this week (March 23 to March 27) on X and Reddit&#39;s r/WallStreetBets: HOOD, NFLX, ARM, META, GME.",
+        "fuente": "benzinga",
+        "fecha": "2026-03-28 12:01"
+      }
+    ],
+    "TSLA": [
+      {
+        "titulo": "Consumer Tech News (March 23-27): Netflix & Sony Hikes Prices, OpenAI Flags Microsoft Dependency Risk & More",
+        "resumen": "Apple launches 13-inch MacBook Neo priced at $599 ($499 for students). Netflix hikes all streaming plan prices, Sony raises PlayStation hardware prices, Semiconductor stocks gain a",
+        "fuente": "benzinga",
+        "fecha": "2026-03-29 12:32"
+      },
+      {
+        "titulo": "Is Trump's Deadline Extension A Red Flag? China Strikes At A Preoccupied US; Turkey Sells Gold",
+        "resumen": "Trade Probe",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 18:16"
+      },
+      {
+        "titulo": "How To Trade SPY, QQQ, AAPL, MSFT, NVDA, GOOGL, META, TSLA Using Technical Analysis",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 14:17"
+      }
+    ],
+    "SOXX": [
+      {
+        "titulo": "Here's How Much You Would Have Made Owning iShares PHLX SOX Semiconductor Sector Index Fund Stock In The Last 20 Years",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 22:00"
+      }
+    ],
+    "GLD": [
+      {
+        "titulo": "When Is The Iran War Likely To End? Experts Weigh In",
+        "resumen": "When Is the Iran war likely to end? We asked our expert network for a potential timeline. This is what they said.",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 21:26"
+      },
+      {
+        "titulo": "Is Trump's Deadline Extension A Red Flag? China Strikes At A Preoccupied US; Turkey Sells Gold",
+        "resumen": "Trade Probe",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 18:16"
+      }
+    ],
+    "SPY": [
+      {
+        "titulo": "When Is The Iran War Likely To End? Experts Weigh In",
+        "resumen": "When Is the Iran war likely to end? We asked our expert network for a potential timeline. This is what they said.",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 21:26"
+      },
+      {
+        "titulo": "Is Trump's Deadline Extension A Red Flag? China Strikes At A Preoccupied US; Turkey Sells Gold",
+        "resumen": "Trade Probe",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 18:16"
+      },
+      {
+        "titulo": "How To Trade SPY, QQQ, AAPL, MSFT, NVDA, GOOGL, META, TSLA Using Technical Analysis",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 14:17"
+      }
+    ],
+    "XLE": [
+      {
+        "titulo": "Nasdaq 100 Enters Correction As 30-Year Yields Near 5%: What's Moving Markets Friday?",
+        "resumen": "U.S. equities tumbled to their lowest levels in nearly seven months on Friday as the Nasdaq 100, heavily weighted toward tech stocks, officially entered correction territory.",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 17:09"
+      }
+    ],
+    "VZ": [
+      {
+        "titulo": "3 Dividend Stocks With Robust Yields For Tough Times",
+        "resumen": "In a volatile market, dividend stocks are a safe bet for income-minded investors. AI stocks are struggling, making dividend stocks a good alternative. Three top dividend stock pick",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 16:26"
+      }
+    ],
+    "XOM": [
+      {
+        "titulo": "3 Dividend Stocks With Robust Yields For Tough Times",
+        "resumen": "In a volatile market, dividend stocks are a safe bet for income-minded investors. AI stocks are struggling, making dividend stocks a good alternative. Three top dividend stock pick",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 16:26"
+      },
+      {
+        "titulo": "Morgan Stanley Maintains Overweight on Exxon Mobil, Raises Price Target to $172",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-03-27 15:46"
+      }
+    ]
+  }
+}

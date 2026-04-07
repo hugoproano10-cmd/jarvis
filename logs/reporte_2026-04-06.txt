@@ -1,0 +1,27 @@
+Reporte matutino — 06/04/2026 07:30
+
+💼 <b>PORTAFOLIO</b>
+  Equity: $100,237.79
+  Cash: $91,454.29
+  Valor portafolio: $100,237.79
+  Posiciones abiertas: 5/8
+  🔴 KO: 26 acc @ $76.90 → $76.59 | P&L: $-8.07 (-0.4%)
+  🔴 MCD: 3 acc @ $309.89 → $305.70 | P&L: $-13.49 (-1.4%)
+  ✅ META: 6 acc @ $532.78 → $579.78 | P&L: $+264.11 (+8.8%)
+  ✅ NVDA: 3 acc @ $168.46 → $177.97 | P&L: $+28.52 (+5.6%)
+  ✅ SOXX: 6 acc @ $339.99 → $342.39 | P&L: $+14.11 (+0.7%)
+  P&L total abierto: $+285.18
+
+🌍 <b>CONTEXTO DE MERCADO</b>
+  Fear &amp; Greed: 13/100 — Miedo Extremo
+  Mercado en pánico. Históricamente, zona de oportunidad de compra.
+  VIX: 25.08 (+4.9%) — Alto
+  Mercado nervioso. Stops más amplios recomendados.
+
+📋 <b>PLAN DE HOY</b>
+  Modo: F&G en pánico → modo oportunidad
+  Para hoy, prioriza los activos más influyentes como KO, MCD y AAPL. Considera un enfoque bearista debido al índice de Pavor y Medio a un pánico. Verifica el tamaño de las órdenes y la liquidez antes de realizar transacciones. Monitorea los ordenes de stop para evitar pérdidas.
+
+📊 <b>RESUMEN DE AYER (2026-04-03)</b>
+  Sin trades ejecutados ayer.
+  JARVIS ejecutó 20 sesión(es) de análisis.

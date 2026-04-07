@@ -1,0 +1,42 @@
+"""
+Configuración centralizada de la estrategia de trading JARVIS.
+Parámetros optimizados por backtest y screener (2026-03-28).
+
+Universo ampliado: 12 activos rankeados por Sharpe ratio del screener.
+"""
+
+# ── Activos permitidos, ordenados por Sharpe del screener ───
+# Sharpe:  XOM 2.72 | JNJ 2.69 | GLD 1.85 | VZ 1.51 | META 1.34
+#          SOXX 1.31 | MCD 0.97 | KO 0.56 | XLE 0.46 | SPY 0.18
+#          TSLA ~0.70 (en combo) | AAPL -0.18
+ACTIVOS_OPERABLES = [
+    "XOM", "JNJ", "GLD", "VZ", "META",
+    "SOXX", "MCD", "KO", "XLE",
+    "SPY", "TSLA", "AAPL",
+]
+
+# Prioridad para selección de señales (índice = orden de prioridad)
+# Cuando hay más señales de compra que slots disponibles, se eligen
+# los activos con mayor prioridad (menor índice en esta lista).
+PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_OPERABLES)}
+
+# ── Parámetros de bracket orders ────────────────────────────
+STOP_LOSS_PCT = 0.10             # -10% (antes -5%, causaba salidas prematuras)
+TAKE_PROFIT_PCT = 0.20           # +20% (antes +10%, no capturaba el movimiento)
+ALERTA_STOP_PCT = 0.06           # Alertar si la pérdida llega al -6% (cerca del stop)
+
+# ── Límites de riesgo ───────────────────────────────────────
+MAX_POR_OPERACION = 2000.0       # USD máximo por trade
+MAX_PCT_PORTAFOLIO = 0.10        # 10% del portafolio por posición
+MAX_POSICIONES = 5               # Máximo posiciones abiertas simultáneas
+
+# ── Señales de entrada ──────────────────────────────────────
+UMBRAL_COMPRA = 3                # Puntuación mínima de indicadores para comprar
+
+# ── Modelos de IA ───────────────────────────────────────────
+OLLAMA_URL = "http://localhost:11434/api/chat"
+MODEL_DEEP = "deepseek-r1:32b"   # Análisis profundo y decisiones de trading
+MODEL_FAST = "deepseek-r1:7b"    # Alertas rápidas y conversación
+
+# ── Indicadores técnicos ────────────────────────────────────
+PERIODO_HISTORICO_MESES = 6      # Meses de datos para indicadores

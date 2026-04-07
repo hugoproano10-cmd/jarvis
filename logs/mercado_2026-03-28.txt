@@ -1,0 +1,380 @@
+============================================================
+  RESUMEN DE MERCADO  —  28/03/2026 10:48:54
+============================================================
+
+  --- ACCIONES ---
+
+  AAPL
+    Precio actual : $248.80 USD
+    Apertura      : $253.90 USD
+    Cierre ayer   : $254.89 USD
+    Variación día : ▼ -2.39%
+
+  TSLA
+    Precio actual : $361.83 USD
+    Apertura      : $369.69 USD
+    Cierre ayer   : $374.20 USD
+    Variación día : ▼ -3.31%
+
+  SPY
+    Precio actual : $634.09 USD
+    Apertura      : $642.50 USD
+    Cierre ayer   : $647.85 USD
+    Variación día : ▼ -2.12%
+
+  NVDA
+    Precio actual : $167.52 USD
+    Apertura      : $170.00 USD
+    Cierre ayer   : $172.28 USD
+    Variación día : ▼ -2.76%
+
+  --- CRIPTOMONEDAS ---
+
+  Bitcoin (BTC/USDT)
+    Precio actual : $67,029.61 USD
+    Apertura 24h  : $66,337.59 USD
+    Variación día : ▲ +1.04%
+
+  BNB (BNB/USDT)
+    Precio actual : $617.39 USD
+    Apertura 24h  : $612.16 USD
+    Variación día : ▲ +0.85%
+
+  --- ANÁLISIS DE SENTIMIENTO ---
+  Sentimiento general : BAJISTA
+  Variación promedio  : -1.45%
+  Activos al alza     : 2/6
+  Activos a la baja   : 4/6
+  Promedio acciones   : -2.65%
+  Promedio criptos    : +0.95%
+  Mayor alza          : Bitcoin (BTC/USDT) (+1.04%)
+  Mayor baja          : TSLA (-3.31%)
+
+  * Sesión con tendencia negativa. Monitorear soportes.
+  * Divergencia notable: criptos superan a acciones.
+
+============================================================
+  Fuentes: Yahoo Finance (acciones) | Binance (criptos)
+============================================================
+
+  Errores al consultar:
+    - Ethereum (ETH/USDT): HTTPSConnectionPool(host='api.binance.com', port=443): Read timed out. (read timeout=10)
+
+============================================================
+  RESUMEN DE MERCADO  —  28/03/2026 10:49:34
+============================================================
+
+  --- ACCIONES ---
+
+  AAPL
+    Precio actual : $248.80 USD
+    Apertura      : $253.90 USD
+    Cierre ayer   : $254.89 USD
+    Variación día : ▼ -2.39%
+
+  TSLA
+    Precio actual : $361.83 USD
+    Apertura      : $369.69 USD
+    Cierre ayer   : $374.20 USD
+    Variación día : ▼ -3.31%
+
+  SPY
+    Precio actual : $634.09 USD
+    Apertura      : $642.50 USD
+    Cierre ayer   : $647.85 USD
+    Variación día : ▼ -2.12%
+
+  NVDA
+    Precio actual : $167.52 USD
+    Apertura      : $170.00 USD
+    Cierre ayer   : $172.28 USD
+    Variación día : ▼ -2.76%
+
+  --- CRIPTOMONEDAS ---
+
+  Bitcoin (BTC/USDT)
+    Precio actual : $67,020.34 USD
+    Apertura 24h  : $66,360.97 USD
+    Variación día : ▲ +0.99%
+
+  Ethereum (ETH/USDT)
+    Precio actual : $2,026.42 USD
+    Apertura 24h  : $1,997.03 USD
+    Variación día : ▲ +1.47%
+
+  BNB (BNB/USDT)
+    Precio actual : $617.35 USD
+    Apertura 24h  : $612.05 USD
+    Variación día : ▲ +0.87%
+
+  --- ANÁLISIS DE SENTIMIENTO ---
+  Sentimiento general : BAJISTA
+  Variación promedio  : -1.04%
+  Activos al alza     : 3/7
+  Activos a la baja   : 4/7
+  Promedio acciones   : -2.65%
+  Promedio criptos    : +1.11%
+  Mayor alza          : Ethereum (ETH/USDT) (+1.47%)
+  Mayor baja          : TSLA (-3.31%)
+
+  * Sesión con tendencia negativa. Monitorear soportes.
+  * Divergencia notable: criptos superan a acciones.
+
+============================================================
+  Fuentes: Yahoo Finance (acciones) | Binance (criptos)
+============================================================
+
+============================================================
+  RESUMEN DE MERCADO  —  28/03/2026 10:59:08
+============================================================
+
+  --- ACCIONES ---
+
+  AAPL
+    Precio actual : $248.80 USD
+    Apertura      : $253.90 USD
+    Cierre ayer   : $254.89 USD
+    Variación día : ▼ -2.39%
+
+  TSLA
+    Precio actual : $361.83 USD
+    Apertura      : $369.69 USD
+    Cierre ayer   : $374.20 USD
+    Variación día : ▼ -3.31%
+
+  SPY
+    Precio actual : $634.09 USD
+    Apertura      : $642.50 USD
+    Cierre ayer   : $647.85 USD
+    Variación día : ▼ -2.12%
+
+  NVDA
+    Precio actual : $167.52 USD
+    Apertura      : $170.00 USD
+    Cierre ayer   : $172.28 USD
+    Variación día : ▼ -2.76%
+
+  --- CRIPTOMONEDAS ---
+
+  Bitcoin (BTC/USDT)
+    Precio actual : $66,999.40 USD
+    Apertura 24h  : $66,128.71 USD
+    Variación día : ▲ +1.32%
+
+  BNB (BNB/USDT)
+    Precio actual : $617.18 USD
+    Apertura 24h  : $610.69 USD
+    Variación día : ▲ +1.06%
+
+  --- ANÁLISIS DE SENTIMIENTO ---
+  Sentimiento general : BAJISTA
+  Variación promedio  : -1.37%
+  Activos al alza     : 2/6
+  Activos a la baja   : 4/6
+  Promedio acciones   : -2.65%
+  Promedio criptos    : +1.19%
+  Mayor alza          : Bitcoin (BTC/USDT) (+1.32%)
+  Mayor baja          : TSLA (-3.31%)
+
+  * Sesión con tendencia negativa. Monitorear soportes.
+  * Divergencia notable: criptos superan a acciones.
+
+============================================================
+  Fuentes: Yahoo Finance (acciones) | Binance (criptos)
+============================================================
+
+  Errores al consultar:
+    - Ethereum (ETH/USDT): HTTPSConnectionPool(host='api.binance.com', port=443): Read timed out. (read timeout=10)
+
+============================================================
+  RESUMEN DE MERCADO  —  28/03/2026 11:02:19
+============================================================
+
+  --- ACCIONES ---
+
+  AAPL
+    Precio actual : $248.80 USD
+    Apertura      : $253.90 USD
+    Cierre ayer   : $254.89 USD
+    Variación día : ▼ -2.39%
+
+  TSLA
+    Precio actual : $361.83 USD
+    Apertura      : $369.69 USD
+    Cierre ayer   : $374.20 USD
+    Variación día : ▼ -3.31%
+
+  SPY
+    Precio actual : $634.09 USD
+    Apertura      : $642.50 USD
+    Cierre ayer   : $647.85 USD
+    Variación día : ▼ -2.12%
+
+  NVDA
+    Precio actual : $167.52 USD
+    Apertura      : $170.00 USD
+    Cierre ayer   : $172.28 USD
+    Variación día : ▼ -2.76%
+
+  --- CRIPTOMONEDAS ---
+
+  Bitcoin (BTC/USDT)
+    Precio actual : $66,986.41 USD
+    Apertura 24h  : $66,031.58 USD
+    Variación día : ▲ +1.45%
+
+  Ethereum (ETH/USDT)
+    Precio actual : $2,026.03 USD
+    Apertura 24h  : $1,988.65 USD
+    Variación día : ▲ +1.88%
+
+  BNB (BNB/USDT)
+    Precio actual : $617.25 USD
+    Apertura 24h  : $610.11 USD
+    Variación día : ▲ +1.17%
+
+  --- ANÁLISIS DE SENTIMIENTO ---
+  Sentimiento general : BAJISTA
+  Variación promedio  : -0.87%
+  Activos al alza     : 3/7
+  Activos a la baja   : 4/7
+  Promedio acciones   : -2.65%
+  Promedio criptos    : +1.50%
+  Mayor alza          : Ethereum (ETH/USDT) (+1.88%)
+  Mayor baja          : TSLA (-3.31%)
+
+  * Sesión con tendencia negativa. Monitorear soportes.
+  * Divergencia notable: criptos superan a acciones.
+
+============================================================
+  Fuentes: Yahoo Finance (acciones) | Binance (criptos)
+============================================================
+
+============================================================
+  RESUMEN DE MERCADO  —  28/03/2026 11:09:29
+============================================================
+
+  --- ACCIONES ---
+
+  AAPL
+    Precio actual : $248.80 USD
+    Apertura      : $253.90 USD
+    Cierre ayer   : $254.89 USD
+    Variación día : ▼ -2.39%
+
+  TSLA
+    Precio actual : $361.83 USD
+    Apertura      : $369.69 USD
+    Cierre ayer   : $374.20 USD
+    Variación día : ▼ -3.31%
+
+  SPY
+    Precio actual : $634.09 USD
+    Apertura      : $642.50 USD
+    Cierre ayer   : $647.85 USD
+    Variación día : ▼ -2.12%
+
+  NVDA
+    Precio actual : $167.52 USD
+    Apertura      : $170.00 USD
+    Cierre ayer   : $172.28 USD
+    Variación día : ▼ -2.76%
+
+  --- CRIPTOMONEDAS ---
+
+  Bitcoin (BTC/USDT)
+    Precio actual : $67,066.06 USD
+    Apertura 24h  : $65,839.57 USD
+    Variación día : ▲ +1.86%
+
+  Ethereum (ETH/USDT)
+    Precio actual : $2,028.90 USD
+    Apertura 24h  : $1,984.93 USD
+    Variación día : ▲ +2.21%
+
+  BNB (BNB/USDT)
+    Precio actual : $616.96 USD
+    Apertura 24h  : $608.00 USD
+    Variación día : ▲ +1.47%
+
+  --- ANÁLISIS DE SENTIMIENTO ---
+  Sentimiento general : BAJISTA
+  Variación promedio  : -0.72%
+  Activos al alza     : 3/7
+  Activos a la baja   : 4/7
+  Promedio acciones   : -2.65%
+  Promedio criptos    : +1.85%
+  Mayor alza          : Ethereum (ETH/USDT) (+2.21%)
+  Mayor baja          : TSLA (-3.31%)
+
+  * Sesión con tendencia negativa. Monitorear soportes.
+  * Divergencia notable: criptos superan a acciones.
+
+============================================================
+  Fuentes: Yahoo Finance (acciones) | Binance (criptos)
+============================================================
+
+============================================================
+  RESUMEN DE MERCADO  —  28/03/2026 11:10:53
+============================================================
+
+  --- ACCIONES ---
+
+  AAPL
+    Precio actual : $248.80 USD
+    Apertura      : $253.90 USD
+    Cierre ayer   : $254.89 USD
+    Variación día : ▼ -2.39%
+
+  TSLA
+    Precio actual : $361.83 USD
+    Apertura      : $369.69 USD
+    Cierre ayer   : $374.20 USD
+    Variación día : ▼ -3.31%
+
+  SPY
+    Precio actual : $634.09 USD
+    Apertura      : $642.50 USD
+    Cierre ayer   : $647.85 USD
+    Variación día : ▼ -2.12%
+
+  NVDA
+    Precio actual : $167.52 USD
+    Apertura      : $170.00 USD
+    Cierre ayer   : $172.28 USD
+    Variación día : ▼ -2.76%
+
+  --- CRIPTOMONEDAS ---
+
+  Bitcoin (BTC/USDT)
+    Precio actual : $67,034.53 USD
+    Apertura 24h  : $65,857.46 USD
+    Variación día : ▲ +1.79%
+
+  Ethereum (ETH/USDT)
+    Precio actual : $2,027.65 USD
+    Apertura 24h  : $1,984.33 USD
+    Variación día : ▲ +2.18%
+
+  BNB (BNB/USDT)
+    Precio actual : $616.56 USD
+    Apertura 24h  : $608.26 USD
+    Variación día : ▲ +1.36%
+
+  --- ANÁLISIS DE SENTIMIENTO ---
+  Sentimiento general : BAJISTA
+  Variación promedio  : -0.75%
+  Activos al alza     : 3/7
+  Activos a la baja   : 4/7
+  Promedio acciones   : -2.65%
+  Promedio criptos    : +1.78%
+  Mayor alza          : Ethereum (ETH/USDT) (+2.18%)
+  Mayor baja          : TSLA (-3.31%)
+
+  * Sesión con tendencia negativa. Monitorear soportes.
+  * Divergencia notable: criptos superan a acciones.
+
+============================================================
+  Fuentes: Yahoo Finance (acciones) | Binance (criptos)
+============================================================
+

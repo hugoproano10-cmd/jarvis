@@ -1,0 +1,36 @@
+Reporte matutino — 31/03/2026 07:30
+
+💼 <b>PORTAFOLIO</b>
+  Equity: $100,057.12
+  Cash: $93,505.14
+  Valor portafolio: $100,057.12
+  Posiciones abiertas: 5/5
+  ✅ GLD: 2 acc @ $417.21 → $420.70 | P&L: $+8.34 (+0.8%)
+  ✅ MCD: 3 acc @ $309.89 → $310.50 | P&L: $+1.96 (+0.2%)
+  ✅ META: 6 acc @ $532.78 → $545.00 | P&L: $+68.67 (+2.3%)
+  🔴 NVDA: 3 acc @ $168.46 → $167.70 | P&L: $-2.29 (-0.5%)
+  🔴 XOM: 6 acc @ $175.18 → $171.75 | P&L: $-19.57 (-2.0%)
+  P&L total abierto: $+57.11
+
+🌍 <b>CONTEXTO DE MERCADO</b>
+  Fear &amp; Greed: 11/100 — Miedo Extremo
+  Mercado en pánico. Históricamente, zona de oportunidad de compra.
+  VIX: 28.71 (-6.2%) — Alto
+  Mercado nervioso. Stops más amplios recomendados.
+
+📋 <b>PLAN DE HOY</b>
+  Modo: F&G en pánico → modo oportunidad
+  1. Prioritize activos con alta liquidez y estabilidad: GLD.  
+2. Busca oportunidades en sector de crecimiento: META, TSLA, AAPL.  
+3. Monitorea el estado del mercado para ajustar posiciones.  
+4. Asegúrate de mantener un balance neutral al riesgo.
+
+📊 <b>RESUMEN DE AYER (2026-03-30)</b>
+  Trades ejecutados: 6
+  Compras: 6 | Ventas: 0
+  ✅ BUY 3.22 MCD @ $309.89 [filled]
+  ✅ BUY 2.39 GLD @ $417.21 [filled]
+  ✅ BUY 3.75 META @ $533.53 [filled]
+  ✅ BUY 1.87 META @ $531.28 [filled]
+  ✅ BUY 5.71 XOM @ $175.18 [filled]
+  ✅ BUY 3 NVDA @ $168.46 [filled]

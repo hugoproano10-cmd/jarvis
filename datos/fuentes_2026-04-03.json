@@ -1,0 +1,1275 @@
+{
+  "fecha": "2026-04-03 19:09:09",
+  "fear_greed": {
+    "valor": 11,
+    "clasificacion": "Miedo Extremo",
+    "nota": "Mercado en pánico. Históricamente, zona de oportunidad de compra."
+  },
+  "vix": {
+    "precio": 23.87,
+    "variacion": -2.69,
+    "nivel": "Elevado",
+    "nota": "Volatilidad alta. Precaución con posiciones grandes."
+  },
+  "earnings": [],
+  "noticias": {
+    "META": [
+      {
+        "titulo": "Google Rival DuckDuckGo Roasts Jeff Bezos' Tall Beverly Hills Fence And Mark Zuckerberg's Multi-Million Dollar Property Spree",
+        "resumen": "This week, DuckDuckGo criticized Jeff Bezos and Mark Zuckerberg for spending millions on personal privacy measures.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 13:02"
+      },
+      {
+        "titulo": "Mark Zuckerberg, Elon Musk Being Taxed Less Than An 'Average Nurse'? Jayapal, Elizabeth Warren Say Not Anymore",
+        "resumen": "Rep. Pramila Jayapal (D-Wash.) criticized the tax rates of billionaires and expressed dissatisfaction with the current tax system.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 12:14"
+      },
+      {
+        "titulo": "Meta's Ray-Ban Meta Smart Glasses Power Blind Runner's Marathon Bid, All Clarke Reynolds Has To Do Is Say 'Be My Eyes'",
+        "resumen": "Blind U.K. artist Clarke Reynolds is set to run the Brighton Marathon using Ray-Ban Meta smart glasses and the Be My Eyes.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 07:31"
+      }
+    ],
+    "TSLA": [
+      {
+        "titulo": "Mark Zuckerberg, Elon Musk Being Taxed Less Than An 'Average Nurse'? Jayapal, Elizabeth Warren Say Not Anymore",
+        "resumen": "Rep. Pramila Jayapal (D-Wash.) criticized the tax rates of billionaires and expressed dissatisfaction with the current tax system.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 12:14"
+      },
+      {
+        "titulo": "Big Tech H-1B Filings Plunge As Amazon, Google, Meta And Microsoft Slash Jobs Amid Rising Immigration Costs",
+        "resumen": "Big Tech H-1B filings fall sharply as Amazon, Google, Meta, and Microsoft cut jobs amid stricter U.S. visa rules and rising hiring costs.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 11:43"
+      },
+      {
+        "titulo": "9 Consumer Discretionary Stocks Whale Activity In Today's Session",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 17:35"
+      }
+    ],
+    "GLD": [
+      {
+        "titulo": "GLD, IAU See Massive Monthly Outflows As Profit-Taking Follows Gold's Price Rally Amid Iran War",
+        "resumen": "The ETFs collectively shed $3.7 billion in March. Gold prices fell more than 11% during the month as investors took profits, even amid ongoing geopolitical uncertainty tied to the",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 21:01"
+      },
+      {
+        "titulo": "Gold's 17% Slide Could Be The Best Buying Opportunity Of 2026 – UBS Says $6,200 Is Next",
+        "resumen": "Gold has fallen 17% from its January record. UBS sees $6,200 by mid-2026. Here&#39;s what the selloff means for the bullion.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 19:37"
+      }
+    ],
+    "XOM": [
+      {
+        "titulo": "Not Exxon, Not Chevron — This Small Cap Name Is One Of The Biggest Winners From $110 Oil",
+        "resumen": "As oil tops $110, a small-cap energy stock is outperforming Exxon and Chevron—here&#39;s why it&#39;s emerging as a key high-beta winner.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 18:23"
+      },
+      {
+        "titulo": "'Italy to get LNG from QatarEnergy-Exxon's US Golden Pass from June, sources say' - Reuters Exclusive",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 16:11"
+      },
+      {
+        "titulo": "Citigroup Maintains Neutral on Exxon Mobil, Raises Price Target to $175",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 15:48"
+      }
+    ],
+    "VZ": [
+      {
+        "titulo": "5 Communication Services Stocks With Whale Alerts In Today's Session",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 17:35"
+      },
+      {
+        "titulo": "Axe Compute Is Trending — Here Is Why AGPU Stock Jumped Overnight Following 117% Intraday Gain",
+        "resumen": "Axe Compute Inc. (NASDAQ:AGPU) shares are trending on Thursday.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 07:13"
+      }
+    ],
+    "XLE": [
+      {
+        "titulo": "Why Is Exxon Mobil Stock Gaining Thursday?",
+        "resumen": "XOM outpaces the market as energy stocks surge. See the technical levels, IEA supply warnings, and what&#39;s driving Exxon&#39;s bullish momentum.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 14:52"
+      },
+      {
+        "titulo": "$120 Oil Bets Surge On Prediction Markets— 4 Energy ETFs In Focus",
+        "resumen": "Oil rallied on Thursday on Trump&#39;s Iran stance. Polymarkets now point to $120. Here are some ETFs in focus.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 18:36"
+      },
+      {
+        "titulo": "Leading And Lagging Sectors For April 3, 2026",
+        "resumen": "",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 13:10"
+      }
+    ],
+    "AAPL": [
+      {
+        "titulo": "Tech, Chip Stocks Slide As Trump's Iran Warning Rattles Markets",
+        "resumen": "US tech and chip stocks slide as geopolitical tensions and surging oil prices trigger a broad market sell-off. Get the latest market updates.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 13:00"
+      }
+    ],
+    "JNJ": [
+      {
+        "titulo": "Trump Administration Prepares 100% Tariffs On Drugmakers Without Pricing Deals: Report",
+        "resumen": "According to a Bloomberg report, Trump may impose 100% tariffs on drugmakers without pricing deals, as part of a broader push to lower drug costs.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-02 08:44"
+      }
+    ],
+    "SPY": [
+      {
+        "titulo": "$120 Oil Bets Surge On Prediction Markets— 4 Energy ETFs In Focus",
+        "resumen": "Oil rallied on Thursday on Trump&#39;s Iran stance. Polymarkets now point to $120. Here are some ETFs in focus.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 18:36"
+      },
+      {
+        "titulo": "Trump Team Reportedly Moves To Slash Staff At Post-2008 Financial Risk Watchdog — Elizabeth Warren Warns It Could Cause 'Another Crash'",
+        "resumen": "The Trump admin is slashing staff at the Office of Financial Research by 63%. Democrats warn gutting the watchdog risks another crash.",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 09:16"
+      },
+      {
+        "titulo": "Former Trump Aide Alleges $400 Million Market Manipulation Tied To Trump: 'A Financial Operation'",
+        "resumen": "Anthony Scaramucci accuses the Trump White House of a $400M insider trading scheme tied to Iran policy, calling it a &#34;financial operation.&#34;",
+        "fuente": "benzinga",
+        "fecha": "2026-04-03 07:53"
+      }
+    ]
+  },
+  "macro_fed": {
+    "fed_funds_rate": {
+      "nombre": "Tasa Fed Funds",
+      "serie": "FEDFUNDS",
+      "valor": 3.64,
+      "fecha": "2026-03-01",
+      "error": null
+    },
+    "cpi": {
+      "nombre": "CPI (Inflación)",
+      "serie": "CPIAUCSL",
+      "valor": 327.46,
+      "fecha": "2026-02-01",
+      "error": null
+    },
+    "desempleo": {
+      "nombre": "Tasa Desempleo",
+      "serie": "UNRATE",
+      "valor": 4.3,
+      "fecha": "2026-03-01",
+      "error": null
+    },
+    "interpretacion": "Fed Funds en 3.64%: tasas moderadamente altas. Desempleo 4.3%: nivel moderado."
+  },
+  "finnhub_sentimiento": {
+    "XOM": {
+      "simbolo": "XOM",
+      "noticias": [
+        {
+          "titulo": "Energy & Utilities Roundup: Market Talk",
+          "resumen": "1523 ET – The energy sector has recorded the largest percentage increase in estimated earnings of the 11 S&P 500 sectors tracked by FactSet.  The estimated year-over-year earnings",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 15:59",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Oil Stocks Look Tapped Out. Why It’s Time to Move Into Other Sectors.",
+          "resumen": "Oil popped 8% Thursday, but oil company stocks gained just 0.5%. It suggests the stocks already reflect most of the higher crude prices.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 11:12",
+          "sentimiento": null
+        },
+        {
+          "titulo": "This Oil Shock Is So Big It Is Fueling a Turnaround in Energy Stocks",
+          "resumen": "Wall Street is bracing for a longer-term disruption from the war with Iran, and loading up on shares of oil-and-gas producers that have lagged behind in recent years.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 09:00",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Here is What to Know Beyond Why Exxon Mobil Corporation (XOM) is a Trending Stock",
+          "resumen": "Exxon (XOM) has been one of the stocks most watched by Zacks.com users lately. So, it is worth exploring what lies ahead for the stock.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 08:00",
+          "sentimiento": null
+        },
+        {
+          "titulo": "The cost to fly private is up as much as 20% with fuel prices soaring",
+          "resumen": "Deep-pocketed travelers are less likely to get priced out as airfares rise, but they have to navigate unexpected fees related to the Iran war and rising fuel costs.",
+          "fuente": "CNBC",
+          "fecha": "2026-04-03 04:00",
+          "sentimiento": null
+        }
+      ],
+      "recomendacion": {
+        "periodo": "2026-04-01",
+        "strong_buy": 7,
+        "buy": 11,
+        "hold": 12,
+        "sell": 2,
+        "strong_sell": 0,
+        "total_analistas": 32,
+        "sesgo": "Neutral"
+      },
+      "ultimo_earnings": {
+        "periodo": "2025-12-31",
+        "eps_actual": 1.71,
+        "eps_estimado": 1.7016,
+        "sorpresa": 0.0084,
+        "sorpresa_pct": 0.4937
+      }
+    },
+    "JNJ": {
+      "simbolo": "JNJ",
+      "noticias": [
+        {
+          "titulo": "Alphabet vs. Tesla: This stock is just an 'immense cash flow machine'",
+          "resumen": "Yahoo Finance's \"Market Madness\" tournament has whittled down the competition of top-performing companies, pairing Alphabet (GOOG, GOOGL) against Tesla (TSLA) and Palantir Technolo",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 08:30",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Trump tariff fallout: Some industries grapple with lingering effects one year later",
+          "resumen": "A year after his \"liberation day,\" Trump's trade war has reshaped how companies in industries such as retail and autos are modeling economic and policy risk.",
+          "fuente": "CNBC",
+          "fecha": "2026-04-03 02:30",
+          "sentimiento": null
+        },
+        {
+          "titulo": "7 Dividend Increases Expected In April 2026",
+          "resumen": "April 2026 is poised for dividend increases from blue-chip names with long records of annual hikes.",
+          "fuente": "SeekingAlpha",
+          "fecha": "2026-04-02 23:58",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Trump Slaps 100% Tariffs on Some Drug Imports. What to Know.",
+          "resumen": "More than a dozen major drugmakers already have struck ‘most favored nation’ pricing agreements with the White House.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-02 15:04",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Bayer Advances AB-1002 Study, Highlights Pharma Growth Strategy",
+          "resumen": "Bayer advances AB-1002 after AskBio completes mid-stage study enrollment, as its Pharma strategy and pipeline milestones drive long-term growth outlook.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-02 13:29",
+          "sentimiento": null
+        }
+      ],
+      "recomendacion": {
+        "periodo": "2026-04-01",
+        "strong_buy": 6,
+        "buy": 14,
+        "hold": 12,
+        "sell": 0,
+        "strong_sell": 0,
+        "total_analistas": 32,
+        "sesgo": "Alcista"
+      },
+      "ultimo_earnings": {
+        "periodo": "2025-12-31",
+        "eps_actual": 2.46,
+        "eps_estimado": 2.4633,
+        "sorpresa": -0.0033,
+        "sorpresa_pct": -0.134
+      }
+    },
+    "GLD": {
+      "simbolo": "GLD",
+      "noticias": [
+        {
+          "titulo": "Finding The Opportunities After The Selloff And End Of The War",
+          "resumen": "Crude oil upside looks limited post-rally as macro fragility persists.",
+          "fuente": "SeekingAlpha",
+          "fecha": "2026-04-03 07:00",
+          "sentimiento": null
+        },
+        {
+          "titulo": "One Year Liberated",
+          "resumen": "While equity markets took a big hit last spring, the S&P 500 made a full recovery by June and is now up solidly over the past year. Read more here.",
+          "fuente": "SeekingAlpha",
+          "fecha": "2026-04-03 05:00",
+          "sentimiento": null
+        },
+        {
+          "titulo": "The Rise Of The Everyday Commodity Hedge In A Volatile Era",
+          "resumen": "Market participants are increasingly using short-term instruments alongside traditional once-a-month expiry option contracts. Read more here.",
+          "fuente": "SeekingAlpha",
+          "fecha": "2026-04-03 02:30",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Misunderstood 10-13% Yields For Important Retirement Portfolio Diversification",
+          "resumen": "Discover 2 top-performing sectors income investors missâ2 investments yielding 10â13% with tax efficiency and expert management.",
+          "fuente": "SeekingAlpha",
+          "fecha": "2026-04-03 02:05",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Macro Insights: The Hormuz Crisis Says No, But The Market Says Yes",
+          "resumen": "U.S.-Iran tensions, oil spikes, and S&P 500 risks raise volatility and stagflation fearsâsee bearish vs bullish takes and how to position now.",
+          "fuente": "SeekingAlpha",
+          "fecha": "2026-04-03 02:00",
+          "sentimiento": null
+        }
+      ],
+      "recomendacion": {},
+      "ultimo_earnings": {}
+    },
+    "VZ": {
+      "simbolo": "VZ",
+      "noticias": [
+        {
+          "titulo": "5 Big-Name Stocks That Pay 5% Dividends Wall Street Loves",
+          "resumen": "Investors love dividend stocks because they provide dependable passive income streams and an excellent opportunity for solid total return. Total return includes interest, capital g",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 07:14",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Meta, Google under attack as court cases bypass 30-year-old legal shield",
+          "resumen": "Internet platforms have long been able to rely on special protections to avoid liability for what takes place on their sites. But that may be changing.",
+          "fuente": "CNBC",
+          "fecha": "2026-04-03 03:30",
+          "sentimiento": null
+        },
+        {
+          "titulo": "3 Consistent Dividend Payers Outperforming in 2026: VZ, PEP, MO",
+          "resumen": "Companies with a long history of consistent dividend payouts often offer a nice shield against volatility while generating an income stream, with these three outperforming nicely s",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-02 14:32",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Dividend Champion, Contender, And Challenger Highlights: Week Of April 5",
+          "resumen": "Get the weekly dividend summary for Champions, Contenders & Challengersâdividend changes, upcoming ex-dividend and pay dates. Read it right here.",
+          "fuente": "SeekingAlpha",
+          "fecha": "2026-04-02 13:25",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Verizon Fractus Settlement Clears IoT Antenna Cloud For Investors",
+          "resumen": "Verizon Communications (NYSE:VZ) has reached a settlement with Fractus that resolves patent litigation over antenna technology used in Internet of Things and fleet management appli",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-02 12:11",
+          "sentimiento": null
+        }
+      ],
+      "recomendacion": {
+        "periodo": "2026-04-01",
+        "strong_buy": 7,
+        "buy": 11,
+        "hold": 16,
+        "sell": 1,
+        "strong_sell": 0,
+        "total_analistas": 35,
+        "sesgo": "Neutral"
+      },
+      "ultimo_earnings": {
+        "periodo": "2025-12-31",
+        "eps_actual": 1.09,
+        "eps_estimado": 1.0853,
+        "sorpresa": 0.0047,
+        "sorpresa_pct": 0.4331
+      }
+    },
+    "META": {
+      "simbolo": "META",
+      "noticias": [
+        {
+          "titulo": "Meta's Bay Area layoffs affect roughly 200 workers as company pours billions into AI infrastructure",
+          "resumen": "Meta is cutting approximately 200 jobs in the San Francisco Bay Area as the company restructures teams and invests heavily in AI infrastructure.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 16:15",
+          "sentimiento": null
+        },
+        {
+          "titulo": "AI companies are building huge natural gas plants to power data centers. What could go wrong?",
+          "resumen": "Meta, Microsoft, and Google are all betting big on new natural gas power plants to run their AI data centers. They may regret it.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 14:48",
+          "sentimiento": null
+        },
+        {
+          "titulo": "2 Top Oversold Tech Stocks to Buy Before They Soar",
+          "resumen": "These two digital advertising platforms are posting record engagement, but the market is heavily focused on near-term headwinds.",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 14:26",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Meta’s VA Partnership Puts Clinical VR Therapy In Meta Platforms Story",
+          "resumen": "Meta Platforms (NasdaqGS:META) has partnered with the U.S. Department of Veterans Affairs to scale immersive virtual reality therapy across VA medical centers. The collaboration fo",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 11:17",
+          "sentimiento": null
+        },
+        {
+          "titulo": "Moonbounce Launches with $12M to Give Organizations Real-Time Control Over AI Behavior",
+          "resumen": "OAKLAND, Calif., April 03, 2026--Moonbounce, the AI control engine that ensures systems behave exactly as designed at any scale, today launched with $12 million in funding. Lead in",
+          "fuente": "Yahoo",
+          "fecha": "2026-04-03 11:04",
+          "sentimiento": null
+        }
+      ],
+      "recomendacion": {
+        "periodo": "2026-04-01",
+        "strong_buy": 22,
+        "buy": 42,
+        "hold": 8,
+        "sell": 0,
+        "strong_sell": 0,
+        "total_analistas": 72,
+        "sesgo": "Alcista"
+      },
+      "ultimo_earnings": {
+        "periodo": "2025-12-31",
+        "eps_actual": 8.88,
+        "eps_estimado": 8.3992,
+        "sorpresa": 0.4808,
+        "sorpresa_pct": 5.7244
+      }
+    }
+  },
+  "finnhub_earnings_calendario": [],
+  "senales_institucionales": {
+    "XOM": {
+      "simbolo": "XOM",
+      "senal_general": "ALCISTA",
+      "insider": {
+        "transacciones": [
+          {
+            "nombre": "Talley Darrin L",
+            "tipo": "",
+            "acciones": 17124,
+            "precio": 155.495,
+            "fecha": "2026-03-17",
+            "es_compra": false
+          },
+          {
+            "nombre": "Talley Darrin L",
+            "tipo": "",
+            "acciones": 18204,
+            "precio": 157.8201,
+            "fecha": "2026-03-03",
+            "es_compra": false
+          },
+          {
+            "nombre": "Talley Darrin L",
+            "tipo": "",
+            "acciones": 20354,
+            "precio": 149.175,
+            "fecha": "2026-02-09",
+            "es_compra": false
+          },
+          {
+            "nombre": "Talley Darrin L",
+            "tipo": "",
+            "acciones": 23584,
+            "precio": 139.75,
+            "fecha": "2026-02-03",
+            "es_compra": false
+          },
+          {
+            "nombre": "Talley Darrin L",
+            "tipo": "",
+            "acciones": 27934,
+            "precio": 139.755,
+            "fecha": "2026-02-03",
+            "es_compra": false
+          }
+        ],
+        "compras_total": 0,
+        "ventas_total": 0,
+        "senal": "NEUTRAL",
+        "nota": "Actividad insider normal: 0 compras, 0 ventas"
+      },
+      "opciones": {
+        "call_volume": 42882,
+        "put_volume": 23835,
+        "put_call_ratio": 0.56,
+        "inusuales": [
+          {
+            "tipo": "CALL",
+            "strike": 145,
+            "volumen": 257,
+            "open_interest": 13,
+            "ratio": 19.8,
+            "expiracion": "2026-04-10"
+          },
+          {
+            "tipo": "CALL",
+            "strike": 147,
+            "volumen": 230,
+            "open_interest": 28,
+            "ratio": 8.2,
+            "expiracion": "2026-04-10"
+          },
+          {
+            "tipo": "CALL",
+            "strike": 167.5,
+            "volumen": 2967,
+            "open_interest": 743,
+            "ratio": 4.0,
+            "expiracion": "2026-04-10"
+          },
+          {
+            "tipo": "PUT",
+            "strike": 143,
+            "volumen": 321,
+            "open_interest": 14,
+            "ratio": 22.9,
+            "expiracion": "2026-04-10"
+          },
+          {
+            "tipo": "PUT",
+            "strike": 165,
+            "volumen": 5974,
+            "open_interest": 409,
+            "ratio": 14.6,
+            "expiracion": "2026-04-10"
+          }
+        ],
+        "senal": "ALCISTA",
+        "nota": "Flujo inusual en 6 opciones (mayoría CALLS). P/C ratio: 0.56"
+      },
+      "ownership": {
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "senal": "N/D"
+      },
+      "detalles": [
+        "Insider: NEUTRAL — Actividad insider normal: 0 compras, 0 ventas",
+        "Opciones: ALCISTA — Flujo inusual en 6 opciones (mayoría CALLS). P/C ratio: 0.56",
+        "Institucional: N/D — Expecting value: line 1 column 1 (char 0)"
+      ]
+    },
+    "JNJ": {
+      "simbolo": "JNJ",
+      "senal_general": "ALCISTA",
+      "insider": {
+        "transacciones": [
+          {
+            "nombre": "Woods Eugene A.",
+            "tipo": "",
+            "acciones": 5240,
+            "precio": 242.14,
+            "fecha": "2026-03-12",
+            "es_compra": false
+          },
+          {
+            "nombre": "Pinto Daniel E",
+            "tipo": "",
+            "acciones": 462,
+            "precio": 242.14,
+            "fecha": "2026-03-12",
+            "es_compra": false
+          },
+          {
+            "nombre": "HEWSON MARILLYN A",
+            "tipo": "",
+            "acciones": 14513,
+            "precio": 242.14,
+            "fecha": "2026-03-12",
+            "es_compra": false
+          },
+          {
+            "nombre": "Decker Robert J",
+            "tipo": "",
+            "acciones": 0,
+            "precio": 0,
+            "fecha": "2026-03-03",
+            "es_compra": false
+          },
+          {
+            "nombre": "Decker Robert J",
+            "tipo": "",
+            "acciones": 23682,
+            "precio": 247.87,
+            "fecha": "2026-03-03",
+            "es_compra": false
+          },
+          {
+            "nombre": "Decker Robert J",
+            "tipo": "",
+            "acciones": 27757,
+            "precio": 115.67,
+            "fecha": "2026-03-03",
+            "es_compra": false
+          },
+          {
+            "nombre": "Schmid Timothy",
+            "tipo": "",
+            "acciones": 25447,
+            "precio": 245.66,
+            "fecha": "2026-02-23",
+            "es_compra": false
+          },
+          {
+            "nombre": "Schmid Timothy",
+            "tipo": "",
+            "acciones": 0,
+            "precio": 0,
+            "fecha": "2026-02-18",
+            "es_compra": false
+          },
+          {
+            "nombre": "Schmid Timothy",
+            "tipo": "",
+            "acciones": 0,
+            "precio": 0,
+            "fecha": "2026-02-18",
+            "es_compra": false
+          },
+          {
+            "nombre": "Schmid Timothy",
+            "tipo": "",
+            "acciones": 26769,
+            "precio": 244.53,
+            "fecha": "2026-02-18",
+            "es_compra": false
+          }
+        ],
+        "compras_total": 0,
+        "ventas_total": 0,
+        "senal": "NEUTRAL",
+        "nota": "Actividad insider normal: 0 compras, 0 ventas"
+      },
+      "opciones": {
+        "call_volume": 3276,
+        "put_volume": 1932,
+        "put_call_ratio": 0.59,
+        "inusuales": [
+          {
+            "tipo": "CALL",
+            "strike": 242.5,
+            "volumen": 120,
+            "open_interest": 36,
+            "ratio": 3.3,
+            "expiracion": "2026-04-10"
+          }
+        ],
+        "senal": "ALCISTA",
+        "nota": "Flujo inusual en 1 opciones (mayoría CALLS). P/C ratio: 0.59"
+      },
+      "ownership": {
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "senal": "N/D"
+      },
+      "detalles": [
+        "Insider: NEUTRAL — Actividad insider normal: 0 compras, 0 ventas",
+        "Opciones: ALCISTA — Flujo inusual en 1 opciones (mayoría CALLS). P/C ratio: 0.59",
+        "Institucional: N/D — Expecting value: line 1 column 1 (char 0)"
+      ]
+    },
+    "GLD": {
+      "simbolo": "GLD",
+      "senal_general": "NEUTRAL",
+      "insider": {
+        "transacciones": [],
+        "compras_total": 0,
+        "ventas_total": 0,
+        "senal": "NEUTRAL",
+        "nota": "Actividad insider normal: 0 compras, 0 ventas"
+      },
+      "opciones": {
+        "error": "HTTPSConnectionPool(host='finnhub.io', port=443): Read timed out. (read timeout=15)",
+        "senal": "N/D"
+      },
+      "ownership": {
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "senal": "N/D"
+      },
+      "detalles": [
+        "Insider: NEUTRAL — Actividad insider normal: 0 compras, 0 ventas",
+        "Opciones: N/D — HTTPSConnectionPool(host='finnhub.io', port=443): Read timed out. (read timeout=15)",
+        "Institucional: N/D — Expecting value: line 1 column 1 (char 0)"
+      ]
+    },
+    "VZ": {
+      "simbolo": "VZ",
+      "senal_general": "BAJISTA",
+      "insider": {
+        "transacciones": [
+          {
+            "nombre": "Russo Joseph J.",
+            "tipo": "",
+            "acciones": 44544,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Venkatesh Vandana",
+            "tipo": "",
+            "acciones": 48593,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Hammock Samantha",
+            "tipo": "",
+            "acciones": 40495,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Litchfield Caroline",
+            "tipo": "",
+            "acciones": 11402,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Colao Vittorio",
+            "tipo": "",
+            "acciones": 23741,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Malady Kyle",
+            "tipo": "",
+            "acciones": 89087,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Stillwell Mary-Lee",
+            "tipo": "",
+            "acciones": 24803,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "MANN JENNIFER K",
+            "tipo": "",
+            "acciones": 7106,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Narasimhan Laxman",
+            "tipo": "",
+            "acciones": 33125,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          },
+          {
+            "nombre": "Skiadas Anthony T",
+            "tipo": "",
+            "acciones": 72890,
+            "precio": 0,
+            "fecha": "2026-04-02",
+            "es_compra": false
+          }
+        ],
+        "compras_total": 0,
+        "ventas_total": 0,
+        "senal": "NEUTRAL",
+        "nota": "Actividad insider normal: 0 compras, 0 ventas"
+      },
+      "opciones": {
+        "call_volume": 8786,
+        "put_volume": 6354,
+        "put_call_ratio": 0.72,
+        "inusuales": [
+          {
+            "tipo": "PUT",
+            "strike": 47,
+            "volumen": 1181,
+            "open_interest": 205,
+            "ratio": 5.8,
+            "expiracion": "2026-04-10"
+          }
+        ],
+        "senal": "BAJISTA",
+        "nota": "Flujo inusual en 1 opciones (mayoría PUTS). P/C ratio: 0.72"
+      },
+      "ownership": {
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "senal": "N/D"
+      },
+      "detalles": [
+        "Insider: NEUTRAL — Actividad insider normal: 0 compras, 0 ventas",
+        "Opciones: BAJISTA — Flujo inusual en 1 opciones (mayoría PUTS). P/C ratio: 0.72",
+        "Institucional: N/D — Expecting value: line 1 column 1 (char 0)"
+      ]
+    },
+    "META": {
+      "simbolo": "META",
+      "senal_general": "BAJISTA",
+      "insider": {
+        "transacciones": [
+          {
+            "nombre": "Olivan Javier",
+            "tipo": "",
+            "acciones": 88045,
+            "precio": 605.38,
+            "fecha": "2026-03-25",
+            "es_compra": false
+          },
+          {
+            "nombre": "Olivan Javier",
+            "tipo": "",
+            "acciones": 8130,
+            "precio": 605.38,
+            "fecha": "2026-03-25",
+            "es_compra": false
+          },
+          {
+            "nombre": "Olivan Javier",
+            "tipo": "",
+            "acciones": 2657,
+            "precio": 605.38,
+            "fecha": "2026-03-25",
+            "es_compra": false
+          },
+          {
+            "nombre": "Olivan Javier",
+            "tipo": "",
+            "acciones": 8130,
+            "precio": 605.38,
+            "fecha": "2026-03-25",
+            "es_compra": false
+          },
+          {
+            "nombre": "Olivan Javier",
+            "tipo": "",
+            "acciones": 13335,
+            "precio": 605.38,
+            "fecha": "2026-03-25",
+            "es_compra": false
+          },
+          {
+            "nombre": "Anderson Aaron",
+            "tipo": "",
+            "acciones": 5364,
+            "precio": 0,
+            "fecha": "2026-03-24",
+            "es_compra": false
+          },
+          {
+            "nombre": "LI SUSAN J",
+            "tipo": "",
+            "acciones": 91239,
+            "precio": 0,
+            "fecha": "2026-03-24",
+            "es_compra": false
+          },
+          {
+            "nombre": "LI SUSAN J",
+            "tipo": "",
+            "acciones": 249382,
+            "precio": 0,
+            "fecha": "2026-03-24",
+            "es_compra": false
+          },
+          {
+            "nombre": "LI SUSAN J",
+            "tipo": "",
+            "acciones": 155491,
+            "precio": 0,
+            "fecha": "2026-03-24",
+            "es_compra": false
+          },
+          {
+            "nombre": "LI SUSAN J",
+            "tipo": "",
+            "acciones": 97541,
+            "precio": 0,
+            "fecha": "2026-03-24",
+            "es_compra": false
+          }
+        ],
+        "compras_total": 0,
+        "ventas_total": 0,
+        "senal": "NEUTRAL",
+        "nota": "Actividad insider normal: 0 compras, 0 ventas"
+      },
+      "opciones": {
+        "call_volume": 76357,
+        "put_volume": 63127,
+        "put_call_ratio": 0.83,
+        "inusuales": [
+          {
+            "tipo": "CALL",
+            "strike": 560,
+            "volumen": 801,
+            "open_interest": 219,
+            "ratio": 3.7,
+            "expiracion": "2026-04-06"
+          },
+          {
+            "tipo": "CALL",
+            "strike": 562.5,
+            "volumen": 2422,
+            "open_interest": 647,
+            "ratio": 3.7,
+            "expiracion": "2026-04-06"
+          },
+          {
+            "tipo": "CALL",
+            "strike": 565,
+            "volumen": 2191,
+            "open_interest": 109,
+            "ratio": 20.1,
+            "expiracion": "2026-04-06"
+          },
+          {
+            "tipo": "CALL",
+            "strike": 567.5,
+            "volumen": 3710,
+            "open_interest": 115,
+            "ratio": 32.3,
+            "expiracion": "2026-04-06"
+          },
+          {
+            "tipo": "CALL",
+            "strike": 570,
+            "volumen": 3711,
+            "open_interest": 290,
+            "ratio": 12.8,
+            "expiracion": "2026-04-06"
+          }
+        ],
+        "senal": "BAJISTA",
+        "nota": "Flujo inusual en 50 opciones (mayoría PUTS). P/C ratio: 0.83"
+      },
+      "ownership": {
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "senal": "N/D"
+      },
+      "detalles": [
+        "Insider: NEUTRAL — Actividad insider normal: 0 compras, 0 ventas",
+        "Opciones: BAJISTA — Flujo inusual en 50 opciones (mayoría PUTS). P/C ratio: 0.83",
+        "Institucional: N/D — Expecting value: line 1 column 1 (char 0)"
+      ]
+    }
+  },
+  "av_sentimiento": {
+    "XOM": {
+      "noticias": [
+        {
+          "titulo": "3 US Stocks Heavily Affected by Trump’s Iran Speech This Week",
+          "fuente": "Cryptonews.net",
+          "fecha": "20260403T210907",
+          "score_ticker": 0.30341,
+          "label_ticker": "Somewhat-Bullish",
+          "score_general": 0.364564
+        },
+        {
+          "titulo": "BP CEO Meg O'Neill Navigates Oil Price Rally & Corporate Restructuring - News and Statistics",
+          "fuente": "IndexBox",
+          "fecha": "20260403T161036",
+          "score_ticker": 0.149798,
+          "label_ticker": "Neutral",
+          "score_general": 0.072438
+        },
+        {
+          "titulo": "Is Strait of Hormuz Disruption Reshaping The Investment Case For TechnipFMC (FTI)?",
+          "fuente": "Sahm",
+          "fecha": "20260403T110858",
+          "score_ticker": 0.231856,
+          "label_ticker": "Somewhat-Bullish",
+          "score_general": 0.171355
+        },
+        {
+          "titulo": "Rockland Trust Co. Increases Stock Holdings in Exxon Mobil Corporation $XOM",
+          "fuente": "MarketBeat",
+          "fecha": "20260403T094013",
+          "score_ticker": 0.343178,
+          "label_ticker": "Somewhat-Bullish",
+          "score_general": 0.341541
+        },
+        {
+          "titulo": "Nisa Investment Advisors LLC Raises Position in Exxon Mobil Corporation $XOM",
+          "fuente": "MarketBeat",
+          "fecha": "20260403T093917",
+          "score_ticker": 0.24397,
+          "label_ticker": "Somewhat-Bullish",
+          "score_general": 0.238661
+        }
+      ],
+      "score_promedio": 0.2544,
+      "sentimiento": "Positivo",
+      "total_analizadas": 5
+    },
+    "JNJ": {
+      "noticias": [
+        {
+          "titulo": "Argenx SE stock: Biotech powerhouse or high-risk bet?",
+          "fuente": "AD HOC NEWS",
+          "fecha": "20260403T173924",
+          "score_ticker": -0.145889,
+          "label_ticker": "Neutral",
+          "score_general": -0.042078
+        },
+        {
+          "titulo": "Alcon Inc stock: Steady eye care leader amid market pressures?",
+          "fuente": "AD HOC NEWS",
+          "fecha": "20260403T164051",
+          "score_ticker": 0.132887,
+          "label_ticker": "Neutral",
+          "score_general": 0.284094
+        },
+        {
+          "titulo": "Evotec SE stock: Biotech innovator with partnership power—your buy guide",
+          "fuente": "AD HOC NEWS",
+          "fecha": "20260403T161044",
+          "score_ticker": 0.348399,
+          "label_ticker": "Somewhat-Bullish",
+          "score_general": 0.36655
+        },
+        {
+          "titulo": "Nanobiotix S.A. (NASDAQ:NBTX) Q4 2025 Earnings Call Transcript",
+          "fuente": "Insider Monkey",
+          "fecha": "20260403T120933",
+          "score_ticker": 0.238904,
+          "label_ticker": "Somewhat-Bullish",
+          "score_general": 0.278631
+        },
+        {
+          "titulo": "Stereotaxis (NYSE: STXS) details 2026 meeting, director elections and say-on-pay",
+          "fuente": "Stock Titan",
+          "fecha": "20260403T104021",
+          "score_ticker": -0.048524,
+          "label_ticker": "Neutral",
+          "score_general": 0.056377
+        }
+      ],
+      "score_promedio": 0.1052,
+      "sentimiento": "Ligeramente positivo",
+      "total_analizadas": 5
+    },
+    "GLD": {
+      "noticias": [
+        {
+          "titulo": "GLD ETF Gains 3.0%",
+          "fuente": "Moomoo",
+          "fecha": "20260325T211042",
+          "score_ticker": 0.352379,
+          "label_ticker": "Bullish",
+          "score_general": 0.376235
+        },
+        {
+          "titulo": "GLD ETF Declines 2.3%",
+          "fuente": "Moomoo",
+          "fecha": "20260323T204147",
+          "score_ticker": -0.401101,
+          "label_ticker": "Bearish",
+          "score_general": -0.436229
+        },
+        {
+          "titulo": "SPDR GOLD SHARES ETF DECLINES 6.1%",
+          "fuente": "Moomoo",
+          "fecha": "20260323T090952",
+          "score_ticker": -0.368381,
+          "label_ticker": "Bearish",
+          "score_general": -0.377168
+        },
+        {
+          "titulo": "3 Ways to Play Gold Amid the Ongoing Middle East Conflict",
+          "fuente": "MarketBeat",
+          "fecha": "20260314T090931",
+          "score_ticker": 0.146018,
+          "label_ticker": "Neutral",
+          "score_general": 0.14688
+        },
+        {
+          "titulo": "The SPDR Gold Shares ETF Soared by 64% in 2025, and It's Already Crushing the Stock Market in 2026. Is It Too Late to Bu",
+          "fuente": "The Globe and Mail",
+          "fecha": "20260225T220938",
+          "score_ticker": 0.447622,
+          "label_ticker": "Bullish",
+          "score_general": 0.356792
+        }
+      ],
+      "score_promedio": 0.0353,
+      "sentimiento": "Neutral",
+      "total_analizadas": 5
+    }
+  },
+  "av_earnings": {
+    "XOM": {
+      "trimestres": [
+        {
+          "fecha": "2025-12-31",
+          "reportado": "2026-01-30",
+          "eps_actual": 1.71,
+          "eps_estimado": 1.69,
+          "sorpresa": "0.02",
+          "sorpresa_pct": 1.1834
+        },
+        {
+          "fecha": "2025-09-30",
+          "reportado": "2025-10-31",
+          "eps_actual": 1.88,
+          "eps_estimado": 1.82,
+          "sorpresa": "0.06",
+          "sorpresa_pct": 3.2967
+        },
+        {
+          "fecha": "2025-06-30",
+          "reportado": "2025-08-01",
+          "eps_actual": 1.64,
+          "eps_estimado": 1.56,
+          "sorpresa": "0.08",
+          "sorpresa_pct": 5.1282
+        },
+        {
+          "fecha": "2025-03-31",
+          "reportado": "2025-05-02",
+          "eps_actual": 1.76,
+          "eps_estimado": 1.74,
+          "sorpresa": "0.02",
+          "sorpresa_pct": 1.1494
+        }
+      ],
+      "tendencia": "Supera estimados consistentemente (4/4 trimestres, promedio +2.7%)",
+      "beats": 4,
+      "misses": 0,
+      "promedio_sorpresa_pct": 2.69
+    },
+    "JNJ": {
+      "trimestres": [
+        {
+          "fecha": "2025-12-31",
+          "reportado": "2026-01-21",
+          "eps_actual": 2.46,
+          "eps_estimado": 2.46,
+          "sorpresa": "0",
+          "sorpresa_pct": 0.0
+        },
+        {
+          "fecha": "2025-09-30",
+          "reportado": "2025-10-14",
+          "eps_actual": 2.8,
+          "eps_estimado": 2.76,
+          "sorpresa": "0.04",
+          "sorpresa_pct": 1.4493
+        },
+        {
+          "fecha": "2025-06-30",
+          "reportado": "2025-07-16",
+          "eps_actual": 2.77,
+          "eps_estimado": 2.68,
+          "sorpresa": "0.09",
+          "sorpresa_pct": 3.3582
+        },
+        {
+          "fecha": "2025-03-31",
+          "reportado": "2025-04-15",
+          "eps_actual": 4.54,
+          "eps_estimado": 2.26,
+          "sorpresa": "2.28",
+          "sorpresa_pct": 100.885
+        }
+      ],
+      "tendencia": "Supera estimados consistentemente (3/4 trimestres, promedio +26.4%)",
+      "beats": 3,
+      "misses": 0,
+      "promedio_sorpresa_pct": 26.42
+    },
+    "GLD": {
+      "trimestres": [],
+      "tendencia": "Mixto: 0 beats, 0 misses en 4 trimestres",
+      "beats": 0,
+      "misses": 0,
+      "promedio_sorpresa_pct": 0
+    }
+  },
+  "av_economicos": {
+    "gdp": {
+      "nombre": "PIB Real (trimestral)",
+      "datos": [
+        {
+          "fecha": "2025-10-01",
+          "valor": "6125.904"
+        },
+        {
+          "fecha": "2025-07-01",
+          "valor": "6023.785"
+        },
+        {
+          "fecha": "2025-04-01",
+          "valor": "5943.384"
+        },
+        {
+          "fecha": "2025-01-01",
+          "valor": "5776.724"
+        }
+      ],
+      "cambio_pct": 1.7,
+      "valor_actual": 6125.904
+    },
+    "inflacion": {
+      "nombre": "Inflación anual (%)",
+      "datos": [
+        {
+          "fecha": "2024-01-01",
+          "valor": "2.94952520485207"
+        },
+        {
+          "fecha": "2023-01-01",
+          "valor": "4.11633838374488"
+        },
+        {
+          "fecha": "2022-01-01",
+          "valor": "8.00279982052121"
+        }
+      ],
+      "valor_actual": 2.94952520485207
+    },
+    "desempleo": {
+      "nombre": "Tasa de desempleo (%)",
+      "datos": [
+        {
+          "fecha": "2026-03-01",
+          "valor": "4.3"
+        },
+        {
+          "fecha": "2026-02-01",
+          "valor": "4.4"
+        },
+        {
+          "fecha": "2026-01-01",
+          "valor": "4.3"
+        }
+      ],
+      "valor_actual": 4.3
+    },
+    "interpretacion": "PIB creciendo +1.7%: crecimiento moderado. Inflación 2.9%: moderada."
+  },
+  "precios_realtime": {}
+}

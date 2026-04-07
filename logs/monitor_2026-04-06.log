@@ -1,0 +1,45 @@
+🤖 JARVIS — Monitor de Sistema
+📅 06/04/2026 09:00 (45.8s)
+
+🔴 2 problema(s) detectado(s) (23 OK, 2 FAIL)
+
+CLUSTER
+  ✅ jarvis-core (Ollama): 0.0s
+  ✅ jarvis-power (Ollama): 0.0s
+  ✅ jarvis-brain (llama.cpp): 0.0s
+  ✅ Modelos cargados: deepseek-r1:32b (2318-07-17), deepseek-r1:7b (2318-07-17)
+
+MODELOS
+  ✅ nemotron-3-super: OK (2 chars) (37.73s) 37.73s
+  ✅ nemotron-3-nano:30b: OK (2 chars) (0.79s) 0.79s
+  ✅ deepseek-r1:671b (health only): 0.0s
+
+SERVICIOS
+  🔴 jarvis-bot: inactive
+  🔴 jarvis-voz: activating
+  ✅ ollama: active
+  ✅ jarvis-dashboard:8501: responding
+  ✅ jarvis-brain (remoto): healthy
+
+APIs DATOS
+  ✅ FRED API: Fed Funds: 3.64% (0.36s)
+  ✅ Finnhub: 87 noticias (1.76s)
+  ✅ Alpha Vantage: 120 trimestres (1.29s)
+  ✅ Tiingo: XOM: $0.00 (0.79s)
+  ✅ Binance Testnet: BTCUSDT: $69,577.53 (0.66s)
+  ✅ Alpaca Paper: equity: $100,305.59 (0.33s)
+
+TRADING
+  ✅ Cron jobs: 8 activos
+  ✅ Último log trading: jarvis_trading_2026-04-06.txt (376 líneas)
+  ✅ Log cripto: hace 0.0h
+  ✅ Balance: $100,306.13 | 8 posiciones
+
+MEMORIA/RECURSOS
+  ✅ ChromaDB: 26 conv, 188 trades
+  ✅ Disco: 1543 GB libres (16% usado)
+  ✅ RAM: 11 GB libre / 120 GB (91% usado)
+
+Revisar:
+  🔴 jarvis-bot: inactive
+  🔴 jarvis-voz: activating

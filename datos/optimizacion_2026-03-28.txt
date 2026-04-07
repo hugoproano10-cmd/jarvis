@@ -1,0 +1,77 @@
+====================================================================================================
+  OPTIMIZACIÓN DE ESTRATEGIA JARVIS — 28/03/2026 17:52
+  Período: 2 años | Capital: $10,000/activo | Umbral entrada: score >= 3
+====================================================================================================
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────
+  TABLA COMPARATIVA DE ESCENARIOS
+  ────────────────────────────────────────────────────────────────────────────────────────────────
+   #  Escenario                              Ret%    B&H%    Alfa Trades   Win%  Sharpe   MaxDD     PF
+  ────────────────────────────────────────────────────────────────────────────────────────────────
+   1  BASE: SL5/TP10 | Todos               -15.16   +9.05  -24.21     32  18.8%   -0.84 -30.08%   0.47
+   2  SL8/TP15 | Todos                     -16.32   +9.05  -25.37     24  20.8%   -0.55 -39.36%   0.57
+   3  SL10/TP20 | Todos                     -1.01   +9.05  -10.06     17  29.4%    0.03 -34.10%   1.02
+   4  SL7/TP14 | Todos                     -13.58   +9.05  -22.63     24  20.8%   -0.46 -35.08%   0.61
+   5  SL5/TP10 | SPY+AAPL                   -6.97   +8.86  -15.84     10  20.0%   -0.50 -18.37%   0.52
+   6  SL8/TP15 | SPY+AAPL                   -4.66   +8.86  -13.52      8  25.0%   -0.16 -23.43%   0.74
+   7  SL10/TP20 | SPY+AAPL                  +0.48   +8.86   -8.38      7  28.6%    0.18 -26.66%   1.23
+   8  SL7/TP14 | SPY+AAPL                   -3.54   +8.86  -12.40      8  25.0%   -0.10 -21.71%   0.78
+   9  SL8/TP15 | Todos+FiltMod              +1.13   +9.05   -7.92      5  40.0%   -0.15 -12.31%   0.41
+  10  SL10/TP20 | Todos+FiltMod             -2.86   +9.05  -11.90      4  25.0%   -0.27 -25.97%   0.22
+  11  SL7/TP14 | Todos+FiltMod              +1.43   +9.05   -7.62      5  40.0%   -0.12 -11.43%   0.44
+  12  SL8/TP15 | SPY+AAPL+FiltMod           -3.79   +8.86  -12.66      1   0.0%   -0.56  -9.33%   0.00
+  13  SL10/TP20 | SPY+AAPL+FiltMod          -4.74   +8.86  -13.60      1   0.0%   -0.59 -11.19%   0.00
+  14  SL7/TP14 | SPY+AAPL+FiltMod           -3.32   +8.86  -12.18      1   0.0%   -0.52  -8.40%   0.00
+  15  SL10/TP20 | Todos+FiltEstr            +0.00   +9.05   -9.05      0   0.0%    0.00   0.00%   0.00
+  16  SL10/TP20 | SPY+AAPL+FiltEstr         +0.00   +8.86   -8.86      0   0.0%    0.00   0.00%   0.00
+  17  SL10/TP20 | SPY+AAPL+TSLA             +9.02   +3.01   +6.01     13  38.5%    0.35 -26.66%   1.37
+  18  SL10/TP20 | SPY+AAPL+TSLA+FM          -3.81   +3.01   -6.81      4  25.0%   -0.36 -25.97%   0.30
+  ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────
+  ANÁLISIS DETALLADO POR ACTIVO — TOP ESCENARIOS (win rate > 40%)
+  ────────────────────────────────────────────────────────────────────────────────────────────────
+  Ningún escenario alcanza win rate > 40%.
+  Mostrando los 3 mejores por Sharpe ratio:
+
+  >>> SL10/TP20 | SPY+AAPL+TSLA
+      Retorno: +9.02% | Sharpe: 0.35 | Win: 38.5% | DD: -26.66%
+         SPY: ret   +7.78% | 3T (1W/2L) | win  33.3% | sharpe +0.53 | dd -15.46%
+        AAPL: ret   -6.82% | 4T (1W/3L) | win  25.0% | sharpe -0.18 | dd -26.66%
+        TSLA: ret  +26.10% | 6T (3W/3L) | win  50.0% | sharpe +0.70 | dd -25.70%
+
+  >>> SL10/TP20 | SPY+AAPL
+      Retorno: +0.48% | Sharpe: 0.18 | Win: 28.6% | DD: -26.66%
+         SPY: ret   +7.78% | 3T (1W/2L) | win  33.3% | sharpe +0.53 | dd -15.46%
+        AAPL: ret   -6.82% | 4T (1W/3L) | win  25.0% | sharpe -0.18 | dd -26.66%
+
+  >>> SL10/TP20 | Todos
+      Retorno: -1.01% | Sharpe: 0.03 | Win: 29.4% | DD: -34.10%
+        AAPL: ret   -6.82% | 4T (1W/3L) | win  25.0% | sharpe -0.18 | dd -26.66%
+        TSLA: ret  +26.10% | 6T (3W/3L) | win  50.0% | sharpe +0.70 | dd -25.70%
+         SPY: ret   +7.78% | 3T (1W/2L) | win  33.3% | sharpe +0.53 | dd -15.46%
+        NVDA: ret  -31.11% | 4T (0W/4L) | win   0.0% | sharpe -0.93 | dd -34.10%
+
+====================================================================================================
+  RECOMENDACIÓN
+====================================================================================================
+
+  NINGÚN ESCENARIO cumple win rate > 40%.
+  Seleccionando el menos malo por Sharpe ratio:
+
+    Escenario   : SL10/TP20 | SPY+AAPL+TSLA
+    Stop-loss   : -10%
+    Take-profit : +20%
+    Filtro      : No
+    Activos     : SPY+AAPL+TSLA
+    Retorno     : +9.02% | Sharpe: 0.35 | Win: 38.5%
+
+  VEREDICTO: ESTRATEGIA NO VIABLE en su forma actual.
+  Recomendaciones:
+    1. Ampliar stop-loss para evitar salidas prematuras en activos volátiles
+    2. Filtrar entradas con RSI + volumen para mayor selectividad
+    3. Considerar operar solo activos de menor volatilidad (SPY, AAPL)
+    4. Evaluar trailing stop en vez de stop-loss fijo
+    5. Agregar filtro de tendencia: solo comprar si SMA50 > SMA200 (ya en score)
+
+====================================================================================================

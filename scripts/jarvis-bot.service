@@ -1,0 +1,15 @@
+[Unit]
+Description=JARVIS Telegram Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/hproano/asistente
+ExecStart=/home/hproano/asistente_env/bin/python /home/hproano/asistente/agentes/jarvis_telegram_bot.py
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target

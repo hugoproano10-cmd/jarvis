@@ -1,0 +1,2529 @@
+======================================================================
+=== 08:23:39 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 25.26 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: IBM, SPY, TSLA, AMD, NVDA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.1%) | VIX neutral (25.3) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +85)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — NO — No noticias específicas de JNJ que indiquen un evento grave.
+  GLD: OK — NO
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  AGG: OK — NO — Sin noticias específicas de AGG que indiquen un evento grave, la señal técnica es válida.
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: NO — No noticias específicas de JNJ que indiquen un evento grave.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — Sin noticias específicas de AGG que indiquen un evento grave, la señal técnica es válida.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "qty": 2,
+    "monto_aprox": 481.94,
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: NO — No noticias específicas de JNJ que indiquen un evento grave.",
+    "regla": "R-QUANT",
+    "ejecutada": true,
+    "order_id": "31",
+    "status": "Inactive"
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "monto_aprox": 427.65,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": true,
+    "order_id": "33",
+    "status": "Inactive"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "monto_aprox": 478.2,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": true,
+    "order_id": "35",
+    "status": "Inactive"
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "qty": 5,
+    "monto_aprox": 495.25,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — Sin noticias específicas de AGG que indiquen un evento grave, la señal técnica es válida.",
+    "regla": "R-BUY",
+    "ejecutada": true,
+    "order_id": "37",
+    "status": "Inactive"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado alcista con miedo extremo (Fear & Greed: 11/100).  
+**LÍNEA 2:** Activos destacados: JNJ, GLD, HYG, AGG.  
+**LÍNEA 3:** Se ejecutaron compras automáticas en JNJ, GLD, HYG y AGG siguiendo reglas técnicas alcistas.  
+**LÍNEA 4:** Sugerencia: Reducir exposición a JNJ por reporte de ganancias cercano; considerar incremento en GLD o HYG.
+
+BALANCE: {
+  "equity": "6186.17",
+  "cash": "2167.0",
+  "buying_power": "2167.0",
+  "portfolio_value": "6186.17",
+  "currency": "BASE",
+  "status": "ACTIVE"
+}
+
+======================================================================
+=== 08:34:01 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 25.4 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: SPY, IBM, TSLA, AMD, NVDA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.4%) | VIX neutral (25.4) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-OPT-SELL] GLD: VENDER — opciones bajistas P/C=1.01, 5 flujos PUTS, P&L -0.2%
+  [R-OPT-SELL] HYG: VENDER — opciones bajistas P/C=1.68, 0 flujos PUTS, P&L -0.2%
+  [R-BUY] IEF: COMPRAR — score +3, prio #4
+
+VETOS LLM:
+  IEF: OK — SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de IEF que indiquen un evento grave como fraude, bankruptcy, recall o investigación regulatoria.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.2%, sin regla activa
+  [R-OPT-SELL] GLD  : VENDER    — R-OPT-SELL: opciones bajistas (P/C=1.01, 5 flujos inusuales mayoría PUTS) — Flujo inusual en 40 opciones (mayoría PUTS). P/C ratio: 1.01
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L -0.6%, sin regla activa
+  [R-OPT-SELL] HYG  : VENDER    — R-OPT-SELL: opciones bajistas (P/C=1.68, 0 flujos inusuales mayoría PUTS) — Put/Call ratio alto: 1.68 — sesgo bajista en opciones
+  [R-BUY     ] IEF  : COMPRAR   — R-BUY: score +3 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de IEF que indiquen un evento grave como fraude, bankruptcy, recall o investigación regulatoria.
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.2%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "VENDER",
+    "qty": 1,
+    "monto_aprox": 428.19,
+    "razon": "R-OPT-SELL: opciones bajistas (P/C=1.01, 5 flujos inusuales mayoría PUTS) — Flujo inusual en 40 opciones (mayoría PUTS). P/C ratio: 1.01",
+    "regla": "R-OPT-SELL",
+    "ejecutada": true,
+    "order_id": "50",
+    "status": "Filled"
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.6%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "VENDER",
+    "qty": 6,
+    "monto_aprox": 477.96,
+    "razon": "R-OPT-SELL: opciones bajistas (P/C=1.68, 0 flujos inusuales mayoría PUTS) — Put/Call ratio alto: 1.68 — sesgo bajista en opciones",
+    "regla": "R-OPT-SELL",
+    "ejecutada": true,
+    "order_id": "52",
+    "status": "Filled"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "COMPRAR",
+    "qty": 5,
+    "monto_aprox": 475.4,
+    "razon": "R-BUY: score +3 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de IEF que indiquen un evento grave como fraude, bankruptcy, recall o investigación regulatoria.",
+    "regla": "R-BUY",
+    "ejecutada": true,
+    "order_id": "54",
+    "status": "Inactive"
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con sesgo bajista por miedo extremo (FEAR & GREED: 11/100).  
+**LÍNEA 2:** IEF destaca como refugio, GLD y HYG bajistas.  
+**LÍNEA 3:** VENDidas GLD y HYG; COMPRADA IEF por MACD alcista y golden cross.  
+**LÍNEA 4:** Considerar incremento en bonos (IEF) y reducción en activos cíclicos como XOM ante incertidumbre.
+
+BALANCE: {
+  "equity": "6220.82",
+  "cash": "1182.87",
+  "buying_power": "1182.87",
+  "portfolio_value": "6220.82",
+  "currency": "BASE",
+  "status": "ACTIVE"
+}
+
+======================================================================
+=== 09:04:06 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 25.9 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: AMD, IBM, TSLA, SPY, NVDA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.9%) | VIX neutral (25.9) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +80)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — NO — Las noticias recientes de JNJ no mencionan eventos grave como fraude, bankruptcy o investigated regulatoria.
+  GLD: OK — NO — No noticias específicas de GLD que indiquen un evento grave.
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  AGG: OK — NO
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: NO — Las noticias recientes de JNJ no mencionan eventos grave como fraude, bankruptcy o investigated regulatoria.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — No noticias específicas de GLD que indiquen un evento grave.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: NO — Las noticias recientes de JNJ no mencionan eventos grave como fraude, bankruptcy o investigated regulatoria.",
+    "regla": "R-QUANT",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — No noticias específicas de GLD que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+1. **Evaluación general del mercado:** Alcista, con miedo extremo y oportunidad de compra histórica.  
+2. **Activos destacados hoy:** JNJ, GLD, HYG y AGG.  
+3. **Resumen de acciones automáticas ejecutadas:** Compra en JNJ, GLD, HYG y AGG por reglas R-QUANT y R-BUY.  
+4. **Sugerencia de ajuste al portafolio:** Incrementar posiciones en JNJ y GLD; reducir exposición a activos cíclicos ante tensiones geopolíticas.
+
+BALANCE: {
+  "equity": "0",
+  "cash": "0",
+  "buying_power": "0",
+  "portfolio_value": "0",
+  "currency": "USD",
+  "status": "DISCONNECTED"
+}
+
+======================================================================
+=== 09:34:50 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.86 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: AMD, SPY, NVDA, IBM, TSLA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.8%) | VIX neutral (26.9) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +80)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  GLD: OK — NO — GLD's news doesn't mention specific events like recall or fraud, so no veteing needed.
+
+SÍ|NO
+  HYG: OK — NO
+  AGG: OK — NO — No noticias ESPECÍFICAS de AGG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — GLD's news doesn't mention specific events like recall or fraud, so no veteing needed.
+
+SÍ|NO
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — No noticias ESPECÍFICAS de AGG que indiquen un evento grave.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.",
+    "regla": "R-QUANT",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — GLD's news doesn't mention specific events like recall or fraud, so no veteing needed.\n\nSÍ|NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — No noticias ESPECÍFICAS de AGG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+LÍNEA 1: Mercado mixto con tendencia alcista, influenciado por indicadores técnicos positivos y volatilidad alta.  
+LÍNEA 2: JNJ, GLD, HYG y AGG destacan con reglas automáticas de compra.  
+LÍNEA 3: Se ejecutaron compras en JNJ (R-QUANT), GLD (R-BUY), HYG (R-BUY) y AGG (R-BUY).  
+LÍNEA 4: Considerar reducir exposición a activos con próximos reportes de ganancias, como JNJ.
+
+BALANCE: {
+  "equity": "0",
+  "cash": "0",
+  "buying_power": "0",
+  "portfolio_value": "0",
+  "currency": "USD",
+  "status": "DISCONNECTED"
+}
+
+======================================================================
+=== 10:05:08 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.36 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: AMD, TSLA, NVDA, SPY, IBM
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-1.1%) | VIX neutral (26.4) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +85)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  GLD: OK — SÍ
+  HYG: OK — NO — Sin noticias específicas de HYG que den un event gravamen, la señal técnica es válida.
+  AGG: OK — NO — No noticias ESPECÍFICAS de AGG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — Sin noticias específicas de HYG que den un event gravamen, la señal técnica es válida.
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — No noticias ESPECÍFICAS de AGG que indiquen un evento grave.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.",
+    "regla": "R-QUANT",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — Sin noticias específicas de HYG que den un event gravamen, la señal técnica es válida.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — No noticias ESPECÍFICAS de AGG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con miedo extremo (Fear & Greed: 11/100) e historias de conflicto geopolítico.  
+**LÍNEA 2:** Destacan GLD (oro), JNJ (salud) y bonos (HYG, AGG).  
+**LÍNEA 3:** Se compraron JNJ, GLD, HYG y AGG por reglas técnicas alcistas.  
+**LÍNEA 4:** Considerar reducir exposición a JNJ ante reporte de ganancias próximo; aumentar en GLD y bonos (HYG, AGG).
+
+BALANCE: {
+  "equity": "0",
+  "cash": "0",
+  "buying_power": "0",
+  "portfolio_value": "0",
+  "currency": "USD",
+  "status": "DISCONNECTED"
+}
+
+======================================================================
+=== 10:34:25 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 27.07 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: TSLA, AMD, IBM, SPY, NVDA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-1.0%) | VIX neutral (27.1) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +80)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — SÍ|NO — No hay noticias específicas de JNJ que indiquen un evento grave.
+  GLD: OK — SÍ|NO — No hay noticias ESPECÍFICAS que indiquen un evento grave para GLD, por lo que la señal de compra no se veta.
+
+No
+  HYG: OK — NO — Sin noticias específicas de HYG que indiquen un evento grave, la señal técnica es válida.
+  AGG: OK — SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de AGG que indiquen un evento grave como fraude, bancarrota o recall.
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias específicas de JNJ que indiquen un evento grave.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS que indiquen un evento grave para GLD, por lo que la señal de compra no se veta.
+
+No
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — Sin noticias específicas de HYG que indiquen un evento grave, la señal técnica es válida.
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de AGG que indiquen un evento grave como fraude, bancarrota o recall.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias específicas de JNJ que indiquen un evento grave.",
+    "regla": "R-QUANT",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS que indiquen un evento grave para GLD, por lo que la señal de compra no se veta.\n\nNo",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — Sin noticias específicas de HYG que indiquen un evento grave, la señal técnica es válida.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de AGG que indiquen un evento grave como fraude, bancarrota o recall.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con predominio alcista en sectores defensivos.  
+**LÍNEA 2:** JNJ y GLD destacan por su puntuación técnica positiva.  
+**LÍNEA 3:** Se ejecutaron compras automáticas de JNJ (R-QUANT) y GLD (R-BUY).  
+**LÍNEA 4:** Reducir exposición en activos cíclicos como XOM; incrementar posiciones en GLD.
+
+BALANCE: {
+  "equity": "0",
+  "cash": "0",
+  "buying_power": "0",
+  "portfolio_value": "0",
+  "currency": "USD",
+  "status": "DISCONNECTED"
+}
+
+======================================================================
+=== 10:44:13 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.82 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: AMD, NVDA, IBM, SPY, TSLA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-1.0%) | VIX neutral (26.8) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +80)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — NO — No noticias específicas de JNJ que indiquen un evento grave.
+  GLD: OK — SÍ|NO — GLD no tiene noticias específicas de fraude, bankruptcy o recall, solo menciones market reactions.
+
+NOTA: La respuesta es SÍ|NO con un mensaje breve. En este caso, la respuesta es NO porque las noticias no mencionan eventos Gravity del activo específico.
+  HYG: OK — NO
+  AGG: OK — SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de AGG que indiquen un evento grave, por lo que la señal técnica no se vuelve inválida.
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: NO — No noticias específicas de JNJ que indiquen un evento grave.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas de fraude, bankruptcy o recall, solo menciones market reactions.
+
+NOTA: La respuesta es SÍ|NO con un mensaje breve. En este caso, la respuesta es NO porque las noticias no mencionan eventos Gravity del activo específico.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de AGG que indiquen un evento grave, por lo que la señal técnica no se vuelve inválida.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: NO — No noticias específicas de JNJ que indiquen un evento grave.",
+    "regla": "R-QUANT",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas de fraude, bankruptcy o recall, solo menciones market reactions.\n\nNOTA: La respuesta es SÍ|NO con un mensaje breve. En este caso, la respuesta es NO porque las noticias no mencionan eventos Gravity del activo específico.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de AGG que indiquen un evento grave, por lo que la señal técnica no se vuelve inválida.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+1. **Evaluación del mercado:** Mixto con miedo extremo pero oportunidades de compra.
+
+2. **Activos destacados:** GLD, HYG, AGG.
+
+3. **Acciones ejecutadas:** Compra en JNJ, GLD, HYG y AGG basadas en reglas técnicas.
+
+4. **Sugerencia de ajuste:** Reducir exposición a renta variable, aumentar bonos (AGG) y mantener posiciones en GLD para mitigar riesgos.
+
+BALANCE: {
+  "equity": "0",
+  "cash": "0",
+  "buying_power": "0",
+  "portfolio_value": "0",
+  "currency": "USD",
+  "status": "DISCONNECTED"
+}
+
+======================================================================
+=== 10:48:50 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.66 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: NVDA, AMD, IBM, SPY, TSLA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-1.1%) | VIX neutral (26.7) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +85)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  GLD: OK — SÍ|GLD tiene noticias específicas de mercado negativas que indican eventos graves como flujo de efectivo y posibles declinaciones.
+  HYG: OK — NO
+  AGG: OK — NO
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|GLD tiene noticias específicas de mercado negativas que indican eventos graves como flujo de efectivo y posibles declinaciones.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.",
+    "regla": "R-QUANT",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|GLD tiene noticias específicas de mercado negativas que indican eventos graves como flujo de efectivo y posibles declinaciones.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**1. Evaluación general del mercado:** Mixto, con miedo extremo pero oportunidades de compra históricas.  
+**2. Activos que destacan hoy:** JNJ (buena puntuación y noticias positivas), GLD (riesgo por noticias negativas).  
+**3. Resumen de las acciones automáticas ejecutadas:** Compras en JNJ, GLD, HYG y AGG con reglas alcistas, pero GLD tiene riesgos noticiosos.  
+**4. Sugerencia de ajuste al portafolio:** Reducir exposición a GLD por noticias negativas y equilibrar con bonos (AGG) o acciones sólidas como JNJ.
+
+BALANCE: {
+  "equity": "0",
+  "cash": "0",
+  "buying_power": "0",
+  "portfolio_value": "0",
+  "currency": "USD",
+  "status": "DISCONNECTED"
+}
+
+======================================================================
+=== 10:53:46 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.52 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: SPY, NVDA, AMD, TSLA, IBM
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-1.0%) | VIX neutral (26.5) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-EARNINGS] JNJ: R-EARNINGS +1 (ejecutivos confiados: +85)
+  [R-QUANT] JNJ: score +1 → +3 (R-QUANT +1 (compra leve))
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-QUANT] JNJ: COMPRAR — score +3, prio #0
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [R-BUY] AGG: COMPRAR — score +2, prio #3
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  JNJ: OK — SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  GLD: OK — SÍ|NO — GLD no tiene noticias específicas negativas que contradigan la señal de compra.
+
+**Respuesta:** NO
+  HYG: OK — NO — No noticias específicas de HYG que indiquen un evento grave.
+  AGG: OK — NO — Sin noticias específicas de AGG y sin eventos grave como fraude o bankruptcy, la señal técnica es válida.
+
+DECISIONES FINALES:
+  [R-QUANT   ] JNJ  : COMPRAR   — R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas negativas que contradigan la señal de compra.
+
+**Respuesta:** NO
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias específicas de HYG que indiquen un evento grave.
+  [R-BUY     ] AGG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — Sin noticias específicas de AGG y sin eventos grave como fraude o bankruptcy, la señal técnica es válida.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "JNJ",
+    "accion": "COMPRAR",
+    "razon": "R-QUANT: score +1 +adj(+2)=+3 (>=2) — MACD por encima de señal, Death cross (SMA50 < SMA200), Precio sobre SMA50 | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de JNJ que indiquen un evento grave.",
+    "regla": "R-QUANT",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas negativas que contradigan la señal de compra.\n\n**Respuesta:** NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias específicas de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "AGG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Golden cross (SMA50 > SMA200), Precio bajo SMA50 | LLM: NO — Sin noticias específicas de AGG y sin eventos grave como fraude o bankruptcy, la señal técnica es válida.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**Respuesta:**
+
+LÍNEA 1: Mercado mixto con tendencia alcista latente, influenciada por indicadores técnicos positivos y miedo extremo en el índice Fear & Greed.
+
+LÍNEA 2: JNJ y GLD destacan hoy con buenas puntuaciones técnicas y ausencia de noticias negativas graves.
+
+LÍNEA 3: Se ejecutaron compras automáticas en JNJ (regla R-QUANT) y GLD (regla R-BUY), ambos con indicadores técnicos favorables.
+
+LÍNEA 4: Sugerir incrementar posiciones en activos defensivos como JNJ y GLD, considerando la estabilidad técnica y el contexto de miedo en el mercado.
+
+BALANCE: {
+  "equity": "0",
+  "cash": "0",
+  "buying_power": "0",
+  "portfolio_value": "0",
+  "currency": "USD",
+  "status": "DISCONNECTED"
+}
+
+======================================================================
+=== 11:05:15 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.73 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: SPY, IBM, AMD, TSLA, NVDA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.9%) | VIX neutral (26.7) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|GLD enfrenta outflow significativo y potencial declive, lo que indica negate la señal de compra.
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.4%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L -0.0%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|GLD enfrenta outflow significativo y potencial declive, lo que indica negate la señal de compra.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.4%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.0%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|GLD enfrenta outflow significativo y potencial declive, lo que indica negate la señal de compra.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con predominio de miedo.  
+**LÍNEA 2:** GLD y HYG destacan, pero GLD enfrenta riesgos por outflows.  
+**LÍNEA 3:** Se compraron GLD y HYG siguiendo reglas automáticas.  
+**LÍNEA 4:** Reducir exposición a GLD y considerar posiciones en HYG con precaución.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 11:06:16 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.69 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: TSLA, SPY, IBM, NVDA, AMD
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.9%) | VIX neutral (26.7) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — GLD no tiene noticias específicas negativas que indiquen un event grave.
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.4%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.0%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas negativas que indiquen un event grave.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.4%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.0%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas negativas que indiquen un event grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+1. **Evaluación general del mercado:** Alcista con miedo extremo (Fear & Greed Index: 11/100).  
+2. **Activos que destacan hoy:** GLD y HYG comprados por reglas automáticas.  
+3. **Resumen de acciones ejecutadas:** Compra en GLD (score +4) y HYG (score +2).  
+4. **Sugerencia de ajuste al portafolio:** Considerar incremento en posiciones de oro (GLD) y bonos de alto rendimiento (HYG).
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 11:11:18 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.67 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: AMD, NVDA, IBM, SPY, TSLA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.7%) | VIX neutral (26.7) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave.
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave, por lo que la señal técnica es aceptable.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.3%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.1%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave, por lo que la señal técnica es aceptable.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.3%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.1%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave, por lo que la señal técnica es aceptable.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con miedo extremo (Fear & Greed Index: 11/100) y volatilidad alta (VIX: 26.67).  
+**LÍNEA 2:** GLD y HYG destacan con señales técnicas positivas.  
+**LÍNEA 3:** Se ejecutaron compras en GLD y HYG basadas en reglas automáticas (R-BUY).  
+**LÍNEA 4:** Considerar reforzar posiciones en GLD y HYG, teniendo en cuenta el contexto de volatilidad y próximos reportes.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 11:34:04 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.29 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: AMD, TSLA, NVDA, SPY, IBM
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.6%) | VIX neutral (26.3) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — No hay noticias ESPECÍFICAS que den un event gravamen al activo.
+  HYG: OK — NO
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.3%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.1%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS que den un event gravamen al activo.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.3%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.33
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.1%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": 0.13
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS que den un event gravamen al activo.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false,
+    "score": 3
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con miedo extremo (Fear & Greed: 11/100) y volatilidad alta (VIX: 26.29).  
+**LÍNEA 2:** GLD y HYG destacan con señales alcistas en indicadores técnicos.  
+**LÍNEA 3:** Se ejecutaron compras automáticas de GLD y HYG basadas en reglas R-BUY.  
+**LÍNEA 4:** Considerar incremento en GLD para refugio seguro y revisión de exposición a bonos de alto rendimiento (HYG).
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 12:04:11 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.37 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: IBM, AMD, TSLA, NVDA, SPY
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.6%) | VIX neutral (26.4) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave.
+  HYG: OK — NO
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.4%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.1%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.4%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.35
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.1%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": 0.08
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false,
+    "score": 3
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con predominio de miedo, zona de oportunidad de compra.  
+**LÍNEA 2:** GLD y HYG destacan como compras automáticas.  
+**LÍNEA 3:** Se ejecutaron compras en GLD (R-BUY) y HYG (R-BUY).  
+**LÍNEA 4:** Considerar incremento en exposición a GLD para refugio, ajuste moderado en bonos de alto rendimiento.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 12:33:37 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.51 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: NVDA, SPY, AMD, IBM, TSLA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.6%) | VIX neutral (26.5) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — GLD no tiene noticias específicas de fraude, bankruptcy o recall, por lo que no se vetan.
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.3%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L -0.1%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas de fraude, bankruptcy o recall, por lo que no se vetan.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.3%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.33
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.1%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.06
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — GLD no tiene noticias específicas de fraude, bankruptcy o recall, por lo que no se vetan.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false,
+    "score": 3
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con tendencia alcista emergente.  
+**LÍNEA 2:** GLD (oro) y HYG (bonos de alto rendimiento) destacan.  
+**LÍNEA 3:** Se ejecutaron compras en GLD y HYG basadas en indicadores técnicos y fundamentales positivos.  
+**LÍNEA 4:** Ajustar portafolio incrementando exposición a oro y bonos, reducir stop losses dada la volatilidad alta.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 13:03:55 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.62 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: NVDA, TSLA, AMD, IBM, SPY
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.4%) | VIX neutral (26.6) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — NO
+  HYG: OK — NO
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.3%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.4%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.3%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.3
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.4%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": 0.41
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false,
+    "score": 3
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con predominio de miedo (FEAR & GREED: 11/100) y volatilidad alta (VIX:26.62).  
+**LÍNEA 2:** GLD y HYG destacan con señales alcistas en indicadores técnicos.  
+**LÍNEA 3:** Se ejecutaron compras automáticas de GLD (R-BUY score +4) y HYG (R-BUY score +2).  
+**LÍNEA 4:** Sugerir reducir exposición a acciones individuales próximas a resultados (如 JNJ) e incrementar posiciones en GLD y HYG.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 13:34:14 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.62 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: NVDA, SPY, TSLA, IBM, AMD
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.5%) | VIX neutral (26.6) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — NO — Las noticias sobre GLD no mencionan eventos grave como fraude, bankruptcy o recall.
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.2%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.8%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — Las noticias sobre GLD no mencionan eventos grave como fraude, bankruptcy o recall.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.2%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.22
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.8%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": 0.78
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — Las noticias sobre GLD no mencionan eventos grave como fraude, bankruptcy o recall.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false,
+    "score": 3
+  }
+]
+
+EXPLICACIÓN LLM:
+**Evaluación general del mercado:** Alcista con miedo extremo.  
+**Activos que destacan hoy:** GLD (oro), HYG (bonos de alto rendimiento).  
+**Resumen de acciones automáticas ejecutadas:** Compra de GLD y HYG basada en indicadores técnicos alcistas.  
+**Sugerencia de ajuste al portafolio:** Incrementar exposición a GLD como refugio, considerar posiciones defensivas en utilities o bienes raíces.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 14:03:47 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 27.32 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: TSLA, IBM, NVDA, AMD, SPY
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.9%) | VIX neutral (27.3) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave, por lo que la señal técnica no se vuelve inválida.
+
+Respuesta: NO
+  HYG: OK — NO
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.3%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.4%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave, por lo que la señal técnica no se vuelve inválida.
+
+Respuesta: NO
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.3%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.27
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.4%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": 0.43
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave, por lo que la señal técnica no se vuelve inválida.\n\nRespuesta: NO",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false,
+    "score": 3
+  }
+]
+
+EXPLICACIÓN LLM:
+**Línea 1:** Mercado mixto con miedo extremo (FEAR & GREED INDEX: 11/100) y volatilidad alta (VIX: 27.32).  
+
+**Línea 2:** GLD destaca como refugio, HYG muestra fuerza técnica.  
+
+**Línea 3:** Se ejecutó compra de GLD; intento de compra de HYG no completado.  
+
+**Línea 4:** Ajuste sugerido: Incrementar exposición a GLD e HYG, reducir posiciones en acciones individuales con reportes próximos.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 14:27:18 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 27.75 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: TSLA, IBM, SPY, AMD, NVDA
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.5%) | VIX neutral (27.8) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: TSLA excluido — "plunge" en "Big Tech H-1B Filings Plunge As Amazon, Google, Me..."
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — NO — GLD's news does not mention specific adverse events, so no vetar.
+  HYG: OK — NO
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.2%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.3%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — GLD's news does not mention specific adverse events, so no vetar.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.2%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.3%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: NO — GLD's news does not mention specific adverse events, so no vetar.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**Evaluación general del mercado:** Mixto, con miedo extremo pero oportunidades de compra.
+
+**Activos que destacan hoy:** GLD (oro) y HYG (bonos de alto rendimiento).
+
+**Resumen de las acciones automáticas ejecutadas:** Se compraron GLD y HYG basadas en indicadores técnicos alcistas.
+
+**Sugerencia de ajuste al portafolio:** Aumentar exposición a activos defensivos como GLD, considerando la volatilidad actual.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 14:34:24 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 27.47 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 2
+  Máx por trade: $500
+  Excluidos: AMD, NVDA, SPY, IBM
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.5%) | VIX neutral (27.5) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO AGRESIVO — umbral de compra baja a score >= 2
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+  [SLOT-FULL] IEF: descartada — sin slot disponible
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — Explicación: GLD no ha tenido notícia específica que indique un evento grave como fraude, bankruptcy, recall o investigated regulatoria.
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.2%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.3%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — Explicación: GLD no ha tenido notícia específica que indique un evento grave como fraude, bankruptcy, recall o investigated regulatoria.
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+  [SLOT-FULL ] IEF  : MANTENER  — señal de compra (score +3) pero sin slot (4 máx)
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.2%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": -0.15
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.3%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false,
+    "pnl_pct": 0.34
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "qty": 1,
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=2) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — Explicación: GLD no ha tenido notícia específica que indique un evento grave como fraude, bankruptcy, recall o investigated regulatoria.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "qty": 6,
+    "razon": "R-BUY: score +2 (>=2) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false,
+    "error": "Orden omitida (qty < 1 tras precio RT)"
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "MANTENER",
+    "razon": "señal de compra (score +3) pero sin slot (4 máx)",
+    "regla": "SLOT-FULL",
+    "ejecutada": false,
+    "score": 3
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto, dominado por el miedo pero con oportunidades alcistas en sectores defensivos.  
+**LÍNEA 2:** GLD y HYG destacan con señales técnicas positivas y ausencia de noticias negativas graves.  
+**LÍNEA 3:** Se ejecutaron compras automáticas de GLD (score +4) y HYG (score +2) basadas en indicadores técnicos y ausencia de riesgos específicos.  
+**LÍNEA 4:** Considerar incrementar exposición a activos defensivos como GLD y HYG, evitando nuevas posiciones en activos con reportes próximos (e.g., JNJ).
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
+======================================================================
+=== 14:39:47 — Trading Agent v2 ===
+======================================================================
+
+CONDICIONES:
+  VIX: 26.48 | F&G: 11/100
+  Modo agresivo: SÍ
+  Umbral compra: 0
+  Máx por trade: $500
+  Excluidos: NVDA, SPY, AMD, IBM
+
+REGLAS SESIÓN:
+  R-REGIMEN: BEAR (confianza 2/3) — SPY bajo MA200 (-0.5%) | VIX neutral (26.5) | F&G temeroso (11)
+  R-BEAR: Solo defensivos permitidos: AGG, D, GLD, HYG, IEF, JNJ, KO, T, VZ, XLU
+  R-FNG15: Fear & Greed en 11 (<15): MODO PÁNICO — score >= 0 para defensivos, refugios AGG,GLD,IEF priorizados (hasta 3)
+  R-NEWS: IBM excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-NEWS: SPY excluido — "plunge" en "Stock Market Today: S&P 500, Nasdaq Futures Plunge..."
+  R-TRENDS: Sentimiento retail neutral
+
+INDICADORES TÉCNICOS:
+  JNJ  : score +1 → MANTENER
+         MACD por encima de señal
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  GLD  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+  HYG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Death cross (SMA50 < SMA200)
+         Precio sobre SMA50
+  AGG  : score +2 → MANTENER
+         MACD alcista con histograma creciente
+         Golden cross (SMA50 > SMA200)
+         Precio bajo SMA50
+  IEF  : score +3 → COMPRAR
+         MACD alcista con histograma creciente
+         Precio debajo de media de Bollinger
+         Golden cross (SMA50 > SMA200)
+
+REGLAS APLICADAS:
+  [R-QUANT] GLD: score +3 → +4 (R-QUANT +1 (compra leve))
+  [R-BUY] GLD: COMPRAR — score +4, prio #1
+  [R-BUY] IEF: COMPRAR — score +3, prio #4
+  [R-BUY] HYG: COMPRAR — score +2, prio #2
+
+VETOS LLM:
+  GLD: OK — SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave como fraude, bankruptcy o recall.
+  IEF: OK — NO
+  HYG: OK — NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+
+DECISIONES FINALES:
+  [HOLD      ] AGG  : MANTENER  — posición abierta P&L -0.2%, sin regla activa
+  [HOLD      ] JNJ  : MANTENER  — posición abierta P&L +0.5%, sin regla activa
+  [R-BUY     ] GLD  : COMPRAR   — R-BUY: score +3 +adj(+1)=+4 (>=0) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave como fraude, bankruptcy o recall.
+  [R-BUY     ] IEF  : COMPRAR   — R-BUY: score +3 (>=0) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | LLM: NO
+  [R-BUY     ] HYG  : COMPRAR   — R-BUY: score +2 (>=0) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.
+
+RESULTADOS EJECUCIÓN:
+[
+  {
+    "simbolo": "AGG",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L -0.2%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "JNJ",
+    "accion": "MANTENER",
+    "razon": "posición abierta P&L +0.5%, sin regla activa",
+    "regla": "HOLD",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "GLD",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 +adj(+1)=+4 (>=0) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | R-QUANT +1 (compra leve) | LLM: SÍ|NO — Explicación: No hay noticias ESPECÍFICAS de GLD que indiquen un evento grave como fraude, bankruptcy o recall.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "IEF",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +3 (>=0) — MACD alcista con histograma creciente, Precio debajo de media de Bollinger, Golden cross (SMA50 > SMA200) | LLM: NO",
+    "regla": "R-BUY",
+    "ejecutada": false
+  },
+  {
+    "simbolo": "HYG",
+    "accion": "COMPRAR",
+    "razon": "R-BUY: score +2 (>=0) — MACD alcista con histograma creciente, Death cross (SMA50 < SMA200), Precio sobre SMA50 | LLM: NO — No noticias ESPECÍFICAS de HYG que indiquen un evento grave.",
+    "regla": "R-BUY",
+    "ejecutada": false
+  }
+]
+
+EXPLICACIÓN LLM:
+**LÍNEA 1:** Mercado mixto con miedo extremo (Fear & Greed: 11/100) y alta volatilidad (VIX: 26.48).  
+**LÍNEA 2:** GLD, IEF y HYG destacan por señales alcistas en indicadores técnicos.  
+**LÍNEA 3:** Se ejecutaron compras automáticas de GLD, IEF y HYG basadas en reglas R-BUY.  
+**LÍNEA 4:** Sugerir reforzar posiciones en bonos (IEF) y oro (GLD), reducir exposición a acciones cíclicas con reportes próximos.
+
+BALANCE: {
+  "equity": "4711.60",
+  "cash": "1182.00",
+  "buying_power": "1182.00",
+  "portfolio_value": "4711.60",
+  "currency": "USD",
+  "status": "CACHED"
+}
+
