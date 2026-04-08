@@ -44,6 +44,7 @@ from datos.earnings_calls_nlp import get_tono_ejecutivos
 from datos.memoria_jarvis import guardar_decision_trading as _guardar_decision
 from datos.marketdata_scorer import get_opciones_signal as _get_opciones_signal
 from datos.unusual_whales_scorer import get_institutional_flow as _get_institutional_flow
+from datos.quiver_scorer import get_quiver_score as _get_quiver_score
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(PROYECTO, ".env"))
@@ -781,7 +782,13 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
         if flow_bonus != 0:
             flow_notas.append(f"R-FLOW {flow_bonus:+d}")
 
-        score_ajustado = score + quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus
+        # R-QUIVER: Congressional + insider trading (Quiver Quantitative)
+        quiver_bonus = _get_quiver_score(sym)
+        quiver_notas = []
+        if quiver_bonus != 0:
+            quiver_notas.append(f"R-QUIVER {quiver_bonus:+d}")
+
+        score_ajustado = score + quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus + quiver_bonus
 
         if earnings_notas:
             log_reglas.append(f"  [R-EARNINGS] {sym}: {', '.join(earnings_notas)}")
@@ -793,6 +800,8 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
             log_reglas.append(f"  [R-OPCIONES] {sym}: {', '.join(opciones_notas)}")
         if flow_notas:
             log_reglas.append(f"  [R-FLOW] {sym}: {', '.join(flow_notas)}")
+        if quiver_notas:
+            log_reglas.append(f"  [R-QUIVER] {sym}: {', '.join(quiver_notas)}")
 
         # Determinar umbral efectivo para este activo
         # En pánico: refugios (GLD, IEF, AGG) aceptan score >= 0
@@ -824,7 +833,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 regla_nombre = "R-BUY"
 
             razon_base = f"score {score:+d}"
-            total_bonus = quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus
+            total_bonus = quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus + quiver_bonus
             if total_bonus != 0:
                 razon_base += f" +adj({total_bonus:+d})={score_ajustado:+d}"
             razon_base += f" (>={umbral_efectivo}) — {razones_tecnicas}"
@@ -833,7 +842,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 razon_base += f" | {notas_todas[0]}"
 
             _sd = (f"técnico:{score:+d} quant:{quant_bonus:+d} earn:{earnings_bonus:+d} "
-                   f"finbert:{finbert_bonus:+d} opc:{opciones_bonus:+d} flow:{flow_bonus:+d}")
+                   f"finbert:{finbert_bonus:+d} opc:{opciones_bonus:+d} flow:{flow_bonus:+d} quiver:{quiver_bonus:+d}")
             compras_candidatas.append({
                 "simbolo": sym,
                 "accion": "COMPRAR",
@@ -854,7 +863,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 "score": score,
             })
         else:
-            total_bonus = quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus
+            total_bonus = quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus + quiver_bonus
             extra = f" [adj:{total_bonus:+d}→{score_ajustado:+d}]" if total_bonus != 0 else ""
             decisiones.append({
                 "simbolo": sym,
