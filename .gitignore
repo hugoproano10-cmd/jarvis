@@ -223,3 +223,9 @@ whatsapp/.wwebjs_cache/
 
 # Estado cripto (temporal)
 cripto/estado_cripto.json
+
+# Archivos de audio generados
+audios/respuestas/
+*.mp3
+*.wav
+*.m4a
