@@ -130,8 +130,16 @@ const alertServer = http.createServer((req, res) => {
             try {
                 const data = JSON.parse(body);
                 const mensaje = data.mensaje || '';
-                if (mensaje && client.info) {
-                    await client.sendMessage(NUMERO_AUTORIZADO, mensaje);
+                const audio_base64 = data.audio_base64 || null;
+                if ((mensaje || audio_base64) && client.info) {
+                    if (mensaje) {
+                        await client.sendMessage(NUMERO_AUTORIZADO, mensaje);
+                    }
+                    if (audio_base64) {
+                        const audioMedia = new MessageMedia('audio/mpeg', audio_base64, 'jarvis.mp3');
+                        await client.sendMessage(NUMERO_AUTORIZADO, audioMedia,
+                            { sendAudioAsVoice: true });
+                    }
                     res.writeHead(200, {'Content-Type': 'application/json'});
                     res.end(JSON.stringify({status: 'ok'}));
                 } else {
