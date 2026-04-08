@@ -42,6 +42,8 @@ from datos.regimen_mercado import get_regimen_actual
 from datos.quantconnect_estrategias import get_senales_quant
 from datos.earnings_calls_nlp import get_tono_ejecutivos
 from datos.memoria_jarvis import guardar_decision_trading as _guardar_decision
+from datos.marketdata_scorer import get_opciones_signal as _get_opciones_signal
+from datos.unusual_whales_scorer import get_institutional_flow as _get_institutional_flow
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(PROYECTO, ".env"))
@@ -225,10 +227,11 @@ def _get_finbert_score(simbolo: str, noticias: list) -> int:
 
 
 def _log_decision(simbolo, accion, precio_actual=None, precio_entrada=None,
-                  pnl_pct=None, motivo="", score=None, regla="", **_kw):
+                  pnl_pct=None, motivo="", score=None, regla="",
+                  score_detalle=None, **_kw):
     """Escribe una línea en trading_decisiones.log.
     Formato:
-      BUY:  ts | BUY  | SYM  | $price | score:+N | señales
+      BUY:  ts | BUY  | SYM  | $price | score:+N | técnico:+N finbert:+N opciones:+N flow:+N | señales
       SELL: ts | SELL | SYM  | $price | entrada:$X | P&L:+X.X% | motivo:reason
       HOLD: ts | HOLD | SYM  | $price | score:+N | reason
       SKIP: ts | SKIP | SYM  | score:+N | reason
@@ -261,10 +264,14 @@ def _log_decision(simbolo, accion, precio_actual=None, precio_entrada=None,
             parts.append(f"${precio_actual:.2f}")
         if score is not None:
             parts.append(f"score:{score:+d}")
+        if score_detalle:
+            parts.append(score_detalle)
         parts.append(motivo)
     elif tag == "SKIP":
         if score is not None:
             parts.append(f"score:{score:+d}")
+        if score_detalle:
+            parts.append(score_detalle)
         parts.append(motivo)
     else:  # HOLD
         if precio_actual:
@@ -762,7 +769,19 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 if finbert_bonus != 0:
                     finbert_notas.append(f"R-FINBERT {finbert_bonus:+d} ({len(titulos)} noticias)")
 
-        score_ajustado = score + quant_bonus + earnings_bonus + finbert_bonus
+        # R-OPCIONES: Señal de opciones (Marketdata.app)
+        opciones_bonus = _get_opciones_signal(sym)
+        opciones_notas = []
+        if opciones_bonus != 0:
+            opciones_notas.append(f"R-OPCIONES {opciones_bonus:+d}")
+
+        # R-FLOW: Flujo institucional (Unusual Whales)
+        flow_bonus = _get_institutional_flow(sym)
+        flow_notas = []
+        if flow_bonus != 0:
+            flow_notas.append(f"R-FLOW {flow_bonus:+d}")
+
+        score_ajustado = score + quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus
 
         if earnings_notas:
             log_reglas.append(f"  [R-EARNINGS] {sym}: {', '.join(earnings_notas)}")
@@ -770,6 +789,10 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
             log_reglas.append(f"  [R-QUANT] {sym}: score {score:+d} → {score_ajustado:+d} ({', '.join(quant_notas)})")
         if finbert_notas:
             log_reglas.append(f"  [R-FINBERT] {sym}: {', '.join(finbert_notas)}")
+        if opciones_notas:
+            log_reglas.append(f"  [R-OPCIONES] {sym}: {', '.join(opciones_notas)}")
+        if flow_notas:
+            log_reglas.append(f"  [R-FLOW] {sym}: {', '.join(flow_notas)}")
 
         # Determinar umbral efectivo para este activo
         # En pánico: refugios (GLD, IEF, AGG) aceptan score >= 0
@@ -801,7 +824,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 regla_nombre = "R-BUY"
 
             razon_base = f"score {score:+d}"
-            total_bonus = quant_bonus + earnings_bonus + finbert_bonus
+            total_bonus = quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus
             if total_bonus != 0:
                 razon_base += f" +adj({total_bonus:+d})={score_ajustado:+d}"
             razon_base += f" (>={umbral_efectivo}) — {razones_tecnicas}"
@@ -809,12 +832,15 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
             if notas_todas:
                 razon_base += f" | {notas_todas[0]}"
 
+            _sd = (f"técnico:{score:+d} quant:{quant_bonus:+d} earn:{earnings_bonus:+d} "
+                   f"finbert:{finbert_bonus:+d} opc:{opciones_bonus:+d} flow:{flow_bonus:+d}")
             compras_candidatas.append({
                 "simbolo": sym,
                 "accion": "COMPRAR",
                 "razon": f"{regla_nombre}: {razon_base}",
                 "regla": regla_nombre,
                 "score": score_ajustado,
+                "score_detalle": _sd,
                 "precio": precio,
                 "es_refugio": es_refugio,
                 "razones_indicadores": senal.get("razones", []),
@@ -828,7 +854,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 "score": score,
             })
         else:
-            total_bonus = quant_bonus + earnings_bonus
+            total_bonus = quant_bonus + earnings_bonus + finbert_bonus + opciones_bonus + flow_bonus
             extra = f" [adj:{total_bonus:+d}→{score_ajustado:+d}]" if total_bonus != 0 else ""
             decisiones.append({
                 "simbolo": sym,
@@ -1709,6 +1735,7 @@ def main():
                 pnl_pct=d.get("pnl_pct"),
                 motivo=d.get("razon", "")[:120],
                 score=d.get("score"), regla=d.get("regla", ""),
+                score_detalle=d.get("score_detalle"),
             )
     else:
         print("\n8) Ejecutando órdenes...")
@@ -1728,6 +1755,7 @@ def main():
                 pnl_pct=r.get("pnl_pct"),
                 motivo=r.get("razon", "")[:120],
                 score=r.get("score"), regla=r.get("regla", ""),
+                score_detalle=r.get("score_detalle"),
             )
 
             if not r.get("ejecutada"):
