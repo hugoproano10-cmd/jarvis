@@ -125,7 +125,18 @@ const http = require('http');
 const alertServer = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/alerta') {
         let body = '';
-        req.on('data', chunk => body += chunk);
+        let size = 0;
+        const MAX_SIZE = 50 * 1024 * 1024; // 50MB
+        req.on('data', chunk => {
+            size += chunk.length;
+            if (size > MAX_SIZE) {
+                res.writeHead(413, {'Content-Type': 'application/json'});
+                res.end(JSON.stringify({error: 'payload too large'}));
+                req.destroy();
+                return;
+            }
+            body += chunk;
+        });
         req.on('end', async () => {
             try {
                 const data = JSON.parse(body);

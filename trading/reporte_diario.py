@@ -404,12 +404,14 @@ def generar_reporte():
                 import base64
                 with open(audio["archivo"], "rb") as af:
                     audio_b64 = base64.b64encode(af.read()).decode("utf-8")
-                _req.post(
+                size_kb = len(audio_b64) * 3 / 4 / 1024
+                print(f"  Enviando audio WhatsApp ({size_kb:.0f} KB)...")
+                resp_wa = _req.post(
                     "http://localhost:8001/alerta",
                     json={"mensaje": resumen_audio, "audio_base64": audio_b64},
-                    timeout=10,
+                    timeout=60,
                 )
-                print("  Audio enviado por WhatsApp.")
+                print(f"  WhatsApp audio response: {resp_wa.status_code} {resp_wa.text[:100]}")
             except Exception as wa_e:
                 print(f"  WhatsApp audio error: {wa_e}")
     except Exception as e:
