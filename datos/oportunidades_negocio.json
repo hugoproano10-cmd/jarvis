@@ -88,5 +88,18 @@
       "reddit_posts": 30,
       "hacker_news": 10
     }
+  },
+  {
+    "fecha": "2026-04-07 23:00:02",
+    "nodo_analisis": "brain",
+    "analisis": "```json\n{\n  \"oportunidades\": [\n    {\n      \"titulo\": \"Analítica Deportiva en Tiempo Real con IA\",\n      \"problema\": \"Falta de análisis instantáneo y profundo durante eventos deportivos en vivo (ej: tarjetas rojas, jugadas clave), limitando la experiencia de fanáticos y estrategas.\",\n      \"mercado\": \"Clubes deportivos, transmisores (ESPN, Fox), plataformas de streaming y casas de apuestas legales. Meta inicial: ligas latinoamericanas y MLS.\",\n      \"modelo_negocio\": \"SaaS con suscripción por evento/liga. APIs personalizadas para clientes premium. Monetización de datos para pronósticos.\",\n      \"competencia\": \"Stats Perform, Genius Sports. Ventaja: IA más rápida y adaptable a ligas locales.\",\n      \"inversion_usd\": \"350,000\",\n      \"tiempo_primer_ingreso\": \"2 meses\",\n      \"ventaja_ecuador\": \"Equipo técnico capacitado en IA + huso horario ideal para cobertura en América. Costos operativos 40% menores vs. EE.UU.\",\n      \"por_que_ahora\": \"Alta demanda en tendencias (fútbol, NBA). Mercado de datos deportivos crece 22% anual. Tecnología 671B permite análisis inéditos.\"\n    },\n    {\n      \"titulo\": \"Seguridad de IA para Software Crítico\",\n      \"problema\": \"Vulnerabilidades en sistemas de IA expuestos en Project Glasswing: empresas carecen de herramientas para proteger modelos avanzados contra ataques cibernéticos.\",\n      \"mercado\": \"Empresas con IA crítica (fintech, salud, logística). Enfoque en startups de EE.UU./UE que usen LLMs.\",\n      \"modelo_negocio\": \"Licencias empresariales + auditorías personalizadas. Modelo \"freemium\" para pruebas de vulnerabilidad básica.\",\n      \"competencia\": \"Snyk, Palo Alto (soluciones genéricas). Ventaja: especialización en modelos >500B parámetros.\",\n      \"inversion_usd\": \"500,000\",\n      \"tiempo_primer_ingreso",
+    "fuentes_resumen": {
+      "trends_regiones": 70,
+      "techcrunch": 15,
+      "product_hunt": 15,
+      "ycombinator": 10,
+      "reddit_posts": 30,
+      "hacker_news": 10
+    }
   }
 ]
