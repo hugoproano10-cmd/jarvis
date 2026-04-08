@@ -383,7 +383,7 @@ def generar_reporte():
             f"El mercado está en {txt_ctx.split('Sentimiento:')[1].split(chr(10))[0].strip() if 'Sentimiento:' in txt_ctx else 'modo normal'}. "
             f"Hoy JARVIS recomienda cautela. Todos los sistemas operativos."
         )
-        audio = _voz.sintetizar_respuesta(resumen_audio, premium=True)
+        audio = _voz.sintetizar_respuesta(resumen_audio, premium=False)
         if audio.get("archivo"):
             print(f"  Audio reporte ({audio['motor']}): {audio['archivo']}")
             # Enviar audio por Telegram

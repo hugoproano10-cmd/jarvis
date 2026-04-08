@@ -157,7 +157,7 @@ def sintetizar_respuesta(texto, referencia=None, premium=False):
         dict con: archivo, motor, duracion_generacion, texto_procesado
     """
     inicio = time.time()
-    usar_fish = premium or texto.startswith("REPORTE:")
+    usar_fish = premium
 
     # 1. Fish Speech (solo en modo premium / reportes)
     if usar_fish and _fish_speech_disponible():
