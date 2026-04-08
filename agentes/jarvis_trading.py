@@ -1512,7 +1512,7 @@ def main():
         print(f"   ERROR conexión IBKR: {e}")
         _notificar(
             "\u26a0\ufe0f <b>JARVIS — No pude conectar a IBKR</b>\n"
-            f"Error: {e}\n"
+            f"Error: {_esc(e)}\n"
             "Verifica que TWS esté abierto y con API habilitada.\n"
             "Continúo solo con análisis (sin ejecutar órdenes)."
         )
@@ -1766,7 +1766,7 @@ def main():
                 label = "STOP-LOSS" if regla == "R-SL" else "TRAILING-STOP"
                 alerta = (
                     f"\U0001f534 {label}: {sym} @ ${precio_acc:,.2f}"
-                    f" | P&L:{r.get('pnl_pct', '?')}%"
+                    f" | P&amp;L:{r.get('pnl_pct', '?')}%"
                     f" | Entrada:${entrada:,.2f}"
                 )
                 _notificar(alerta)
@@ -1786,7 +1786,7 @@ def main():
                 precio_acc = precios_map.get(sym, 0)
                 alerta = (
                     f"\U0001f504 ROTACIÓN: vendiendo {sym} @ ${precio_acc:,.2f}"
-                    f" | {r.get('razon', '')[:80]}"
+                    f" | {_esc(r.get('razon', '')[:80])}"
                 )
                 _notificar(alerta)
                 print(f"   >>> Alerta ROTACIÓN enviada: {sym}")
@@ -1796,7 +1796,7 @@ def main():
                 alerta = (
                     f"\U0001f7e2 COMPRA: {sym} {qty_str}acc @ ${precio_acc:,.2f}"
                     f" | Score:{r.get('score', '?')}"
-                    f" | {r.get('razon', '')[:100]}"
+                    f" | {_esc(r.get('razon', '')[:100])}"
                 )
                 _notificar(alerta)
                 print(f"   >>> Alerta COMPRA enviada: {sym}")

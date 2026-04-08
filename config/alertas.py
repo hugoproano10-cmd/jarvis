@@ -34,7 +34,10 @@ UMBRAL_ALERTA = 2.0  # porcentaje
 
 
 def enviar_telegram(mensaje: str) -> bool:
-    """Envía un mensaje por Telegram. Retorna True si fue exitoso."""
+    """Envía un mensaje por Telegram. Intenta HTML, fallback a texto plano."""
+    if not BOT_TOKEN or not CHAT_ID:
+        print("Telegram: BOT_TOKEN o CHAT_ID no configurados")
+        return False
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": CHAT_ID,
@@ -42,7 +45,14 @@ def enviar_telegram(mensaje: str) -> bool:
         "parse_mode": "HTML",
     }
     resp = requests.post(url, json=payload, timeout=15)
-    resp.raise_for_status()
+    if not resp.ok:
+        # HTML mal formado — reintentar sin parse_mode
+        print(f"Telegram HTML error {resp.status_code}: {resp.text[:200]}")
+        payload.pop("parse_mode")
+        resp = requests.post(url, json=payload, timeout=15)
+        if not resp.ok:
+            print(f"Telegram texto plano error {resp.status_code}: {resp.text[:200]}")
+            resp.raise_for_status()
     return resp.json().get("ok", False)
 
 
