@@ -106,14 +106,17 @@ _TEST_MODE = "--test" in sys.argv
 
 
 def _notificar(mensaje):
-    """Envía a Telegram + WhatsApp."""
+    """Envía solo a WhatsApp (texto plano via puerto 8001)."""
     if _TEST_MODE:
         print("  [NOTIF] (suprimida en test)")
         return
-    enviar_telegram(mensaje)
+    texto_plano = re.sub(r'<[^>]+>', '', mensaje)
+    texto_plano = (texto_plano
+                   .replace('&amp;', '&').replace('&lt;', '<')
+                   .replace('&gt;', '>').replace('&#39;', "'"))
     try:
         requests.post("http://localhost:8001/alerta",
-                       json={"mensaje": mensaje}, timeout=10)
+                       json={"mensaje": texto_plano}, timeout=10)
     except Exception:
         pass
 

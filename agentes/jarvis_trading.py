@@ -197,9 +197,7 @@ def _log_wa_warning(msg):
 
 
 def _notificar(mensaje):
-    """Envía notificación a Telegram (HTML) + WhatsApp (texto plano via puerto 8001)."""
-    enviar_telegram(mensaje)
-    # WhatsApp: convertir HTML a texto plano y enviar via servidor alertas
+    """Envía notificación solo a WhatsApp (texto plano via puerto 8001)."""
     texto_plano = re.sub(r'<[^>]+>', '', mensaje)
     texto_plano = (texto_plano
                    .replace('&amp;', '&').replace('&lt;', '<')
@@ -1636,59 +1634,9 @@ def main():
         print(f"   {n_descartadas} compra(s) descartada(s) por límite de slots")
     print()
 
-    # 6) Veto LLM para compras (máx 2 vetos por ciclo, solo por noticias específicas)
-    MAX_VETOS_POR_CICLO = 2
+    # 6) Veto LLM eliminado — decisiones pasan directo de reglas a ejecución
     log_vetos = []
-    if compras:
-        print("6) Validando compras con LLM (veto por noticias específicas, máx 2 vetos)...")
-        noticias = contexto_mkt_datos.get("noticias", {})
-        decisiones_final = []
-        vetos_usados = 0
-
-        for d in decisiones:
-            if d["accion"] != "COMPRAR":
-                decisiones_final.append(d)
-                continue
-
-            sym = d["simbolo"]
-            arts = noticias.get(sym, [])
-            noticias_texto = "\n".join(
-                f"- {a.get('titulo', '')}" for a in arts if "error" not in a
-            ) or "Sin noticias recientes."
-
-            # Si ya se agotaron los vetos, pasar directo
-            if vetos_usados >= MAX_VETOS_POR_CICLO:
-                veto_log = f"{sym}: MAX-VETO — límite de {MAX_VETOS_POR_CICLO} vetos alcanzado, compra se mantiene"
-                log_vetos.append(veto_log)
-                print(f"   {veto_log}")
-                d["razon"] += " | LLM: límite de vetos alcanzado, compra aprobada"
-                decisiones_final.append(d)
-                continue
-
-            vetado, explicacion = verificar_llm_veto(
-                sym, d.get("score", 0), noticias_texto
-            )
-            veto_log = f"{sym}: {'VETADO' if vetado else 'OK'} — {explicacion}"
-            log_vetos.append(veto_log)
-            print(f"   {veto_log}")
-
-            if vetado:
-                vetos_usados += 1
-                d_modificada = dict(d)
-                d_modificada["accion"] = "MANTENER"
-                d_modificada["razon"] = f"VETO LLM: {explicacion}"
-                d_modificada["regla"] = "VETO-LLM"
-                decisiones_final.append(d_modificada)
-            else:
-                d["razon"] += f" | LLM: {explicacion}"
-                decisiones_final.append(d)
-
-        decisiones = decisiones_final
-        if vetos_usados > 0:
-            print(f"   Vetos usados: {vetos_usados}/{MAX_VETOS_POR_CICLO}")
-        print()
-    else:
-        print("6) Sin compras que validar con LLM.\n")
+    print("6) Veto LLM desactivado — decisiones basadas solo en reglas.\n")
 
     # 7) Mostrar decisiones finales
     print("=" * 70)
@@ -1809,10 +1757,9 @@ def main():
     print(f"   Equity: ${float(balance_final['equity']):,.2f}")
     print(f"   Cash: ${float(balance_final['cash']):,.2f}")
 
-    # 10) Explicación LLM
-    print("\n10) Obteniendo explicación del LLM...")
-    explicacion_llm = obtener_explicacion_llm(decisiones, contexto_mkt_texto, condiciones)
-    print(f"   {explicacion_llm[:200]}...")
+    # 10) Explicación LLM eliminada — mensaje basado solo en reglas
+    print("\n10) LLM desactivado — usando resumen de reglas.")
+    explicacion_llm = ""
 
     # 11) Enviar a Telegram
     etiqueta = " (dry-run)" if solo_analisis else ""
@@ -1826,7 +1773,7 @@ def main():
 
     print("\n11) Enviando notificaciones...")
     _notificar(mensaje)
-    print("   Telegram + WhatsApp enviados.")
+    print("   WhatsApp enviado.")
 
     # 12) Guardar decisiones en memoria ChromaDB
     for r in resultados:
