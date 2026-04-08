@@ -206,7 +206,7 @@ def _notificar(mensaje):
                    .replace('&gt;', '>').replace('&#39;', "'"))
     try:
         requests.post("http://localhost:8001/alerta",
-                      json={"mensaje": texto_plano}, timeout=5)
+                      json={"mensaje": texto_plano}, timeout=10)
     except Exception:
         pass  # WhatsApp alertas opcional, no interrumpir trading
 

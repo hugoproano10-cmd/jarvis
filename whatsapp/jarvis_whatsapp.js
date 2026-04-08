@@ -147,9 +147,16 @@ const alertServer = http.createServer((req, res) => {
                         await client.sendMessage(NUMERO_AUTORIZADO, mensaje);
                     }
                     if (audio_base64) {
-                        const audioMedia = new MessageMedia('audio/mpeg', audio_base64, 'jarvis.mp3');
-                        await client.sendMessage(NUMERO_AUTORIZADO, audioMedia,
-                            { sendAudioAsVoice: true });
+                        try {
+                            const audioMedia = new MessageMedia('audio/mpeg', audio_base64, 'jarvis.mp3');
+                            await client.sendMessage(NUMERO_AUTORIZADO, audioMedia,
+                                { sendAudioAsVoice: true });
+                        } catch (audioErr) {
+                            console.error('Error enviando audio WhatsApp:', audioErr.message, audioErr.stack);
+                            res.writeHead(500, {'Content-Type': 'application/json'});
+                            res.end(JSON.stringify({error: audioErr.message}));
+                            return;
+                        }
                     }
                     res.writeHead(200, {'Content-Type': 'application/json'});
                     res.end(JSON.stringify({status: 'ok'}));

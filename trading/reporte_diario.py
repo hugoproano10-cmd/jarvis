@@ -53,13 +53,13 @@ MODEL_FAST = _cfg.MODEL_FAST
 
 # JARVIS live config
 POSICIONES_PROTEGIDAS = {"AMD", "NVDA"}
-ACTIVOS_JARVIS = ["JNJ", "GLD", "HYG", "AGG", "IEF"]
+ACTIVOS_JARVIS = ["JNJ", "GLD", "HYG", "AGG", "IEF", "KO", "VZ", "XLU", "T", "D", "IBM"]
 ACTIVOS = ACTIVOS_JARVIS
-MAX_POSICIONES_JARVIS = 4
+MAX_POSICIONES_JARVIS = 6
 JARVIS_LIVE_CAPITAL = float(os.getenv("JARVIS_LIVE_CAPITAL", "2000"))
 STOP_LOSS_PCT = 0.03
 TAKE_PROFIT_PCT = 0.10
-MAX_POR_TRADE = 500.0
+MAX_POR_TRADE = 750.0
 
 ESTADO_PATH = os.path.join(PROYECTO, "logs", "ultimo_estado.json")
 
@@ -112,8 +112,8 @@ def _notificar(mensaje):
         return
     enviar_telegram(mensaje)
     try:
-        requests.post("http://localhost:8000/send_message",
-                       json={"mensaje": mensaje}, timeout=5)
+        requests.post("http://localhost:8001/alerta",
+                       json={"mensaje": mensaje}, timeout=10)
     except Exception:
         pass
 

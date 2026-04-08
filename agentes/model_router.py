@@ -36,8 +36,8 @@ NODOS = {
     "power-nano": {
         "nombre": "jarvis-power",
         "url": "http://192.168.208.80:11435",
-        "modelo": "nemotron-3-nano:30b",
-        "descripcion": "Chat rápido (~15s)",
+        "modelo": "deepseek-r1:70b",
+        "descripcion": "Chat general (~60s)",
         "timeout": 60,
     },
     "power-deep70": {
