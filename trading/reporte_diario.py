@@ -399,6 +399,19 @@ def generar_reporte():
                     files={"voice": af}, timeout=30,
                 )
             print("  Audio enviado por Telegram.")
+            # Enviar audio por WhatsApp
+            try:
+                import base64
+                with open(audio["archivo"], "rb") as af:
+                    audio_b64 = base64.b64encode(af.read()).decode("utf-8")
+                _req.post(
+                    "http://localhost:8001/alerta",
+                    json={"mensaje": resumen_audio, "audio_base64": audio_b64},
+                    timeout=10,
+                )
+                print("  Audio enviado por WhatsApp.")
+            except Exception as wa_e:
+                print(f"  WhatsApp audio error: {wa_e}")
     except Exception as e:
         print(f"  Audio reporte: error ({e})")
 
