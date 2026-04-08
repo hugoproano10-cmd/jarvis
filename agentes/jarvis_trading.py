@@ -209,6 +209,21 @@ def _notificar(mensaje):
         pass  # WhatsApp alertas opcional, no interrumpir trading
 
 
+def _get_finbert_score(simbolo: str, noticias: list) -> int:
+    """Obtiene score de sentimiento FinBERT para un activo. Retorna -2 a +2."""
+    try:
+        resp = requests.post(
+            "http://192.168.208.80:8002/score",
+            json={"simbolo": simbolo, "noticias": noticias},
+            timeout=5
+        )
+        if resp.ok:
+            return resp.json().get("score", 0)
+    except Exception:
+        pass
+    return 0
+
+
 def _log_decision(simbolo, accion, precio_actual=None, precio_entrada=None,
                   pnl_pct=None, motivo="", score=None, regla="", **_kw):
     """Escribe una línea en trading_decisiones.log.
@@ -472,7 +487,8 @@ def calcular_senales_tecnicas():
 # ══════════════════════════════════════════════════════════════
 
 def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
-                               senales_inst=None, senales_qt=None, tono_exec=None):
+                               senales_inst=None, senales_qt=None, tono_exec=None,
+                               noticias_por_activo=None):
     """
     Aplica reglas automáticas de trading. NO usa LLM.
     Retorna lista de decisiones con la regla que las activó.
@@ -735,12 +751,25 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                     earnings_notas.append(
                         f"R-EARNINGS -2 (deterioro {diff:+d} vs {te_prev['quarter']})")
 
-        score_ajustado = score + quant_bonus + earnings_bonus
+        # R-FINBERT: Sentimiento de noticias FinBERT ajusta score
+        finbert_bonus = 0
+        finbert_notas = []
+        if noticias_por_activo:
+            arts = noticias_por_activo.get(sym, [])
+            titulos = [a.get("titulo", "") for a in arts if "error" not in a and a.get("titulo")]
+            if titulos:
+                finbert_bonus = _get_finbert_score(sym, titulos)
+                if finbert_bonus != 0:
+                    finbert_notas.append(f"R-FINBERT {finbert_bonus:+d} ({len(titulos)} noticias)")
+
+        score_ajustado = score + quant_bonus + earnings_bonus + finbert_bonus
 
         if earnings_notas:
             log_reglas.append(f"  [R-EARNINGS] {sym}: {', '.join(earnings_notas)}")
         if quant_notas:
             log_reglas.append(f"  [R-QUANT] {sym}: score {score:+d} → {score_ajustado:+d} ({', '.join(quant_notas)})")
+        if finbert_notas:
+            log_reglas.append(f"  [R-FINBERT] {sym}: {', '.join(finbert_notas)}")
 
         # Determinar umbral efectivo para este activo
         # En pánico: refugios (GLD, IEF, AGG) aceptan score >= 0
@@ -772,7 +801,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 regla_nombre = "R-BUY"
 
             razon_base = f"score {score:+d}"
-            total_bonus = quant_bonus + earnings_bonus
+            total_bonus = quant_bonus + earnings_bonus + finbert_bonus
             if total_bonus != 0:
                 razon_base += f" +adj({total_bonus:+d})={score_ajustado:+d}"
             razon_base += f" (>={umbral_efectivo}) — {razones_tecnicas}"
@@ -1616,8 +1645,10 @@ def main():
 
     # 5) Aplicar reglas automáticas
     print("5) Aplicando reglas automáticas...")
+    noticias_mkt = contexto_mkt_datos.get("noticias", {})
     decisiones, log_reglas, n_compras, n_descartadas = aplicar_reglas_automaticas(
-        senales, posiciones, condiciones, datos_acciones, senales_inst, senales_qt, tono_exec
+        senales, posiciones, condiciones, datos_acciones, senales_inst, senales_qt, tono_exec,
+        noticias_por_activo=noticias_mkt
     )
 
     if log_reglas:
