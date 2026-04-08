@@ -399,10 +399,24 @@ def generar_reporte():
                     files={"voice": af}, timeout=30,
                 )
             print("  Audio enviado por Telegram.")
-            # Enviar audio por WhatsApp
+            # Enviar audio por WhatsApp (convertir WAV→MP3 si necesario)
             try:
                 import base64
-                with open(audio["archivo"], "rb") as af:
+                import subprocess
+                archivo_audio = audio["archivo"]
+                if archivo_audio.endswith('.wav'):
+                    archivo_mp3 = archivo_audio.replace('.wav', '.mp3')
+                    conv = subprocess.run(
+                        ['ffmpeg', '-y', '-i', archivo_audio,
+                         '-codec:a', 'libmp3lame', '-qscale:a', '2',
+                         archivo_mp3],
+                        capture_output=True, timeout=30)
+                    if conv.returncode == 0:
+                        archivo_audio = archivo_mp3
+                        print(f"  WAV convertido a MP3: {archivo_mp3}")
+                    else:
+                        print(f"  Error convirtiendo a MP3, usando WAV")
+                with open(archivo_audio, "rb") as af:
                     audio_b64 = base64.b64encode(af.read()).decode("utf-8")
                 size_kb = len(audio_b64) * 3 / 4 / 1024
                 print(f"  Enviando audio WhatsApp ({size_kb:.0f} KB)...")
