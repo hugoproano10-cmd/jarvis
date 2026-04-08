@@ -197,19 +197,18 @@ def _log_wa_warning(msg):
 
 
 def _notificar(mensaje):
-    """Envía notificación a Telegram (HTML) + WhatsApp (texto plano)."""
+    """Envía notificación a Telegram (HTML) + WhatsApp (texto plano via puerto 8001)."""
     enviar_telegram(mensaje)
-    # WhatsApp: convertir HTML a texto plano
+    # WhatsApp: convertir HTML a texto plano y enviar via servidor alertas
     texto_plano = re.sub(r'<[^>]+>', '', mensaje)
     texto_plano = (texto_plano
                    .replace('&amp;', '&').replace('&lt;', '<')
                    .replace('&gt;', '>').replace('&#39;', "'"))
     try:
-        resp = requests.post("http://localhost:8000/mensaje",
-                       json={"mensaje": texto_plano}, timeout=5)
-        resp.raise_for_status()
-    except Exception as e:
-        _log_wa_warning(f"WhatsApp no disponible — {e}")
+        requests.post("http://localhost:8001/alerta",
+                      json={"mensaje": texto_plano}, timeout=5)
+    except Exception:
+        pass  # WhatsApp alertas opcional, no interrumpir trading
 
 
 def _log_decision(simbolo, accion, precio_actual=None, precio_entrada=None,

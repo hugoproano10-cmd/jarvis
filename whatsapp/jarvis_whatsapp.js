@@ -119,3 +119,35 @@ async function handleVoice(msg) {
 }
 
 client.initialize();
+
+// ── Servidor HTTP para alertas salientes de JARVIS (puerto 8001) ──
+const http = require('http');
+const alertServer = http.createServer((req, res) => {
+    if (req.method === 'POST' && req.url === '/alerta') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', async () => {
+            try {
+                const data = JSON.parse(body);
+                const mensaje = data.mensaje || '';
+                if (mensaje && client.info) {
+                    await client.sendMessage(NUMERO_AUTORIZADO, mensaje);
+                    res.writeHead(200, {'Content-Type': 'application/json'});
+                    res.end(JSON.stringify({status: 'ok'}));
+                } else {
+                    res.writeHead(400, {'Content-Type': 'application/json'});
+                    res.end(JSON.stringify({error: 'mensaje vacio o cliente no listo'}));
+                }
+            } catch(e) {
+                res.writeHead(500, {'Content-Type': 'application/json'});
+                res.end(JSON.stringify({error: e.message}));
+            }
+        });
+    } else {
+        res.writeHead(404);
+        res.end();
+    }
+});
+alertServer.listen(8001, '127.0.0.1', () => {
+    console.log('Servidor alertas JARVIS escuchando en puerto 8001');
+});
