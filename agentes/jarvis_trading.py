@@ -33,7 +33,7 @@ from trading.indicadores_tecnicos import (
     generar_senal,
 )
 
-# IBKR trading adapter (cuenta real, TWS en localhost:7496)
+# IBKR trading adapter (cuenta real, Gateway Docker localhost:4001)
 from agentes.ibkr_trading import get_balance, get_positions, buy, sell, _precio_fallback
 
 from datos.contexto_mercado import get_contexto_completo
@@ -71,7 +71,7 @@ TAKE_PROFIT_PCT = _cfg.TAKE_PROFIT_PCT
 # Overrides para operar con capital limitado en cuenta real IBKR.
 # Posiciones existentes (AMD, NVDA) son del usuario y no se tocan.
 JARVIS_LIVE_CAPITAL = float(os.getenv("JARVIS_LIVE_CAPITAL", "2000"))
-JARVIS_LIVE_HASTA = os.getenv("JARVIS_LIVE_HASTA", "2026-04-10")
+JARVIS_LIVE_HASTA = os.getenv("JARVIS_LIVE_HASTA", "2026-12-31")
 POSICIONES_PROTEGIDAS = {"AMD", "NVDA"}  # No vender/comprar — son del usuario
 ACTIVOS_DEFENSIVOS = ["JNJ", "GLD", "HYG", "AGG", "IEF", "KO", "VZ", "XLU", "T", "D", "IBM"]
 ACTIVOS_REFUGIO = {"GLD", "IEF", "AGG"}  # Safe-haven en modo pánico
