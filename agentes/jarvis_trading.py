@@ -306,8 +306,6 @@ def refrescar_precios_tiingo(posiciones):
 
 def evaluar_condiciones_mercado(datos_contexto):
     """Evalúa VIX, F&G, noticias y régimen de mercado. Retorna ajustes para la sesión."""
-    global ACTIVOS_OPERABLES, SIMBOLOS_OPERABLES, PRIORIDAD_SHARPE
-
     fng = datos_contexto.get("fear_greed", {})
     vix = datos_contexto.get("vix", {})
     noticias = datos_contexto.get("noticias", {})
@@ -338,25 +336,16 @@ def evaluar_condiciones_mercado(datos_contexto):
     )
 
     if regimen_tipo == "BEAR":
-        # En BEAR, forzar universo a solo defensivos (actualizar globals)
-        ACTIVOS_OPERABLES = list(ACTIVOS_DEFENSIVOS)
-        SIMBOLOS_OPERABLES = set(ACTIVOS_DEFENSIVOS)
-        PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_DEFENSIVOS)}
-        # Excluir cualquier activo no defensivo
+        # En BEAR, excluir todo activo no defensivo (globals ya fijados en main())
         activos_no_defensivos = set(_UNIVERSO_COMPLETO) - set(ACTIVOS_DEFENSIVOS)
         activos_excluidos |= activos_no_defensivos
         reglas.append(
             f"R-BEAR: Solo defensivos permitidos: {', '.join(sorted(ACTIVOS_DEFENSIVOS))}"
         )
-    else:
-        # BULL o LATERAL: restaurar universo completo
-        ACTIVOS_OPERABLES = list(_UNIVERSO_COMPLETO)
-        SIMBOLOS_OPERABLES = set(_UNIVERSO_COMPLETO)
-        PRIORIDAD_SHARPE = _PRIORIDAD_COMPLETA
-        if regimen_tipo == "BULL":
-            reglas.append(
-                f"R-BULL: Universo completo, max pos {max_posiciones_regimen}, umbral {umbral_regimen}"
-            )
+    elif regimen_tipo == "BULL":
+        reglas.append(
+            f"R-BULL: Universo completo, max pos {max_posiciones_regimen}, umbral {umbral_regimen}"
+        )
 
     # ── Regla VIX extremo (> 35) → 30% ──
     if vix_precio > VIX_EXTREMO:
@@ -1493,7 +1482,26 @@ def guardar_log(explicacion_llm, decisiones, resultados, balance, condiciones,
 # ══════════════════════════════════════════════════════════════
 
 def main():
+    global ACTIVOS_OPERABLES, SIMBOLOS_OPERABLES, PRIORIDAD_SHARPE
+
     solo_analisis = "--dry-run" in sys.argv
+
+    # ── Detectar régimen PRIMERO y fijar universo de activos ──
+    try:
+        _reg_actual = get_regimen_actual().get("regimen", "LATERAL")
+    except Exception:
+        _reg_actual = "LATERAL"
+
+    if _reg_actual == "BEAR":
+        activos_ciclo = list(ACTIVOS_DEFENSIVOS)
+        PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_DEFENSIVOS)}
+    else:
+        activos_ciclo = list(_UNIVERSO_COMPLETO)
+        PRIORIDAD_SHARPE = _PRIORIDAD_COMPLETA
+
+    # Fijar globals para que TODAS las funciones usen el universo correcto
+    ACTIVOS_OPERABLES = activos_ciclo
+    SIMBOLOS_OPERABLES = set(activos_ciclo)
 
     # ── LIVE GUARD: fecha límite ──
     hoy = datetime.now().date()
@@ -1503,7 +1511,7 @@ def main():
     print("=" * 70)
     print(f"  JARVIS LIVE TRADING — IBKR")
     print(f"  Capital JARVIS: ${JARVIS_LIVE_CAPITAL:,.0f} | Max/trade: ${MAX_POR_TRADE:,.0f}")
-    print(f"  Activos: {', '.join(ACTIVOS_OPERABLES)}")
+    print(f"  Activos ({len(activos_ciclo)}): {', '.join(activos_ciclo)}")
     print(f"  Protegidas (no tocar): {', '.join(POSICIONES_PROTEGIDAS)}")
     print(f"  Stop-loss: {STOP_LOSS_REGLA_PCT*100:.0f}% | Fecha límite: {JARVIS_LIVE_HASTA}")
     if expirado:
@@ -1569,7 +1577,7 @@ def main():
     venta_count = sum(1 for s in senales.values() if s.get("senal") == "VENDER")
     print(f"   Señales: {compra_count} COMPRAR, {venta_count} VENDER, "
           f"{len(senales) - compra_count - venta_count} MANTENER")
-    for sym in ACTIVOS_OPERABLES:
+    for sym in activos_ciclo:
         s = senales.get(sym, {})
         print(f"   {sym:<5}: score {s.get('puntuacion', 0):+d} → {s.get('senal', '?')}")
     print()
@@ -1643,7 +1651,7 @@ def main():
     # 4b) Señales institucionales (Finnhub Premium)
     print("4b) Obteniendo señales institucionales...")
     senales_inst = {}
-    activos_a_evaluar = (set(p["symbol"] for p in posiciones) | set(ACTIVOS_OPERABLES)) & SIMBOLOS_OPERABLES
+    activos_a_evaluar = set(p["symbol"] for p in posiciones) | set(activos_ciclo)
     for sym in activos_a_evaluar:
         try:
             senales_inst[sym] = get_senales_institucionales(sym)
@@ -1661,8 +1669,8 @@ def main():
     print("4c) Calculando señales quant...")
     senales_qt = {}
     try:
-        senales_qt = get_senales_quant(ACTIVOS_OPERABLES)
-        for sym in ACTIVOS_OPERABLES:
+        senales_qt = get_senales_quant(activos_ciclo)
+        for sym in activos_ciclo:
             sq = senales_qt.get(sym, {})
             comb = sq.get("combinada", "N/D")
             if comb != "NEUTRAL":
@@ -1680,7 +1688,7 @@ def main():
     print("4d) Analizando tono ejecutivos (earnings)...")
     tono_exec = {}
     try:
-        tono_exec = get_tono_ejecutivos(ACTIVOS_OPERABLES[:5])
+        tono_exec = get_tono_ejecutivos(activos_ciclo[:5])
         for sym, te in tono_exec.items():
             if te.get("error"):
                 continue
@@ -1722,7 +1730,7 @@ def main():
     etiqueta_modo = " [DRY-RUN]" if solo_analisis else " [LIVE]"
     max_pos_efectivo = min(condiciones.get("max_posiciones_regimen", MAX_POSICIONES), MAX_POSICIONES)
     reg_label = condiciones.get("regimen", "?")
-    print(f"  DECISIONES FINALES{etiqueta_modo} ({len(ACTIVOS_OPERABLES)} activos, "
+    print(f"  DECISIONES FINALES{etiqueta_modo} ({len(activos_ciclo)} activos, "
           f"máx {max_pos_efectivo} pos, ${condiciones['max_por_trade']:,.0f}/trade, "
           f"régimen {reg_label}, SL {STOP_LOSS_REGLA_PCT*100:.0f}%)")
     print("=" * 70)
