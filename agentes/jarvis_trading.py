@@ -336,11 +336,16 @@ def evaluar_condiciones_mercado(datos_contexto):
     )
 
     if regimen_tipo == "BEAR":
-        # En BEAR, solo activos defensivos
-        activos_no_defensivos = set(ACTIVOS_OPERABLES) - activos_permitidos_regimen
+        # En BEAR, forzar universo a solo defensivos (actualizar globals)
+        global ACTIVOS_OPERABLES, SIMBOLOS_OPERABLES, PRIORIDAD_SHARPE
+        ACTIVOS_OPERABLES = ACTIVOS_DEFENSIVOS
+        SIMBOLOS_OPERABLES = set(ACTIVOS_DEFENSIVOS)
+        PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_DEFENSIVOS)}
+        # Excluir cualquier activo no defensivo
+        activos_no_defensivos = set(_UNIVERSO_COMPLETO) - set(ACTIVOS_DEFENSIVOS)
         activos_excluidos |= activos_no_defensivos
         reglas.append(
-            f"R-BEAR: Solo defensivos permitidos: {', '.join(sorted(activos_permitidos_regimen))}"
+            f"R-BEAR: Solo defensivos permitidos: {', '.join(sorted(ACTIVOS_DEFENSIVOS))}"
         )
     elif regimen_tipo == "BULL":
         reglas.append(
@@ -1149,7 +1154,8 @@ def ejecutar_ordenes(decisiones, datos_acciones, posiciones, max_por_trade=None,
         max_por_trade = MAX_POR_TRADE
     posiciones_map = {p["symbol"]: p for p in posiciones}
     precios_map = {d["simbolo"]: d["precio"] for d in datos_acciones}
-    cash_disponible = float(balance["cash"]) if balance else 0
+    # Usar cash liquidado (T+1) en vez de cash total para evitar órdenes rechazadas
+    cash_disponible = float(balance.get("settled_cash", balance.get("cash", 0))) if balance else 0
     n_posiciones = len(posiciones_map)
     resultados = []
 

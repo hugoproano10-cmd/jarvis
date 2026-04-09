@@ -187,11 +187,13 @@ def get_balance():
 
         equity = float(summary.get("NetLiquidation", 0))
         cash = float(summary.get("TotalCashValue", 0))
+        settled = float(summary.get("SettledCash", cash))
         buying_power = float(summary.get("BuyingPower", 0))
 
         bal = {
             "equity": str(equity),
             "cash": str(cash),
+            "settled_cash": str(settled),
             "buying_power": str(buying_power),
             "portfolio_value": str(equity),
             "currency": summary.get("Currency", "USD"),
