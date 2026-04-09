@@ -339,7 +339,7 @@ def evaluar_condiciones_mercado(datos_contexto):
 
     if regimen_tipo == "BEAR":
         # En BEAR, forzar universo a solo defensivos (actualizar globals)
-        ACTIVOS_OPERABLES = ACTIVOS_DEFENSIVOS
+        ACTIVOS_OPERABLES = list(ACTIVOS_DEFENSIVOS)
         SIMBOLOS_OPERABLES = set(ACTIVOS_DEFENSIVOS)
         PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_DEFENSIVOS)}
         # Excluir cualquier activo no defensivo
@@ -348,10 +348,15 @@ def evaluar_condiciones_mercado(datos_contexto):
         reglas.append(
             f"R-BEAR: Solo defensivos permitidos: {', '.join(sorted(ACTIVOS_DEFENSIVOS))}"
         )
-    elif regimen_tipo == "BULL":
-        reglas.append(
-            f"R-BULL: Universo completo, max pos {max_posiciones_regimen}, umbral {umbral_regimen}"
-        )
+    else:
+        # BULL o LATERAL: restaurar universo completo
+        ACTIVOS_OPERABLES = list(_UNIVERSO_COMPLETO)
+        SIMBOLOS_OPERABLES = set(_UNIVERSO_COMPLETO)
+        PRIORIDAD_SHARPE = _PRIORIDAD_COMPLETA
+        if regimen_tipo == "BULL":
+            reglas.append(
+                f"R-BULL: Universo completo, max pos {max_posiciones_regimen}, umbral {umbral_regimen}"
+            )
 
     # ── Regla VIX extremo (> 35) → 30% ──
     if vix_precio > VIX_EXTREMO:
@@ -717,6 +722,8 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
 
     compras_candidatas = []
     for sym in ACTIVOS_OPERABLES:
+        if sym not in SIMBOLOS_OPERABLES:
+            continue  # No operable en régimen actual
         if sym in posiciones_map:
             continue  # Ya evaluada en fase 1
         senal = senales.get(sym, {})
@@ -1636,7 +1643,7 @@ def main():
     # 4b) Señales institucionales (Finnhub Premium)
     print("4b) Obteniendo señales institucionales...")
     senales_inst = {}
-    activos_a_evaluar = set(p["symbol"] for p in posiciones) | set(ACTIVOS_OPERABLES)
+    activos_a_evaluar = (set(p["symbol"] for p in posiciones) | set(ACTIVOS_OPERABLES)) & SIMBOLOS_OPERABLES
     for sym in activos_a_evaluar:
         try:
             senales_inst[sym] = get_senales_institucionales(sym)
