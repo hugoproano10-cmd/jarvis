@@ -28,19 +28,21 @@ logging.basicConfig(
 )
 log = logging.getLogger("jarvis_cripto")
 
-# Cargar config y alertas
+# Cargar config
 def _load(name, path):
     spec = ilu.spec_from_file_location(name, path)
     mod = ilu.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
 
-try:
-    _alertas = _load("alertas", os.path.join(PROYECTO, "config", "alertas.py"))
-    enviar_telegram = _alertas.enviar_telegram
-except Exception as e:
-    log.error(f"No se pudo cargar módulo de alertas: {e}")
-    enviar_telegram = lambda msg: None
+
+def _enviar_whatsapp(mensaje):
+    """Envía alerta via WhatsApp API local."""
+    try:
+        requests.post("http://localhost:8001/alerta",
+                      json={"mensaje": mensaje}, timeout=10)
+    except Exception:
+        pass
 
 from dotenv import load_dotenv
 load_dotenv(os.path.join(PROYECTO, ".env"))
@@ -50,19 +52,9 @@ load_dotenv(os.path.join(PROYECTO, ".env"))
 BINANCE_KEY = os.getenv("BINANCE_TESTNET_API_KEY", "")
 BINANCE_SECRET = os.getenv("BINANCE_TESTNET_SECRET", "")
 
-# Validar variables de entorno al inicio
-_env_ok = True
-if not BINANCE_KEY or "your_" in BINANCE_KEY:
-    log.warning("BINANCE_TESTNET_API_KEY no configurada o tiene placeholder")
-    _env_ok = False
-if not BINANCE_SECRET or "your_" in BINANCE_SECRET:
-    log.warning("BINANCE_TESTNET_SECRET no configurada o tiene placeholder")
-    _env_ok = False
-if not _env_ok:
-    try:
-        enviar_telegram("⚠️ JARVIS Cripto: API key de Binance no configurada, revisar .env")
-    except Exception:
-        pass
+if not BINANCE_KEY or not BINANCE_SECRET:
+    print("BINANCE keys no configuradas — skip")
+    sys.exit(0)
 TESTNET_BASE = os.getenv("BINANCE_TESTNET_URL", "https://testnet.binance.vision") + "/api/v3"
 
 PARES = ["BTCUSDT", "ETHUSDT", "ADAUSDT", "BNBUSDT"]
@@ -342,7 +334,7 @@ def notificar_compra(resultado, senal):
         f"  SL: ${resultado['sl']:,.2f} (-{STOP_LOSS*100:.0f}%)\n"
         f"  Señal: {senal['razon']}"
     )
-    enviar_telegram(msg)
+    _enviar_whatsapp(msg)
 
 
 def notificar_venta(resultado):
@@ -357,7 +349,7 @@ def notificar_venta(resultado):
         f"  P&amp;L: ${resultado['pnl']:+,.2f} ({resultado['pnl_pct']:+.2f}%)\n"
         f"  Motivo: {resultado['motivo']}"
     )
-    enviar_telegram(msg)
+    _enviar_whatsapp(msg)
 
 
 def notificar_resumen(senales, estado):
@@ -390,7 +382,7 @@ def run(dry_run=False):
     except Exception as e:
         log.error(f"  Conexión Binance testnet FALLIDA: {e}")
         try:
-            enviar_telegram(f"⚠️ JARVIS Cripto: No se puede conectar a Binance testnet — {e}")
+            _enviar_whatsapp(f"⚠️ JARVIS Cripto: No se puede conectar a Binance testnet — {e}")
         except Exception:
             pass
         return

@@ -92,13 +92,7 @@ EDGE_VOLUME = "+10%"  # Más volumen
 
 
 def _fish_speech_disponible():
-    """Verifica si el server de Fish Speech API está corriendo."""
-    try:
-        import requests
-        r = requests.get(f"{FISH_API_URL}/health", timeout=2)
-        return r.status_code == 200
-    except Exception:
-        return False
+    return False  # Fish Speech eliminado del sistema
 
 
 def _sintetizar_fish(texto, referencia=None):

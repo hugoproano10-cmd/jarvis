@@ -18,7 +18,6 @@ PROYECTO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 sys.path.insert(0, PROYECTO)
 sys.path.insert(0, os.path.join(PROYECTO, ".."))
 
-from config.alertas import enviar_telegram
 from trading.monitor_mercado import (
     ACCIONES,
     CRIPTOS_BINANCE,
