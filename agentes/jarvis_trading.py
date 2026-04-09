@@ -306,6 +306,8 @@ def refrescar_precios_tiingo(posiciones):
 
 def evaluar_condiciones_mercado(datos_contexto):
     """Evalúa VIX, F&G, noticias y régimen de mercado. Retorna ajustes para la sesión."""
+    global ACTIVOS_OPERABLES, SIMBOLOS_OPERABLES, PRIORIDAD_SHARPE
+
     fng = datos_contexto.get("fear_greed", {})
     vix = datos_contexto.get("vix", {})
     noticias = datos_contexto.get("noticias", {})
@@ -323,13 +325,13 @@ def evaluar_condiciones_mercado(datos_contexto):
         regimen = get_regimen_actual()
     except Exception:
         regimen = {"regimen": "LATERAL", "confianza": 0, "razon": "No disponible",
-                   "activos_permitidos": list(ACTIVOS_OPERABLES),
+                   "activos_permitidos": list(_UNIVERSO_COMPLETO),
                    "max_posiciones": MAX_POSICIONES, "umbral_compra": UMBRAL_COMPRA_NORMAL}
 
     regimen_tipo = regimen["regimen"]
     max_posiciones_regimen = regimen["max_posiciones"]
     umbral_regimen = regimen["umbral_compra"]
-    activos_permitidos_regimen = set(regimen.get("activos_permitidos", ACTIVOS_OPERABLES))
+    activos_permitidos_regimen = set(regimen.get("activos_permitidos", _UNIVERSO_COMPLETO))
 
     reglas.append(
         f"R-REGIMEN: {regimen_tipo} (confianza {regimen.get('confianza', 0)}/3) — {regimen.get('razon', '')}"
@@ -337,7 +339,6 @@ def evaluar_condiciones_mercado(datos_contexto):
 
     if regimen_tipo == "BEAR":
         # En BEAR, forzar universo a solo defensivos (actualizar globals)
-        global ACTIVOS_OPERABLES, SIMBOLOS_OPERABLES, PRIORIDAD_SHARPE
         ACTIVOS_OPERABLES = ACTIVOS_DEFENSIVOS
         SIMBOLOS_OPERABLES = set(ACTIVOS_DEFENSIVOS)
         PRIORIDAD_SHARPE = {s: i for i, s in enumerate(ACTIVOS_DEFENSIVOS)}

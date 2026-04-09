@@ -1094,13 +1094,29 @@ def get_contexto_enriquecido():
     except Exception:
         pass
 
-    # 9. Google Trends — señal contrarian
+    # 9. Google Trends — señal contrarian (con cache 2h para evitar 429)
     google_trends = {}
+    _gt_cache_path = "/tmp/google_trends_cache.json"
+    _gt_cache_ttl = 7200  # 2 horas
     try:
         from datos.google_trends import get_tendencias_mercado
         google_trends = get_tendencias_mercado()
+        # Guardar cache exitoso
+        import json as _json_gt
+        with open(_gt_cache_path, "w") as _f:
+            _json_gt.dump({"ts": __import__("time").time(), "data": google_trends}, _f)
     except Exception:
-        google_trends = {"senal": "N/D", "nota": "No disponible", "detalles": []}
+        # Intentar cache anterior
+        try:
+            import json as _json_gt
+            with open(_gt_cache_path) as _f:
+                _cached = _json_gt.load(_f)
+            if __import__("time").time() - _cached["ts"] < _gt_cache_ttl:
+                google_trends = _cached["data"]
+            else:
+                google_trends = {"senal": "NEUTRAL", "nota": "Cache expirado", "panico_score": 0, "euforia_score": 0}
+        except Exception:
+            google_trends = {"senal": "NEUTRAL", "nota": "No disponible", "panico_score": 0, "euforia_score": 0}
 
     # 10. Señales quant (Momentum 12-1, RSI semanal, Golden/Death Cross)
     senales_quant = {}
