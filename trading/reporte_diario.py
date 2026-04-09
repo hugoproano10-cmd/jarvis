@@ -376,64 +376,6 @@ def generar_reporte():
     _notificar(mensaje)
     print("  Telegram + WhatsApp enviados.")
 
-    # Generar audio del reporte con Fish Speech (voz clonada de JARVIS)
-    try:
-        _voz = _load("jarvis_voz", os.path.join(PROYECTO, "agentes", "jarvis_voz.py"))
-        # Resumen corto para audio (solo lo esencial, no el HTML completo)
-        resumen_audio = (
-            f"REPORTE: Buenos días Hugo. "
-            f"Tu portafolio tiene un equity de {txt_port.split('Equity:')[1].split(chr(10))[0].strip() if 'Equity:' in txt_port else 'N/D'}. "
-            f"El mercado está en {txt_ctx.split('Sentimiento:')[1].split(chr(10))[0].strip() if 'Sentimiento:' in txt_ctx else 'modo normal'}. "
-            f"Hoy JARVIS recomienda cautela. Todos los sistemas operativos."
-        )
-        audio = _voz.sintetizar_respuesta(resumen_audio, premium=False)
-        if audio.get("archivo"):
-            print(f"  Audio reporte ({audio['motor']}): {audio['archivo']}")
-            # Enviar audio por Telegram
-            import requests as _req
-            from dotenv import load_dotenv as _ld
-            _ld(os.path.join(PROYECTO, ".env"))
-            _bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
-            _chat_id = os.getenv("TELEGRAM_CHAT_ID")
-            with open(audio["archivo"], "rb") as af:
-                _req.post(
-                    f"https://api.telegram.org/bot{_bot_token}/sendVoice",
-                    data={"chat_id": _chat_id, "caption": "Reporte matutino JARVIS"},
-                    files={"voice": af}, timeout=30,
-                )
-            print("  Audio enviado por Telegram.")
-            # Enviar audio por WhatsApp (convertir WAV→MP3 si necesario)
-            try:
-                import base64
-                import subprocess
-                archivo_audio = audio["archivo"]
-                if archivo_audio.endswith('.wav'):
-                    archivo_mp3 = archivo_audio.replace('.wav', '.mp3')
-                    conv = subprocess.run(
-                        ['ffmpeg', '-y', '-i', archivo_audio,
-                         '-codec:a', 'libmp3lame', '-qscale:a', '2',
-                         archivo_mp3],
-                        capture_output=True, timeout=30)
-                    if conv.returncode == 0:
-                        archivo_audio = archivo_mp3
-                        print(f"  WAV convertido a MP3: {archivo_mp3}")
-                    else:
-                        print(f"  Error convirtiendo a MP3, usando WAV")
-                with open(archivo_audio, "rb") as af:
-                    audio_b64 = base64.b64encode(af.read()).decode("utf-8")
-                size_kb = len(audio_b64) * 3 / 4 / 1024
-                print(f"  Enviando audio WhatsApp ({size_kb:.0f} KB)...")
-                resp_wa = _req.post(
-                    "http://localhost:8001/alerta",
-                    json={"mensaje": resumen_audio, "audio_base64": audio_b64},
-                    timeout=60,
-                )
-                print(f"  WhatsApp audio response: {resp_wa.status_code} {resp_wa.text[:100]}")
-            except Exception as wa_e:
-                print(f"  WhatsApp audio error: {wa_e}")
-    except Exception as e:
-        print(f"  Audio reporte: error ({e})")
-
     # Guardar log
     dir_logs = os.path.join(PROYECTO, "logs")
     os.makedirs(dir_logs, exist_ok=True)

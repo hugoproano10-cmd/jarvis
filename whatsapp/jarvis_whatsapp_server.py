@@ -210,22 +210,12 @@ def procesar_mensaje(req: MensajeRequest):
     except Exception:
         pass
 
-    # Generar audio de respuesta
-    audio_b64 = None
-    try:
-        sintesis = voz.sintetizar_respuesta(respuesta[:500])
-        if sintesis.get("archivo") and os.path.exists(sintesis["archivo"]):
-            with open(sintesis["archivo"], "rb") as f:
-                audio_b64 = base64.b64encode(f.read()).decode("utf-8")
-    except Exception as e:
-        log.warning(f"Error sintetizando audio: {e}")
-
     return MensajeResponse(
         respuesta=respuesta,
         modelo=resultado.get("modelo"),
         nodo=resultado.get("nodo"),
         tiempo=resultado.get("tiempo"),
-        audio_base64=audio_b64,
+        audio_base64=None,
         transcripcion=transcripcion,
     )
 

@@ -422,20 +422,6 @@ async def cmd_texto(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("📝 Modo texto activado. JARVIS responderá solo con texto.")
 
 
-async def _enviar_audio(update: Update, texto: str):
-    """Sintetiza y envía audio de respuesta por Telegram."""
-    try:
-        sintesis = voz.sintetizar_respuesta(texto)
-        archivo = sintesis.get("archivo")
-        if archivo and os.path.exists(archivo):
-            with open(archivo, "rb") as f:
-                await update.message.reply_voice(f, caption=f"🔊 {sintesis['motor']}")
-            return True
-    except Exception as e:
-        log.error(f"Error sintetizando audio: {e}")
-    return False
-
-
 # ── Mensajes de voz ────────────────────────────────────────
 
 async def mensaje_voz(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -545,10 +531,6 @@ async def mensaje_voz(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # 4. Enviar texto
         await update.message.reply_text(texto_enviar)
 
-        # 5. Sintetizar y enviar audio de respuesta
-        await update.message.chat.send_action("record_voice")
-        await _enviar_audio(update, respuesta)
-
     except Exception as e:
         log.error(f"Error procesando voz: {e}")
         await update.message.reply_text(f"Error procesando tu mensaje de voz: {e}")
@@ -626,11 +608,6 @@ async def mensaje_libre(update: Update, context: ContextTypes.DEFAULT_TYPE):
             respuesta += meta
 
         await update.message.reply_text(respuesta)
-
-        # Si modo voz activo, también enviar audio
-        if update.effective_chat.id in _modo_voz:
-            await update.message.chat.send_action("record_voice")
-            await _enviar_audio(update, resultado["respuesta"])
     except Exception as e:
         log.error(f"Error router: {e}")
         await update.message.reply_text(f"Error procesando tu mensaje: {e}")

@@ -55,16 +55,6 @@ client.on('message', async msg => {
         const data = resp.data;
         await msg.reply(data.respuesta);
 
-        // Enviar audio si está disponible
-        if (data.audio_base64) {
-            try {
-                const media = new MessageMedia('audio/mpeg', data.audio_base64, 'jarvis.mp3');
-                await msg.reply(media, undefined, { sendAudioAsVoice: true });
-            } catch (audioErr) {
-                console.log('Error enviando audio:', audioErr.message);
-            }
-        }
-
         await msg.react('✅');
     } catch (e) {
         console.error('Error:', e.message);
@@ -101,16 +91,6 @@ async function handleVoice(msg) {
         // Enviar respuesta texto
         await msg.reply(data.respuesta);
 
-        // Enviar respuesta audio
-        if (data.audio_base64) {
-            try {
-                const audioMedia = new MessageMedia('audio/mpeg', data.audio_base64, 'jarvis.mp3');
-                await msg.reply(audioMedia, undefined, { sendAudioAsVoice: true });
-            } catch (audioErr) {
-                console.log('Error enviando audio respuesta:', audioErr.message);
-            }
-        }
-
         await msg.react('✅');
     } catch (e) {
         console.error('Error voz:', e.message);
@@ -141,23 +121,8 @@ const alertServer = http.createServer((req, res) => {
             try {
                 const data = JSON.parse(body);
                 const mensaje = data.mensaje || '';
-                const audio_base64 = data.audio_base64 || null;
-                if ((mensaje || audio_base64) && client.info) {
-                    if (mensaje) {
-                        await client.sendMessage(NUMERO_AUTORIZADO, mensaje);
-                    }
-                    if (audio_base64) {
-                        try {
-                            const audioMedia = new MessageMedia('audio/mpeg', audio_base64, 'jarvis.mp3');
-                            await client.sendMessage(NUMERO_AUTORIZADO, audioMedia,
-                                { sendAudioAsVoice: true });
-                        } catch (audioErr) {
-                            console.error('Error enviando audio WhatsApp:', audioErr.message, audioErr.stack);
-                            res.writeHead(500, {'Content-Type': 'application/json'});
-                            res.end(JSON.stringify({error: audioErr.message}));
-                            return;
-                        }
-                    }
+                if (mensaje && client.info) {
+                    await client.sendMessage(NUMERO_AUTORIZADO, mensaje);
                     res.writeHead(200, {'Content-Type': 'application/json'});
                     res.end(JSON.stringify({status: 'ok'}));
                 } else {
