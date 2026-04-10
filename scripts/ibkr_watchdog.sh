@@ -29,7 +29,7 @@ curl -s -X POST http://localhost:8001/alerta \
 # Reconectar
 cd "$COMPOSE_DIR"
 docker compose restart
-sleep 120
+sleep 180
 
 # Verificar resultado
 STATUS2=$(cd /home/hproano/asistente && \
