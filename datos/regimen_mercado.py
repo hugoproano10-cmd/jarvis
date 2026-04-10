@@ -173,6 +173,7 @@ def get_regimen_actual():
 
     return {
         "regimen": regimen,
+        "tipo": regimen,  # alias para compatibilidad
         "confianza": confianza,
         "razon": razon,
         "nota": nota,
