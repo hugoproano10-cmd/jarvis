@@ -110,9 +110,11 @@ POSICIONES_TS_PATH = os.path.join(PROYECTO, "logs", "jarvis_posiciones_ts.json")
 
 
 def get_posiciones_jarvis(posiciones_todas):
-    """Retorna solo posiciones gestionadas por JARVIS (excluye AMD, NVDA)."""
+    """Retorna solo posiciones gestionadas por JARVIS (excluye AMD, NVDA y fracciones <1 acc)."""
     return [p for p in posiciones_todas
-            if p["symbol"] not in JARVIS_EXCLUIR and p["symbol"] in SIMBOLOS_OPERABLES]
+            if p["symbol"] not in JARVIS_EXCLUIR
+            and p["symbol"] in SIMBOLOS_OPERABLES
+            and abs(float(p.get("qty", 0))) >= 1.0]
 
 
 def _cargar_timestamps_posiciones():
