@@ -287,6 +287,29 @@ def _log_decision(simbolo, accion, precio_actual=None, precio_entrada=None,
         f.write(line + "\n")
 
 
+def _get_activos_operados_hoy():
+    """Lee el log de decisiones y retorna símbolos comprados y vendidos hoy."""
+    hoy = datetime.now().strftime("%Y-%m-%d")
+    comprados = set()
+    vendidos = set()
+    try:
+        with open(LOG_DECISIONES, "r") as f:
+            for linea in f:
+                if not linea.startswith(hoy):
+                    continue
+                if "| SELL |" in linea or "| SELL|" in linea:
+                    partes = linea.split("|")
+                    if len(partes) >= 3:
+                        vendidos.add(partes[2].strip())
+                elif "| BUY  |" in linea or "| BUY |" in linea:
+                    partes = linea.split("|")
+                    if len(partes) >= 3:
+                        comprados.add(partes[2].strip())
+    except FileNotFoundError:
+        pass
+    return comprados, vendidos
+
+
 def refrescar_precios_tiingo(posiciones):
     """Actualiza current_price de cada posición via Tiingo (fuente confiable)."""
     for p in posiciones:
@@ -538,13 +561,16 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
     # (stop-loss / trailing-stop / take-profit parcial y total / hold-min / opciones / rotación)
     rotacion_candidatas = []  # posiciones flat para posible rotación
 
+    # Anti-day-trading: detectar operaciones de hoy (una sola lectura del log)
+    comprados_hoy, vendidos_hoy = _get_activos_operados_hoy()
+
     for sym, pos in posiciones_map.items():
         entry = float(pos["avg_entry_price"])
         current = float(pos["current_price"])
         qty = float(pos["qty"])
         pnl_pct = ((current / entry) - 1) if entry > 0 else 0
 
-        # R-SL: Pérdida > 3% → venta obligatoria (siempre activo)
+        # R-SL: Pérdida > 3% → venta obligatoria (siempre activo, ignora day-trading)
         if pnl_pct <= -STOP_LOSS_REGLA_PCT:
             regla = f"R-SL: pérdida {pnl_pct*100:+.1f}% (>-{STOP_LOSS_REGLA_PCT*100:.0f}%)"
             decisiones.append({
@@ -558,6 +584,16 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 "pnl_pct": round(pnl_pct * 100, 2),
             })
             log_reglas.append(f"  [R-SL] {sym}: VENDER todo — pérdida {pnl_pct*100:+.1f}%")
+            continue
+
+        # R-NODAYTR (inverso): no vender activos comprados hoy (excepto R-SL ya evaluado arriba)
+        if sym in comprados_hoy:
+            decisiones.append({
+                "simbolo": sym, "accion": "MANTENER",
+                "razon": f"R-NODAYTR: comprado hoy — no vender mismo día (Cash account)",
+                "regla": "R-NODAYTR", "pnl_pct": round(pnl_pct * 100, 2),
+            })
+            log_reglas.append(f"  [R-NODAYTR] {sym}: comprado hoy — skip venta (anti-day-trading)")
             continue
 
         # R-TRAILING: Si ganancia >= +5%, mover stop a breakeven
@@ -717,6 +753,14 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
             continue  # No operable en régimen actual
         if sym in posiciones_map:
             continue  # Ya evaluada en fase 1
+        if sym in vendidos_hoy:
+            decisiones.append({
+                "simbolo": sym, "accion": "MANTENER",
+                "razon": f"R-NODAYTR: vendido hoy — no recomprar mismo día (Cash account)",
+                "regla": "R-NODAYTR",
+            })
+            log_reglas.append(f"  [R-NODAYTR] {sym}: vendido hoy — skip compra (anti-day-trading)")
+            continue
         senal = senales.get(sym, {})
         score = senal.get("puntuacion", 0)
         precio = precios_map.get(sym, 0)
