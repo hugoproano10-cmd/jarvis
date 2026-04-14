@@ -1363,6 +1363,7 @@ def construir_mensaje_telegram(explicacion_llm, resultados, balance_final, condi
     # Órdenes
     ordenes_ejecutadas = [r for r in resultados if r.get("ejecutada")]
     mantener = [r for r in resultados if r["accion"] == "MANTENER"]
+    pendientes = [r for r in resultados if not r.get("ejecutada") and r["accion"] != "MANTENER" and not r.get("error")]
     errores = [r for r in resultados if not r.get("ejecutada") and r["accion"] != "MANTENER" and r.get("error")]
 
     if ordenes_ejecutadas:
@@ -1377,6 +1378,13 @@ def construir_mensaje_telegram(explicacion_llm, resultados, balance_final, condi
         msg += "\n"
     else:
         msg += "\U0001f4ad <b>Sin órdenes ejecutadas</b> — ninguna regla activa.\n\n"
+
+    if pendientes:
+        msg += "\U0001f4cb <b>Señales activas (dry-run):</b>\n"
+        for r in pendientes:
+            icono = "+" if r["accion"] == "COMPRAR" else "-"
+            msg += f"  [{icono}] {r['simbolo']} [{r.get('regla','')}]: {_esc(r.get('razon','')[:80])}\n"
+        msg += "\n"
 
     if mantener:
         syms = ", ".join(r["simbolo"] for r in mantener)

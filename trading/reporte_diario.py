@@ -155,8 +155,11 @@ def seccion_portafolio():
     buying_power = float(balance.get("buying_power", 0))
 
     # Separar posiciones JARVIS vs usuario
-    pos_jarvis = [p for p in posiciones if p["symbol"] in set(ACTIVOS_JARVIS)]
-    pos_usuario = [p for p in posiciones if p["symbol"] in POSICIONES_PROTEGIDAS]
+    pos_jarvis = [p for p in posiciones
+                  if p["symbol"] not in POSICIONES_PROTEGIDAS
+                  and abs(float(p.get("qty", 0))) >= 1.0]
+    pos_usuario = [p for p in posiciones if p["symbol"] in POSICIONES_PROTEGIDAS
+                   and abs(float(p.get("qty", 0))) >= 1.0]
 
     L = []
     fuente = "IBKR LIVE" if ibkr_ok else "CACHE + Tiingo"
