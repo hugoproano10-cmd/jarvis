@@ -1363,7 +1363,7 @@ def construir_mensaje_telegram(explicacion_llm, resultados, balance_final, condi
     # Órdenes
     ordenes_ejecutadas = [r for r in resultados if r.get("ejecutada")]
     mantener = [r for r in resultados if r["accion"] == "MANTENER"]
-    errores = [r for r in resultados if not r.get("ejecutada") and r["accion"] != "MANTENER"]
+    errores = [r for r in resultados if not r.get("ejecutada") and r["accion"] != "MANTENER" and r.get("error")]
 
     if ordenes_ejecutadas:
         msg += "\U0001f4b9 <b>Órdenes ejecutadas:</b>\n"
