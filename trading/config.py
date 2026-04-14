@@ -40,7 +40,7 @@ ALERTA_STOP_PCT = 0.06           # Alertar si la pérdida llega al -6% (cerca de
 # ── Límites de riesgo ───────────────────────────────────────
 MAX_POR_OPERACION = 10000.0      # USD máximo por trade (ampliado de 2000)
 MAX_PCT_PORTAFOLIO = 0.15        # 15% del portafolio por posición (ampliado de 10%)
-MAX_POSICIONES = 8               # Máximo posiciones abiertas simultáneas (ampliado de 5)
+MAX_POSICIONES = 10              # Máximo posiciones abiertas simultáneas
 
 # ── Señales de entrada ──────────────────────────────────────
 UMBRAL_COMPRA = 3                # Puntuación mínima de indicadores para comprar

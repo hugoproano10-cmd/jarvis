@@ -82,10 +82,10 @@ ACTIVOS_REFUGIO = {"GLD", "IEF", "AGG"}  # Safe-haven en modo pánico
 _UNIVERSO_COMPLETO = _cfg.ACTIVOS_OPERABLES
 _PRIORIDAD_COMPLETA = _cfg.PRIORIDAD_SHARPE
 
-# Overrides: $750/trade, 6 posiciones max
+# Overrides: $750/trade, 10 posiciones max
 MAX_POR_OPERACION = 750.0
 MAX_POR_TRADE = MAX_POR_OPERACION
-MAX_POSICIONES = 6
+MAX_POSICIONES = 10
 
 # Determinar régimen al inicio para seleccionar universo de activos
 try:
@@ -104,7 +104,7 @@ else:
     PRIORIDAD_SHARPE = _PRIORIDAD_COMPLETA
 
 JARVIS_EXCLUIR = POSICIONES_PROTEGIDAS  # {"AMD", "NVDA"} — nunca tocar
-MAX_POSICIONES_JARVIS = MAX_POSICIONES  # 6
+MAX_POSICIONES_JARVIS = MAX_POSICIONES  # 10
 HOLD_MINIMO_MINUTOS = 30  # No vender posición nueva antes de 30 min
 POSICIONES_TS_PATH = os.path.join(PROYECTO, "logs", "jarvis_posiciones_ts.json")
 
