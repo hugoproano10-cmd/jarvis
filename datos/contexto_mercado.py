@@ -68,12 +68,13 @@ def obtener_noticias(simbolos=None, limite_por_activo=3):
             if aid in vistas:
                 continue
             vistas.add(aid)
+            headline = art.get("headline", "")
             for sym in art.get("symbols", []):
-                if sym in tickers:
+                if sym in tickers and sym in headline:
                     noticias.setdefault(sym, [])
                     if len(noticias[sym]) < limite_por_activo:
                         noticias[sym].append({
-                            "titulo": art["headline"],
+                            "titulo": headline,
                             "resumen": (art.get("summary") or "")[:180].strip(),
                             "fuente": art.get("source", ""),
                             "fecha": art["created_at"][:16].replace("T", " "),

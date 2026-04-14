@@ -1306,6 +1306,9 @@ def ejecutar_ordenes(decisiones, datos_acciones, posiciones, max_por_trade=None,
                     "status": orden["status"],
                     **_meta,
                 })
+                # Actualizar contadores para que compras posteriores vean el slot/cash libre
+                n_posiciones -= 1
+                cash_disponible += qty * precio
                 # Limpiar timestamp + max_pnl en venta completa
                 if qty >= qty_pos:
                     _eliminar_timestamp_posicion(simbolo)
