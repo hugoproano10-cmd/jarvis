@@ -25,7 +25,7 @@ load_dotenv(os.path.join(PROYECTO, ".env"))
 
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
 IBKR_PORT = int(os.getenv("IBKR_PORT", "4001"))
-IBKR_CLIENT_ID = int(os.getenv("IBKR_CLIENT_ID", "1"))
+IBKR_CLIENT_ID = int(os.getenv("IBKR_CLIENT_ID", str(1 + (os.getpid() % 8))))
 TIINGO_API_KEY = os.getenv("TIINGO_API_KEY", "")
 ESTADO_PATH = os.path.join(PROYECTO, "logs", "ultimo_estado.json")
 

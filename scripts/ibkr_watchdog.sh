@@ -5,6 +5,13 @@ COMPOSE_DIR="/home/hproano/ibgateway-config"
 
 log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$LOG"; }
 
+# Skip si trading está en progreso
+LOCKFILE="/tmp/jarvis_trading.lock"
+if [ -f "$LOCKFILE" ]; then
+    log "SKIP - Trading en progreso"
+    exit 0
+fi
+
 # Verificar si IBKR responde
 STATUS=$(cd /home/hproano/asistente && \
   /home/hproano/asistente_env/bin/python3 -c "
