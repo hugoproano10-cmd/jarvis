@@ -63,7 +63,7 @@ log "Código ingresado - esperando 30s para verificar conexión..."
 
 sleep 30
 STATUS=$(cd /home/hproano/asistente && \
-    /home/hproano/asistente_env/bin/python3 -c "
+    IBKR_CLIENT_ID=10 /home/hproano/asistente_env/bin/python3 -c "
 from agentes.ibkr_trading import get_balance
 print(get_balance().get('status','UNKNOWN'))
 " 2>/dev/null)

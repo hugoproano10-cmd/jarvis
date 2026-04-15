@@ -12,9 +12,9 @@ if [ -f "$LOCKFILE" ]; then
     exit 0
 fi
 
-# Verificar si IBKR responde
+# Verificar si IBKR responde (clientId fijo 9 para no colisionar con trading)
 STATUS=$(cd /home/hproano/asistente && \
-  /home/hproano/asistente_env/bin/python3 -c "
+  IBKR_CLIENT_ID=9 /home/hproano/asistente_env/bin/python3 -c "
 from agentes.ibkr_trading import get_balance
 bal = get_balance()
 print(bal.get('status','UNKNOWN'))
@@ -40,7 +40,7 @@ sleep 180
 
 # Verificar resultado
 STATUS2=$(cd /home/hproano/asistente && \
-  /home/hproano/asistente_env/bin/python3 -c "
+  IBKR_CLIENT_ID=9 /home/hproano/asistente_env/bin/python3 -c "
 from agentes.ibkr_trading import get_balance
 bal = get_balance()
 print(bal.get('status','UNKNOWN'))
