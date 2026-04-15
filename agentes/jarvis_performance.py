@@ -27,7 +27,23 @@ load_dotenv(os.path.join(PROYECTO, ".env"))
 
 # ── Config ──────────────────────────────────────────────────
 BRAIN_URL = "http://192.168.202.53:11436/v1/chat/completions"
+BRAIN_TAGS_URL = "http://192.168.202.53:11436/api/tags"
 BRAIN_TIMEOUT = 600
+# Fallback: el modelo está registrado como hash sin nombre en jarvis-brain.
+MODEL_671B_FALLBACK = "sha256-439dd1a5e05286918f54941f49f9b56118c757440f6333f67f1cd5cbb5c8520b"
+
+
+def _descubrir_modelo_671b():
+    """Consulta /api/tags y retorna el nombre del primer modelo disponible."""
+    try:
+        r = requests.get(BRAIN_TAGS_URL, timeout=5)
+        r.raise_for_status()
+        models = r.json().get("models", [])
+        if models and models[0].get("name"):
+            return models[0]["name"]
+    except Exception:
+        pass
+    return MODEL_671B_FALLBACK
 
 _TEST_MODE = "--test" in sys.argv
 
@@ -151,6 +167,7 @@ def llamar_671b(hoy, decisiones, sesion, estado, briefing):
     )
 
     payload = {
+        "model": _descubrir_modelo_671b(),
         "messages": [
             {"role": "system", "content": SYSTEM_PERFORMANCE},
             {"role": "user", "content": prompt[:3500]},
