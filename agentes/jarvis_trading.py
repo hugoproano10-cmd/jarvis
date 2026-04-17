@@ -1702,8 +1702,10 @@ def main():
           f"(capital ${JARVIS_LIVE_CAPITAL:,.0f} - usado ${capital_jarvis_usado:,.0f})\n")
 
     if capital_jarvis_disponible <= 0 and ibkr_ok:
-        print("   >>> Capital JARVIS agotado, solo análisis")
-        solo_analisis = True
+        print("   >>> Capital JARVIS agotado — compras bloqueadas, ventas (SL/TP) activas")
+        # No activar solo_analisis: ventas protectivas (R-SL, R-TRAILING, R-TP) deben ejecutarse.
+        # Clampar cash a 0 para que ejecutar_ordenes rechace compras por cash insuficiente.
+        balance = {**balance, "settled_cash": "0", "cash": "0"}
 
     # 4b) Señales institucionales (Finnhub Premium)
     print("4b) Obteniendo señales institucionales...")
