@@ -1,10 +1,10 @@
 #!/home/hproano/asistente_env/bin/python
 """
-JARVIS Cripto — Bot de trading para BTC, ETH, ADA, BNB en Binance Testnet.
+JARVIS Cripto — Bot de trading para BTC, ETH, ADA, BNB en Binance.
 Estrategia: Momentum + Volumen (ganadora del backtest cripto).
 
 Señal de compra: volumen 1h > 2x promedio 20h Y precio sube > 2% en 1h
-Take-profit: +10% | Stop-loss: -6% | Máximo $2,000/operación
+Take-profit: +10% | Stop-loss: -6% | Máximo $1,000/operación
 Ejecución: cada 15 minutos via cron, 24/7.
 """
 
@@ -49,13 +49,13 @@ load_dotenv(os.path.join(PROYECTO, ".env"))
 
 # ── Configuración ───────────────────────────────────────────
 
-BINANCE_KEY = os.getenv("BINANCE_TESTNET_API_KEY", "")
-BINANCE_SECRET = os.getenv("BINANCE_TESTNET_SECRET", "")
+BINANCE_KEY = os.getenv("BINANCE_REAL_API_KEY", "")
+BINANCE_SECRET = os.getenv("BINANCE_REAL_SECRET", "")
 
 if not BINANCE_KEY or not BINANCE_SECRET:
     print("BINANCE keys no configuradas — skip")
     sys.exit(0)
-TESTNET_BASE = os.getenv("BINANCE_TESTNET_URL", "https://testnet.binance.vision") + "/api/v3"
+BINANCE_BASE = "https://api.binance.com/api/v3"
 
 PARES = ["BTCUSDT", "ETHUSDT", "ADAUSDT", "BNBUSDT"]
 NOMBRES = {
@@ -70,24 +70,24 @@ VOL_RATIO_MIN = 2.0       # Volumen > 2x promedio
 PRECIO_SUBE_MIN = 2.0     # Precio sube > 2% en 1h
 TAKE_PROFIT = 0.10        # +10%
 STOP_LOSS = 0.06          # -6%
-MAX_POR_TRADE = 2000.0    # USD máximo por operación (ampliado de 500)
+MAX_POR_TRADE = 1000.0    # USD máximo por operación (arranque conservador en real)
 VOL_AVG_PERIODOS = 24     # Promedio de volumen en 24 horas
 
 # Estado persistente (archivo JSON)
 ESTADO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "estado_cripto.json")
 
 
-# ── Binance Testnet API (sin firma para datos públicos) ─────
+# ── Binance API (sin firma para datos públicos) ────────────
 
 def binance_get(endpoint, params=None):
-    """GET a Binance testnet (datos públicos, sin auth)."""
-    resp = requests.get(f"{TESTNET_BASE}{endpoint}", params=params, timeout=10)
+    """GET a Binance (datos públicos, sin auth)."""
+    resp = requests.get(f"{BINANCE_BASE}{endpoint}", params=params, timeout=10)
     resp.raise_for_status()
     return resp.json()
 
 
 def binance_signed(endpoint, params=None, method="POST"):
-    """Request firmado a Binance testnet (requiere API key)."""
+    """Request firmado a Binance (requiere API key)."""
     import hmac
     import hashlib
     from urllib.parse import urlencode
@@ -107,7 +107,7 @@ def binance_signed(endpoint, params=None, method="POST"):
     params["signature"] = signature
 
     headers = {"X-MBX-APIKEY": BINANCE_KEY}
-    url = f"{TESTNET_BASE}{endpoint}"
+    url = f"{BINANCE_BASE}{endpoint}"
 
     if method == "POST":
         resp = requests.post(url, headers=headers, params=params, timeout=10)
@@ -223,7 +223,7 @@ def verificar_salida(estado, par, precio_actual):
 
 
 def ejecutar_compra(estado, par, precio, dry_run=False):
-    """Registra una compra (y ejecuta en testnet si hay keys)."""
+    """Registra una compra (y ejecuta en Binance si hay keys)."""
     qty = MAX_POR_TRADE / precio
 
     # Ajustar precisión según par
@@ -274,7 +274,7 @@ def ejecutar_compra(estado, par, precio, dry_run=False):
 
 
 def ejecutar_venta(estado, par, precio, motivo, dry_run=False):
-    """Registra una venta (y ejecuta en testnet si hay keys)."""
+    """Registra una venta (y ejecuta en Binance si hay keys)."""
     pos = estado["posiciones"][par]
     qty = pos["qty"]
     pnl = (precio - pos["precio_entrada"]) * qty
@@ -369,20 +369,20 @@ def run(dry_run=False):
     ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log.info(f"=== JARVIS Cripto iniciando — {ahora} ===")
     log.info(f"  API Key: {'OK (' + BINANCE_KEY[:8] + '...)' if BINANCE_KEY and 'your_' not in BINANCE_KEY else 'NO CONFIGURADA'}")
-    log.info(f"  Testnet URL: {TESTNET_BASE}")
+    log.info(f"  Binance URL: {BINANCE_BASE}")
     log.info(f"  Pares: {', '.join(PARES)}")
     print(f"JARVIS Cripto — {ahora}")
     if dry_run:
         print("  Modo: DRY-RUN (no ejecuta órdenes)\n")
 
-    # Verificar conexión a Binance testnet
+    # Verificar conexión a Binance
     try:
         binance_get("/ping")
-        log.info("  Conexión Binance testnet: OK")
+        log.info("  Conexión Binance: OK")
     except Exception as e:
-        log.error(f"  Conexión Binance testnet FALLIDA: {e}")
+        log.error(f"  Conexión Binance FALLIDA: {e}")
         try:
-            _enviar_whatsapp(f"⚠️ JARVIS Cripto: No se puede conectar a Binance testnet — {e}")
+            _enviar_whatsapp(f"⚠️ JARVIS Cripto: No se puede conectar a Binance — {e}")
         except Exception:
             pass
         return
@@ -441,7 +441,7 @@ def run(dry_run=False):
 
 
 def obtener_balance():
-    """Consulta el balance de la cuenta testnet."""
+    """Consulta el balance de la cuenta Binance."""
     data = binance_signed("/account", method="GET")
     if data is None:
         return None
@@ -460,9 +460,9 @@ def obtener_balance():
 
 
 def mostrar_balance():
-    """Muestra balance formateado de la cuenta testnet."""
+    """Muestra balance formateado de la cuenta Binance."""
     print("=" * 50)
-    print("  BALANCE CUENTA BINANCE TESTNET")
+    print("  BALANCE CUENTA BINANCE REAL")
     print("=" * 50)
 
     # Test conexión
