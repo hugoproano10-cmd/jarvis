@@ -187,7 +187,7 @@ def evaluar_senal(par):
 
     if len(velas) < VOL_AVG_PERIODOS + 1:
         return {"par": par, "nombre": NOMBRES.get(par, par),
-                "senal": "ERROR", "score": 0, "precio": 0,
+                "score": 0, "precio": 0,
                 "var_1h": 0, "vol_ratio": 0, "razon": "Datos insuficientes"}
 
     ultima = velas[-1]
@@ -218,7 +218,6 @@ def evaluar_senal(par):
         "vol_avg_usd": round(vol_avg, 0),
         "vol_ratio": round(vol_ratio, 2),
         "score": score,
-        "senal": "COMPRAR" if (momentum_ok and volumen_ok) else "ESPERAR",
         "razon": f"var={var_1h:+.2f}% | vol={vol_ratio:.1f}x avg",
     }
 
@@ -703,7 +702,7 @@ def run(dry_run=False):
             senal_tec = evaluar_senal(par)
         except Exception as e:
             senal_tec = {"par": par, "nombre": NOMBRES.get(par, par),
-                         "senal": "ERROR", "score": 0, "precio": 0,
+                         "score": 0, "precio": 0,
                          "var_1h": 0, "vol_ratio": 0, "razon": str(e)}
         senales[par] = senal_tec
 
@@ -787,6 +786,7 @@ def run(dry_run=False):
 
         score_total = scores.get("total", 0)
         if score_total < umbral:
+            print(f"     {par}: WAIT — score {score_total:+d} < umbral {umbral} ({_score_str(scores)})")
             _log_decision_cripto(par, "WAIT", precio, scores,
                                 f"score {score_total} < umbral {umbral}", regla="UMBRAL")
             continue
