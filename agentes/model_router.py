@@ -19,9 +19,51 @@ Routing:
 import re
 import time
 import logging
+from collections import deque
+
 import requests
 
 log = logging.getLogger("model-router")
+
+# ── Balanceo por latencia ──────────────────────────────────
+# Historial móvil de tiempos de respuesta por nodo (últimas N llamadas).
+# Se resetea al reiniciar el proceso — está bien, es un predictor corto.
+_MAX_HISTORIAL = 10
+_MIN_MUESTRAS_SATURACION = 3  # no declarar saturado con < 3 muestras
+
+# Umbral de saturación por nodo (segundos). Avg móvil > umbral → saturado.
+# Normales esperados: core ~15s, power-nano ~10s, power-deep70 ~30s, brain ~120s.
+_UMBRAL_SATURACION = {
+    "core":         30.0,
+    "power-nano":   20.0,
+    "power-deep70": 60.0,
+    "brain":        300.0,
+}
+
+_LATENCIAS = {}       # nodo_id -> deque(maxlen=_MAX_HISTORIAL)
+_CONTADOR_REQUESTS = {}  # nodo_id -> int
+
+
+def _registrar_latencia(nodo_id, segundos):
+    hist = _LATENCIAS.setdefault(nodo_id, deque(maxlen=_MAX_HISTORIAL))
+    hist.append(float(segundos))
+    _CONTADOR_REQUESTS[nodo_id] = _CONTADOR_REQUESTS.get(nodo_id, 0) + 1
+
+
+def _promedio_latencia(nodo_id):
+    hist = _LATENCIAS.get(nodo_id)
+    if not hist:
+        return None
+    return sum(hist) / len(hist)
+
+
+def _esta_saturado(nodo_id):
+    hist = _LATENCIAS.get(nodo_id)
+    if not hist or len(hist) < _MIN_MUESTRAS_SATURACION:
+        return False
+    avg = sum(hist) / len(hist)
+    umbral = _UMBRAL_SATURACION.get(nodo_id, float("inf"))
+    return avg > umbral
 
 # ── Configuración de nodos ─────────────────────────────────
 
@@ -206,6 +248,38 @@ def health_check() -> dict:
     return resultado
 
 
+def get_router_stats() -> dict:
+    """Métricas de routing para diagnóstico / dashboard.
+
+    Estado por nodo:
+      - offline:  no responde al health check
+      - saturado: promedio móvil supera el umbral configurado
+      - OK:       disponible y latencia normal (o sin muestras suficientes)
+    """
+    stats = {}
+    for nodo_id, nodo in NODOS.items():
+        hist = _LATENCIAS.get(nodo_id) or deque()
+        disponible = _check_nodo(nodo_id)
+        saturado = _esta_saturado(nodo_id)
+        if not disponible:
+            estado = "offline"
+        elif saturado:
+            estado = "saturado"
+        else:
+            estado = "OK"
+        stats[nodo_id] = {
+            "nombre": nodo["nombre"],
+            "modelo": nodo["modelo"],
+            "estado": estado,
+            "latencia_avg_s": round(sum(hist) / len(hist), 2) if hist else None,
+            "latencia_ultima_s": round(hist[-1], 2) if hist else None,
+            "requests_atendidos": _CONTADOR_REQUESTS.get(nodo_id, 0),
+            "muestras": len(hist),
+            "umbral_saturacion_s": _UMBRAL_SATURACION.get(nodo_id),
+        }
+    return stats
+
+
 def route_message(mensaje: str, contexto: str = "", system_prompt: str = "") -> dict:
     """
     Enruta un mensaje al modelo más adecuado y devuelve la respuesta.
@@ -231,9 +305,28 @@ def route_message(mensaje: str, contexto: str = "", system_prompt: str = "") -> 
         messages.append({"role": "system", "content": f"Contexto adicional: {contexto}"})
     messages.append({"role": "user", "content": mensaje})
 
-    # Intentar nodo preferido, luego fallbacks
+    # Construir cadena de intentos. Si el preferido está saturado (no caído,
+    # solo lento), intentar primero un fallback no-saturado. Si todos están
+    # saturados, usar el preferido igual (mejor lento que nada).
     cadena = [preferido] + fallbacks
-    uso_fallback = False
+    desvio_saturacion = False
+
+    if _esta_saturado(preferido):
+        avg = _promedio_latencia(preferido) or 0
+        umbral = _UMBRAL_SATURACION.get(preferido, 0)
+        alternativa = next(
+            (fb for fb in fallbacks
+             if not _esta_saturado(fb) and _check_nodo(fb)),
+            None,
+        )
+        if alternativa:
+            log.info(f"ROUTER: {preferido} saturado (avg {avg:.1f}s > {umbral:.0f}s), "
+                     f"redirigiendo a {alternativa}")
+            desvio_saturacion = True
+            cadena = [alternativa, preferido] + [f for f in fallbacks if f != alternativa]
+        else:
+            log.info(f"ROUTER: {preferido} saturado (avg {avg:.1f}s) pero todos los "
+                     f"fallbacks también — se usa el preferido")
 
     for i, nodo_id in enumerate(cadena):
         if not _check_nodo(nodo_id):
@@ -241,15 +334,22 @@ def route_message(mensaje: str, contexto: str = "", system_prompt: str = "") -> 
             continue
 
         try:
+            t_call = time.time()
             texto = _llamar_nodo(nodo_id, messages)
+            call_elapsed = time.time() - t_call
+            _registrar_latencia(nodo_id, call_elapsed)
+
             elapsed = time.time() - inicio
             nodo = NODOS[nodo_id]
-            uso_fallback = (i > 0)
+            uso_fallback = (nodo_id != preferido)
 
-            if uso_fallback:
-                log.info(f"[FALLBACK] {nodo['nombre']} {nodo['modelo']} | {elapsed:.1f}s")
-            else:
-                log.info(f"[{nodo['nombre']}] {nodo['modelo']} | {elapsed:.1f}s | {razon}")
+            saturacion_flag = "si" if desvio_saturacion and nodo_id != preferido else "no"
+            log.info(f"ROUTER: {mensaje[:30]} → {nodo['nombre']} ({nodo['modelo']}) | "
+                     f"{elapsed:.1f}s | saturación: {saturacion_flag}")
+            if uso_fallback and not desvio_saturacion:
+                log.info(f"[FALLBACK por error] {nodo['nombre']} {nodo['modelo']}")
+            elif not uso_fallback:
+                log.info(f"[{nodo['nombre']}] {nodo['modelo']} | {razon}")
 
             return {
                 "respuesta": texto,
@@ -260,6 +360,11 @@ def route_message(mensaje: str, contexto: str = "", system_prompt: str = "") -> 
                 "error": False,
             }
         except Exception as e:
+            # Registrar latencia aunque falle — ayuda a detectar nodo lento-y-erroneo
+            try:
+                _registrar_latencia(nodo_id, time.time() - t_call)
+            except Exception:
+                pass
             log.warning(f"Error en {NODOS[nodo_id]['nombre']}({NODOS[nodo_id]['modelo']}): {e}")
             continue
 

@@ -13,12 +13,23 @@ Configuración en .env:
 import os
 import sys
 import math
+import time
+import atexit
 import logging
 from datetime import datetime
 
 from ib_insync import IB, Stock, MarketOrder, LimitOrder, util
 from dotenv import load_dotenv
 import requests
+
+# ── Lockfile coordinación ibkr_trading ──────────────────────
+# El watchdog usa clientId=9, TOTP usa clientId=10. Este módulo usa
+# clientId dinámico basado en PID (1 + PID%8). Además, un lockfile
+# evita que dos procesos simultáneos del mismo trading colisionen.
+IBKR_LOCKFILE = "/tmp/jarvis_ibkr_trading.lock"
+IBKR_LOCK_TTL_SEG = 300        # 5 minutos
+IBKR_LOCK_WAIT_SEG = 30        # cuánto esperar antes de reintentar
+IBKR_LOCK_MAX_REINTENTOS = 1   # tras esperar, proceder aunque siga el lock
 
 PROYECTO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 load_dotenv(os.path.join(PROYECTO, ".env"))
@@ -40,6 +51,9 @@ _SKIP_IBKR_PRICE = {"AMD", "NVDA"}
 
 _ib = None
 _ibkr_available = None  # None=no probado, True/False=resultado
+
+# Asegurar limpieza del lockfile si el proceso termina abruptamente
+atexit.register(lambda: _lockfile_borrar() if '_lockfile_borrar' in globals() else None)
 
 
 # ── Estado cached ──────────────────────────────────────────
@@ -81,6 +95,67 @@ def _cargar_estado():
 
 # ── Conexión ─────────────────────────────────────────────────
 
+def _lockfile_info():
+    """Retorna (existe, edad_seg, pid_contenido) del lockfile."""
+    if not os.path.exists(IBKR_LOCKFILE):
+        return False, None, None
+    try:
+        edad = time.time() - os.path.getmtime(IBKR_LOCKFILE)
+        with open(IBKR_LOCKFILE, "r") as f:
+            pid = f.read().strip()
+        return True, edad, pid
+    except Exception:
+        return True, None, None
+
+
+def _lockfile_crear():
+    """Crea el lockfile con el PID actual."""
+    try:
+        with open(IBKR_LOCKFILE, "w") as f:
+            f.write(str(os.getpid()))
+    except Exception as e:
+        log.warning(f"no pude crear lockfile IBKR: {e}")
+
+
+def _lockfile_borrar():
+    """Borra el lockfile SI es nuestro (PID coincide)."""
+    try:
+        existe, _, pid = _lockfile_info()
+        if not existe:
+            return
+        if pid == str(os.getpid()):
+            os.unlink(IBKR_LOCKFILE)
+    except Exception:
+        pass
+
+
+def _esperar_lock_libre():
+    """Si hay lockfile fresco de OTRO proceso, espera y reintenta.
+    Después de IBKR_LOCK_MAX_REINTENTOS esperas, procede de todos modos —
+    el clientId dinámico (PID) minimiza la colisión.
+    """
+    for intento in range(IBKR_LOCK_MAX_REINTENTOS + 1):
+        existe, edad, pid = _lockfile_info()
+        if not existe:
+            return
+        if edad is None or edad >= IBKR_LOCK_TTL_SEG:
+            # Lock viejo de un proceso que ya murió — limpiar
+            log.info(f"Lockfile IBKR viejo (PID {pid}, edad {edad}s) — limpiando")
+            try:
+                os.unlink(IBKR_LOCKFILE)
+            except Exception:
+                pass
+            return
+        if pid == str(os.getpid()):
+            return  # El lock es nuestro, seguir
+        if intento < IBKR_LOCK_MAX_REINTENTOS:
+            log.info(f"Lockfile IBKR activo (PID {pid}, edad {int(edad)}s) "
+                     f"— esperando {IBKR_LOCK_WAIT_SEG}s antes de reintentar")
+            time.sleep(IBKR_LOCK_WAIT_SEG)
+        else:
+            log.warning(f"Lockfile IBKR persiste (PID {pid}) — procediendo con clientId={IBKR_CLIENT_ID}")
+
+
 def _connect():
     """Conecta a IBKR Gateway/TWS. Reutiliza conexión si ya existe."""
     global _ib, _ibkr_available
@@ -88,6 +163,8 @@ def _connect():
         return _ib
     if _ibkr_available is False:
         raise ConnectionError("IBKR marcado como no disponible en esta sesión")
+
+    _esperar_lock_libre()
 
     log.info(f"Conectando a IBKR {IBKR_HOST}:{IBKR_PORT} (clientId={IBKR_CLIENT_ID}, timeout=10s)...")
     _ib = IB()
@@ -98,6 +175,7 @@ def _connect():
         _ib = None
         raise ConnectionError(f"IBKR {IBKR_HOST}:{IBKR_PORT} — {e}") from e
     _ibkr_available = True
+    _lockfile_crear()
     log.info(f"Conectado OK a IBKR {IBKR_HOST}:{IBKR_PORT}")
     return _ib
 
@@ -109,6 +187,7 @@ def disconnect():
         _ib.disconnect()
         log.info("Desconectado de IBKR")
     _ib = None
+    _lockfile_borrar()
 
 
 def is_connected():

@@ -1,0 +1,15 @@
+[Unit]
+Description=JARVIS Trading Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=hproano
+WorkingDirectory=/home/hproano/asistente
+ExecStart=/home/hproano/asistente_env/bin/python dashboard/jarvis_dashboard.py
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

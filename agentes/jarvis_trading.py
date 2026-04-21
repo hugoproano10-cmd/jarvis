@@ -11,7 +11,7 @@ import json
 import math
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Rutas del proyecto
 PROYECTO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
@@ -44,6 +44,14 @@ from datos.memoria_jarvis import guardar_decision_trading as _guardar_decision
 from datos.marketdata_scorer import get_opciones_signal as _get_opciones_signal
 from datos.unusual_whales_scorer import get_institutional_flow as _get_institutional_flow
 from datos.quiver_scorer import get_quiver_score as _get_quiver_score
+
+# DB histórica (opcional — si falla el import, trading sigue funcionando).
+try:
+    from datos import jarvis_db as _jdb
+except Exception as _e:
+    _jdb = None
+    print(f"[jarvis_trading] jarvis_db no disponible: {_e}")
+
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(PROYECTO, ".env"))
@@ -72,7 +80,7 @@ TAKE_PROFIT_PCT = _cfg.TAKE_PROFIT_PCT
 # ── LIVE TRADING GUARDRAILS ────────────────────────────────
 # Overrides para operar con capital limitado en cuenta real IBKR.
 # Posiciones existentes (AMD, NVDA) son del usuario y no se tocan.
-JARVIS_LIVE_CAPITAL = float(os.getenv("JARVIS_LIVE_CAPITAL", "2000"))
+JARVIS_LIVE_CAPITAL = 15000.0  # Capital operando en acciones IBKR (real ~$10.8k + margen)
 JARVIS_LIVE_HASTA = os.getenv("JARVIS_LIVE_HASTA", "2026-12-31")
 POSICIONES_PROTEGIDAS = {"AMD", "NVDA"}  # No vender/comprar — son del usuario
 ACTIVOS_DEFENSIVOS = ["JNJ", "GLD", "HYG", "AGG", "IEF", "KO", "VZ", "XLU", "T", "D", "IBM"]
@@ -82,8 +90,8 @@ ACTIVOS_REFUGIO = {"GLD", "IEF", "AGG"}  # Safe-haven en modo pánico
 _UNIVERSO_COMPLETO = _cfg.ACTIVOS_OPERABLES
 _PRIORIDAD_COMPLETA = _cfg.PRIORIDAD_SHARPE
 
-# Overrides: $750/trade, 10 posiciones max
-MAX_POR_OPERACION = 750.0
+# Overrides: $1500/trade, 10 posiciones max
+MAX_POR_OPERACION = 1500.0
 MAX_POR_TRADE = MAX_POR_OPERACION
 MAX_POSICIONES = 10
 
@@ -159,6 +167,131 @@ def _minutos_en_posicion(simbolo):
         return None
 
 
+# ── MEJORA 1/4/5: Cooldown y historial de stop-losses ───────
+
+def _cargar_sl_state():
+    """Carga el estado de cooldown e historial de SL. Estructura:
+    {"cooldowns": {sym: iso_ts_sl}, "historial": {sym: [iso_ts, ...]}}
+    """
+    try:
+        with open(COOLDOWN_SL_PATH, "r") as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = {}
+    data.setdefault("cooldowns", {})
+    data.setdefault("historial", {})
+    return data
+
+
+def _guardar_sl_state(data):
+    os.makedirs(os.path.dirname(COOLDOWN_SL_PATH), exist_ok=True)
+    with open(COOLDOWN_SL_PATH, "w") as f:
+        json.dump(data, f, indent=2)
+
+
+def _registrar_sl_ejecutado(simbolo, ts=None):
+    """Registra un stop-loss ejecutado: activa cooldown de N días y añade al historial."""
+    if ts is None:
+        ts = datetime.now().isoformat()
+    state = _cargar_sl_state()
+    state["cooldowns"][simbolo] = ts
+    hist = state["historial"].setdefault(simbolo, [])
+    hist.append(ts)
+    # Recortar historial a los últimos 90 días para mantener archivo pequeño
+    limite = datetime.now() - timedelta(days=90)
+    hist_filtrado = []
+    for t in hist:
+        ts_parsed = _parse_ts_safe(t)
+        if ts_parsed and ts_parsed >= limite:
+            hist_filtrado.append(t)
+    state["historial"][simbolo] = hist_filtrado
+    _guardar_sl_state(state)
+
+
+def _parse_ts_safe(ts_str):
+    try:
+        return datetime.fromisoformat(ts_str)
+    except Exception:
+        return None
+
+
+def _esta_en_cooldown_sl(simbolo):
+    """Retorna (en_cooldown: bool, fecha_fin_iso: str|None)."""
+    state = _cargar_sl_state()
+    ts_str = state["cooldowns"].get(simbolo)
+    if not ts_str:
+        return False, None
+    ts_sl = _parse_ts_safe(ts_str)
+    if ts_sl is None:
+        return False, None
+    fin = ts_sl + timedelta(days=COOLDOWN_SL_DIAS)
+    if datetime.now() < fin:
+        return True, fin.strftime("%Y-%m-%d")
+    return False, None
+
+
+def _contar_sl_hoy():
+    """Cuenta stop-losses ejecutados hoy (todos los símbolos) según el historial."""
+    state = _cargar_sl_state()
+    hoy = datetime.now().date()
+    total = 0
+    for sym, ts_list in state["historial"].items():
+        for ts_str in ts_list:
+            ts = _parse_ts_safe(ts_str)
+            if ts and ts.date() == hoy:
+                total += 1
+    return total
+
+
+def _contar_sl_simbolo_30d(simbolo):
+    """Cuenta stop-losses del símbolo en los últimos SL_HISTORIAL_DIAS días."""
+    state = _cargar_sl_state()
+    ts_list = state["historial"].get(simbolo, [])
+    limite = datetime.now() - timedelta(days=SL_HISTORIAL_DIAS)
+    count = 0
+    for ts_str in ts_list:
+        ts = _parse_ts_safe(ts_str)
+        if ts and ts >= limite:
+            count += 1
+    return count
+
+
+# ── MEJORA 2: Stop-loss dinámico basado en ATR ──────────────
+
+def _calcular_atr_pct(df, periodo=14):
+    """ATR(14) expresado como % del último precio de cierre. None si no hay datos."""
+    try:
+        import pandas as _pd
+        if len(df) < periodo + 1:
+            return None
+        high = df["High"]
+        low = df["Low"]
+        close = df["Close"]
+        close_prev = close.shift(1)
+        tr = _pd.concat([
+            high - low,
+            (high - close_prev).abs(),
+            (low - close_prev).abs(),
+        ], axis=1).max(axis=1)
+        atr = tr.rolling(window=periodo).mean()
+        precio = float(close.iloc[-1])
+        atr_val = float(atr.iloc[-1])
+        if precio <= 0 or atr_val != atr_val:  # NaN check
+            return None
+        return (atr_val / precio) * 100
+    except Exception:
+        return None
+
+
+def _sl_dinamico_desde_atr(atr_pct):
+    """SL dinámico = clamp(2 * ATR%, 2%, 6%). Retorna fracción (0.03 = 3%)."""
+    if atr_pct is None:
+        return STOP_LOSS_REGLA_PCT
+    sl_pct = 2.0 * atr_pct
+    sl_pct = max(SL_DINAMICO_MIN_PCT, min(SL_DINAMICO_MAX_PCT, sl_pct))
+    return sl_pct / 100.0
+
+
 # ══════════════════════════════════════════════════════════════
 #  REGLAS AUTOMÁTICAS — Umbrales
 # ══════════════════════════════════════════════════════════════
@@ -168,19 +301,29 @@ UMBRAL_COMPRA_BEAR = 1          # Score mínimo en BEAR (antes 2)
 UMBRAL_COMPRA_AGRESIVO = 0      # Score en pánico extremo (F&G < 15): comprar cualquier defensivo
 UMBRAL_REFUGIO_PANICO = 0       # Score mínimo para refugios (GLD, IEF, AGG) en pánico
 MAX_REFUGIOS_PANICO = 3         # Permitir hasta 3 refugios en modo pánico
-STOP_LOSS_REGLA_PCT = 0.03      # -3% pérdida → venta obligatoria
+STOP_LOSS_REGLA_PCT = 0.03      # -3% pérdida → venta obligatoria (fallback si ATR no disponible)
+SL_DINAMICO_MIN_PCT = 2.0       # MEJORA 2: piso del SL dinámico (2%)
+SL_DINAMICO_MAX_PCT = 6.0       # MEJORA 2: techo del SL dinámico (6%)
 TAKE_PROFIT_PARCIAL_PCT = 0.08  # +8% ganancia → vender 50% (antes 10%)
 TAKE_PROFIT_TOTAL_PCT = 0.15    # +15% ganancia → vender todo
-TRAILING_STOP_ACTIVACION = 0.05 # +5% → mover stop-loss a breakeven
+TRAILING_STOP_ACTIVACION = 0.03 # MEJORA 6: +3% → mover stop-loss a breakeven (antes 5%)
 VIX_UMBRAL_ALTO = 30            # Reducir posición al 50%
 VIX_EXTREMO = 35                # Reducir posición al 30%
 FACTOR_VIX_ALTO = 0.50
 FACTOR_VIX_EXTREMO = 0.30
 FNG_UMBRAL_PANICO = 20          # Modo oportunidad + priorizar refugios
 FNG_AGRESIVO = 15               # Modo agresivo: umbral compra = 0
-ROTACION_DIAS_FLAT = 5          # Días sin movimiento para rotar
+ROTACION_DIAS_FLAT = 10         # MEJORA 3: días sin movimiento para rotar (antes 5)
 ROTACION_PCT_FLAT = 0.01        # <1% movimiento = "flat"
-ROTACION_SCORE_MINIMO = 3       # Score mínimo del reemplazo para rotar
+ROTACION_SCORE_MINIMO = 4       # MEJORA 3: score mínimo del reemplazo (antes 3)
+
+# MEJORA 1/4/5: gestión post stop-loss
+COOLDOWN_SL_DIAS = 3            # Días calendario de cooldown tras un SL
+MAX_SL_POR_DIA = 3              # Si >=3 SL hoy, pausar compras
+SL_HISTORIAL_DIAS = 30          # Ventana para contar SL históricos por activo
+SL_HISTORIAL_UMBRAL = 2         # SL en ventana para endurecer umbral
+UMBRAL_COMPRA_HISTORIAL = 4     # Umbral endurecido para activos con 2+ SL en 30d
+COOLDOWN_SL_PATH = os.path.join(PROYECTO, "logs", "jarvis_sl_cooldown.json")
 
 PALABRAS_NEGATIVAS = [
     "downgrade", "lawsuit", "sued", "fraud", "investigation", "recall",
@@ -226,6 +369,19 @@ def _get_finbert_score(simbolo: str, noticias: list) -> int:
     except Exception:
         pass
     return 0
+
+
+def _db_accion_map(accion, regla=""):
+    """Normaliza la acción para la DB: COMPRAR→BUY, VENDER→SELL,
+    MANTENER→HOLD; si regla es VETO-LLM/SKIP/SLOT-FULL, usa SKIP."""
+    a = (accion or "").upper()
+    if a in ("BUY", "COMPRAR"):
+        return "BUY"
+    if a in ("SELL", "VENDER"):
+        return "SELL"
+    if regla in ("VETO-LLM", "SKIP", "SLOT-FULL", "R-NEWS"):
+        return "SKIP"
+    return "HOLD"
 
 
 def _log_decision(simbolo, accion, precio_actual=None, precio_entrada=None,
@@ -422,22 +578,27 @@ def evaluar_condiciones_mercado(datos_contexto):
                 break
 
     # ── Google Trends contrarian ──
+    # FIX P4: si Google Trends no está disponible (rate limit, sin cache),
+    # tratar como NEUTRAL — nunca activar modo_agresivo con datos faltantes.
     trends_senal = "NEUTRAL"
     try:
         from datos.google_trends import get_tendencias_mercado
         gt = get_tendencias_mercado()
-        trends_senal = gt.get("senal", "NEUTRAL")
-        if trends_senal in ("COMPRA", "COMPRA_LEVE"):
-            modo_agresivo = True
-            reglas.append(
-                f"R-TRENDS: Pánico retail ({gt.get('panico_score', 0)}/100) → modo agresivo contrarian"
-            )
-        elif trends_senal in ("VENTA", "VENTA_LEVE"):
-            reglas.append(
-                f"R-TRENDS: Euforia retail ({gt.get('euforia_score', 0)}/100) → cautela en compras"
-            )
+        if not gt.get("disponible", True):
+            reglas.append("R-TRENDS: Google Trends no disponible — neutral")
         else:
-            reglas.append(f"R-TRENDS: Sentimiento retail neutral")
+            trends_senal = gt.get("senal", "NEUTRAL")
+            if trends_senal in ("COMPRA", "COMPRA_LEVE"):
+                modo_agresivo = True
+                reglas.append(
+                    f"R-TRENDS: Pánico retail ({gt.get('panico_score', 0)}/100) → modo agresivo contrarian"
+                )
+            elif trends_senal in ("VENTA", "VENTA_LEVE"):
+                reglas.append(
+                    f"R-TRENDS: Euforia retail ({gt.get('euforia_score', 0)}/100) → cautela en compras"
+                )
+            else:
+                reglas.append(f"R-TRENDS: Sentimiento retail neutral")
     except Exception as e:
         reglas.append(f"R-TRENDS: No disponible ({e})")
 
@@ -494,13 +655,19 @@ def obtener_datos_mercado():
 
 
 def calcular_senales_tecnicas():
-    """Calcula indicadores técnicos y señales para todos los activos operables."""
+    """Calcula indicadores técnicos y señales para todos los activos operables.
+    Enriquece cada señal con atr_pct y sl_dinamico (MEJORA 2).
+    """
     senales = {}
     for simbolo in ACTIVOS_OPERABLES:
         try:
             df = descargar_historico(simbolo)
             df = calcular_indicadores(df)
             senal = generar_senal(df, simbolo)
+            # MEJORA 2: SL dinámico por ATR
+            atr_pct = _calcular_atr_pct(df)
+            senal["atr_pct"] = round(atr_pct, 3) if atr_pct is not None else None
+            senal["sl_dinamico"] = _sl_dinamico_desde_atr(atr_pct)
             senales[simbolo] = senal
         except Exception as e:
             senales[simbolo] = {
@@ -510,6 +677,8 @@ def calcular_senales_tecnicas():
                 "puntuacion": 0,
                 "razones": [f"Error: {e}"],
                 "indicadores": {},
+                "atr_pct": None,
+                "sl_dinamico": STOP_LOSS_REGLA_PCT,
             }
     return senales
 
@@ -531,7 +700,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
       R-TP-PARCIAL: Ganancia > 8% → VENDER 50%
       R-TRAILING:   Subió +5% y volvió a breakeven → VENDER
       R-OPT-SELL:   Opciones mayoría PUTS → VENDER anticipado
-      R-ROTACION:   Flat >5 días y mejor candidato → rotar capital
+      R-ROTACION:   Flat >10 días y mejor candidato (score>=4) → rotar capital
     Reglas de compra:
       R-BUY:      Score >= umbral AND sin posición AND slots → COMPRAR
       R-REFUGIO:  Activo refugio en pánico (score >= 0) → COMPRAR
@@ -570,9 +739,15 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
         qty = float(pos["qty"])
         pnl_pct = ((current / entry) - 1) if entry > 0 else 0
 
-        # R-SL: Pérdida > 3% → venta obligatoria (siempre activo, ignora day-trading)
-        if pnl_pct <= -STOP_LOSS_REGLA_PCT:
-            regla = f"R-SL: pérdida {pnl_pct*100:+.1f}% (>-{STOP_LOSS_REGLA_PCT*100:.0f}%)"
+        # R-SL: Pérdida > SL dinámico (ATR) → venta obligatoria (siempre activo, ignora day-trading)
+        # MEJORA 2: SL dinámico por activo — clamp(2*ATR%, 2%, 6%)
+        senal_sym = senales.get(sym, {}) if isinstance(senales, dict) else {}
+        sl_pct_sym = senal_sym.get("sl_dinamico", STOP_LOSS_REGLA_PCT)
+        atr_sym = senal_sym.get("atr_pct")
+        if pnl_pct <= -sl_pct_sym:
+            atr_str = f"ATR%={atr_sym:.1f}" if atr_sym is not None else "ATR=n/d"
+            regla = (f"R-SL: pérdida {pnl_pct*100:+.1f}% "
+                     f"(>-{sl_pct_sym*100:.1f}% {atr_str})")
             decisiones.append({
                 "simbolo": sym,
                 "accion": "VENDER",
@@ -582,8 +757,13 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
                 "precio_entrada": entry,
                 "precio_actual": current,
                 "pnl_pct": round(pnl_pct * 100, 2),
+                "sl_dinamico_pct": round(sl_pct_sym * 100, 2),
+                "atr_pct": atr_sym,
             })
-            log_reglas.append(f"  [R-SL] {sym}: VENDER todo — pérdida {pnl_pct*100:+.1f}%")
+            log_reglas.append(
+                f"  [R-SL] {sym}: VENDER todo — pérdida {pnl_pct*100:+.1f}% "
+                f"(umbral dinámico {sl_pct_sym*100:.1f}%, {atr_str})"
+            )
             continue
 
         # R-NODAYTR (inverso): no vender activos comprados hoy (excepto R-SL ya evaluado arriba)
@@ -715,7 +895,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
             )
             continue
 
-        # R-ROTACION: posición flat > 5 días — candidata para rotación
+        # R-ROTACION: posición flat > ROTACION_DIAS_FLAT días — candidata para rotación
         minutos_pos = _minutos_en_posicion(sym)
         dias_en_pos = (minutos_pos / 1440) if minutos_pos is not None else 999
         if dias_en_pos >= ROTACION_DIAS_FLAT and abs(pnl_pct) < ROTACION_PCT_FLAT:
@@ -747,6 +927,51 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
     # En modo pánico, permitir hasta MAX_REFUGIOS_PANICO slots extra para refugios
     refugios_actuales = sum(1 for s in posiciones_map if s in ACTIVOS_REFUGIO)
 
+    # MEJORA 1/4/5: cargar estado de SL una sola vez y derivar métricas.
+    _sl_state = _cargar_sl_state()
+    _hoy = datetime.now().date()
+    _limite_30d = datetime.now() - timedelta(days=SL_HISTORIAL_DIAS)
+
+    def _sl_hoy_prev_count():
+        total = 0
+        for _ts_list in _sl_state["historial"].values():
+            for _ts in _ts_list:
+                _p = _parse_ts_safe(_ts)
+                if _p and _p.date() == _hoy:
+                    total += 1
+        return total
+
+    def _cooldown_para(sym):
+        ts_str = _sl_state["cooldowns"].get(sym)
+        if not ts_str:
+            return False, None
+        p = _parse_ts_safe(ts_str)
+        if p is None:
+            return False, None
+        fin = p + timedelta(days=COOLDOWN_SL_DIAS)
+        if datetime.now() < fin:
+            return True, fin.strftime("%Y-%m-%d")
+        return False, None
+
+    def _sl_30d_para(sym):
+        n = 0
+        for _ts in _sl_state["historial"].get(sym, []):
+            _p = _parse_ts_safe(_ts)
+            if _p and _p >= _limite_30d:
+                n += 1
+        return n
+
+    # MEJORA 4: contar SL ejecutados hoy (prior + planificados en este ciclo).
+    sl_hoy_prev = _sl_hoy_prev_count()
+    sl_hoy_ciclo = sum(1 for d in decisiones if d.get("regla") == "R-SL")
+    sl_total_hoy = sl_hoy_prev + sl_hoy_ciclo
+    pause_compras = sl_total_hoy >= MAX_SL_POR_DIA
+    if pause_compras:
+        log_reglas.append(
+            f"  [R-PAUSE] {sl_total_hoy} stop-losses hoy "
+            f"(>= {MAX_SL_POR_DIA}), pausando compras"
+        )
+
     compras_candidatas = []
     for sym in ACTIVOS_OPERABLES:
         if sym not in SIMBOLOS_OPERABLES:
@@ -761,6 +986,29 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
             })
             log_reglas.append(f"  [R-NODAYTR] {sym}: vendido hoy — skip compra (anti-day-trading)")
             continue
+
+        # MEJORA 1: cooldown post stop-loss (3 días calendario)
+        en_cd, cd_fin = _cooldown_para(sym)
+        if en_cd:
+            decisiones.append({
+                "simbolo": sym, "accion": "MANTENER",
+                "razon": f"R-COOLDOWN: {sym} en cooldown post-SL hasta {cd_fin}",
+                "regla": "R-COOLDOWN",
+            })
+            log_reglas.append(
+                f"  [R-COOLDOWN] {sym}: cooldown post-SL activo hasta {cd_fin}"
+            )
+            continue
+
+        # MEJORA 4: si hoy hubo >= 3 SL, pausar compras
+        if pause_compras:
+            decisiones.append({
+                "simbolo": sym, "accion": "MANTENER",
+                "razon": f"R-PAUSE: {sl_total_hoy} stop-losses hoy, pausando compras",
+                "regla": "R-PAUSE",
+            })
+            continue
+
         senal = senales.get(sym, {})
         score = senal.get("puntuacion", 0)
         precio = precios_map.get(sym, 0)
@@ -857,6 +1105,17 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
             umbral_sym = UMBRAL_REFUGIO_PANICO
         else:
             umbral_sym = umbral
+
+        # MEJORA 5: activos con 2+ SL en 30 días endurecen su umbral.
+        n_sl_30d = _sl_30d_para(sym)
+        if n_sl_30d >= SL_HISTORIAL_UMBRAL:
+            umbral_sym_anterior = umbral_sym
+            umbral_sym = max(umbral_sym, UMBRAL_COMPRA_HISTORIAL)
+            if umbral_sym != umbral_sym_anterior:
+                log_reglas.append(
+                    f"  [R-HISTORIAL] {sym}: {n_sl_30d} SL en 30 días, "
+                    f"umbral subido a {umbral_sym}"
+                )
 
         # R-OPT-BUY: CALLS inusuales refuerzan señal — acepta score >= umbral-1
         si = senales_inst.get(sym, {})
@@ -967,7 +1226,7 @@ def aplicar_reglas_automaticas(senales, posiciones, condiciones, datos_acciones,
         )
 
     # ── Fase 3: Rotación inteligente ──
-    # Si hay posiciones flat > 5 días Y compras descartadas con score >= 3, rotar
+    # Si hay posiciones flat > ROTACION_DIAS_FLAT Y compras descartadas con score >= ROTACION_SCORE_MINIMO, rotar
     if rotacion_candidatas and compras_descartadas:
         compras_descartadas.sort(key=lambda d: -d["score"])
         for rot in rotacion_candidatas:
@@ -1780,9 +2039,67 @@ def main():
         print(f"   {n_descartadas} compra(s) descartada(s) por límite de slots")
     print()
 
-    # 6) Veto LLM eliminado — decisiones pasan directo de reglas a ejecución
+    # 6) Veto LLM — solo para compras borderline (score cerca del umbral).
+    #    - score > umbral + 1  → compra directa (señal fuerte, sin consulta)
+    #    - score <= umbral + 1 → consultar Nemotron para vetar eventos graves
+    #    - VENDER / MANTENER   → nunca vetar (protectivas o sin acción)
+    #    - Si Nemotron falla, la compra procede (filtro adicional, no gate).
     log_vetos = []
-    print("6) Veto LLM desactivado — decisiones basadas solo en reglas.\n")
+    umbral = condiciones.get("umbral_compra", UMBRAL_COMPRA_NORMAL)
+    print(f"6) Veto LLM (solo borderline, umbral={umbral})...")
+
+    for d in decisiones:
+        if d["accion"] != "COMPRAR":
+            continue
+
+        sym = d["simbolo"]
+        score = d.get("score", 0)
+
+        if score > umbral + 1:
+            msg = f"VETO-LLM: {sym} score fuerte ({score}>{umbral}+1), compra directa sin veto"
+            print(f"   {msg}")
+            log_vetos.append(msg)
+            continue
+
+        # Borderline: consultar Nemotron
+        if score == umbral:
+            msg_chk = f"VETO-LLM: {sym} score borderline ({score}={umbral}), consultando Nemotron..."
+        else:
+            msg_chk = f"VETO-LLM: {sym} score borderline ({score} vs umbral {umbral}), consultando Nemotron..."
+        print(f"   {msg_chk}")
+        log_vetos.append(msg_chk)
+
+        arts = noticias_mkt.get(sym, []) if isinstance(noticias_mkt, dict) else []
+        titulos = [a.get("titulo", "") for a in arts
+                   if isinstance(a, dict) and a.get("titulo") and "error" not in a]
+        noticias_texto = ("\n".join(f"- {t}" for t in titulos[:10])
+                          if titulos else "(sin noticias recientes)")
+
+        vetado, explicacion = verificar_llm_veto(sym, score, noticias_texto)
+        explicacion_corta = explicacion.split("\n")[0].strip()[:200]
+
+        if vetado:
+            msg_v = f"VETO-LLM: {sym} VETADO por Nemotron — {explicacion_corta}"
+            print(f"   {msg_v}")
+            log_vetos.append(msg_v)
+            d["accion"] = "MANTENER"
+            d["regla"] = "VETO-LLM"
+            d["razon"] = f"vetado por LLM: {explicacion_corta}"
+            d["veto_llm"] = {"vetado": True, "explicacion": explicacion_corta}
+            _log_decision(
+                simbolo=sym, accion="MANTENER",
+                precio_actual=d.get("precio", 0),
+                motivo=f"vetado por LLM: {explicacion_corta}",
+                score=score, regla="VETO-LLM",
+                score_detalle=d.get("score_detalle"),
+            )
+        else:
+            msg_a = f"VETO-LLM: {sym} APROBADO por Nemotron — {explicacion_corta}"
+            print(f"   {msg_a}")
+            log_vetos.append(msg_a)
+            d["veto_llm"] = {"vetado": False, "explicacion": explicacion_corta}
+
+    print()
 
     # 7) Mostrar decisiones finales
     print("=" * 70)
@@ -1822,10 +2139,23 @@ def main():
                 precio_actual=precios_map.get(d["simbolo"], 0),
                 precio_entrada=d.get("precio_entrada"),
                 pnl_pct=d.get("pnl_pct"),
-                motivo=d.get("razon", "")[:120],
+                motivo=d.get("razon", "")[:500],
                 score=d.get("score"), regla=d.get("regla", ""),
                 score_detalle=d.get("score_detalle"),
             )
+            # DB histórica — decisión (dry-run, no ejecuta)
+            if _jdb is not None:
+                try:
+                    _jdb.registrar_decision(
+                        mercado="acciones", simbolo=d["simbolo"],
+                        accion=_db_accion_map(d["accion"], d.get("regla", "")),
+                        score=d.get("score"), regla=d.get("regla", ""),
+                        motivo=d.get("razon", "")[:500],
+                        ejecutada=False,
+                        score_detalle=d.get("score_detalle"),
+                    )
+                except Exception as _e:
+                    print(f"   [db] registrar_decision dry-run falló: {_e}")
     else:
         print("\n8) Ejecutando órdenes...")
         resultados = ejecutar_ordenes(
@@ -1842,10 +2172,45 @@ def main():
                 precio_actual=precios_map.get(r["simbolo"], 0),
                 precio_entrada=r.get("precio_entrada"),
                 pnl_pct=r.get("pnl_pct"),
-                motivo=r.get("razon", "")[:120],
+                motivo=r.get("razon", "")[:500],
                 score=r.get("score"), regla=r.get("regla", ""),
                 score_detalle=r.get("score_detalle"),
             )
+            # DB histórica — decisión SIEMPRE; trade sólo si ejecutada
+            if _jdb is not None:
+                try:
+                    sym = r["simbolo"]
+                    accion_db = _db_accion_map(r["accion"], r.get("regla", ""))
+                    precio = precios_map.get(sym, 0)
+                    _jdb.registrar_decision(
+                        mercado="acciones", simbolo=sym, accion=accion_db,
+                        score=r.get("score"), regla=r.get("regla", ""),
+                        motivo=r.get("razon", "")[:500],
+                        ejecutada=bool(r.get("ejecutada")),
+                        score_detalle=r.get("score_detalle"),
+                    )
+                    if r.get("ejecutada") and accion_db in ("BUY", "SELL"):
+                        pnl_pct = r.get("pnl_pct")
+                        pnl_usd = None
+                        entrada = r.get("precio_entrada")
+                        qty = r.get("qty")
+                        if (accion_db == "SELL" and pnl_pct is not None
+                                and entrada and qty):
+                            try:
+                                pnl_usd = round(
+                                    (precio - float(entrada)) * float(qty), 2)
+                            except Exception:
+                                pnl_usd = None
+                        _jdb.registrar_trade(
+                            mercado="acciones", simbolo=sym, accion=accion_db,
+                            qty=qty, precio=precio,
+                            score=r.get("score"), regla=r.get("regla", ""),
+                            pnl_pct=pnl_pct, pnl_usd=pnl_usd,
+                            motivo=r.get("razon", "")[:500],
+                            score_detalle=r.get("score_detalle"),
+                        )
+                except Exception as _e:
+                    print(f"   [db] registrar trade/decisión falló: {_e}")
 
             if not r.get("ejecutada"):
                 continue
@@ -1859,6 +2224,14 @@ def main():
                 precio_acc = precios_map.get(sym, 0)
                 entrada = r.get("precio_entrada", 0)
                 label = "STOP-LOSS" if regla == "R-SL" else "TRAILING-STOP"
+                # MEJORA 1: registrar cooldown SOLO tras un SL real ejecutado
+                if regla == "R-SL":
+                    try:
+                        _registrar_sl_ejecutado(sym)
+                        print(f"   [R-COOLDOWN] {sym}: cooldown de "
+                              f"{COOLDOWN_SL_DIAS} días activado")
+                    except Exception as _e:
+                        print(f"   [R-COOLDOWN] error registrando SL: {_e}")
                 alerta = (
                     f"\U0001f534 {label}: {sym} @ ${precio_acc:,.2f}"
                     f" | P&amp;L:{r.get('pnl_pct', '?')}%"
@@ -1944,6 +2317,35 @@ def main():
         condiciones, log_reglas, log_vetos, senales
     )
     print(f"   Log: {ruta}")
+
+    # 14) Snapshot diario en DB histórica (lado acciones).
+    # El lado cripto se añade vía cripto/jarvis_cripto.py o snapshot_diario.py.
+    if _jdb is not None:
+        try:
+            posiciones_snap = []
+            for p in posiciones or []:
+                try:
+                    posiciones_snap.append({
+                        "simbolo": p.get("symbol"),
+                        "qty": float(p.get("qty", 0)),
+                        "precio_entrada": float(p.get("avg_entry_price", 0) or 0),
+                        "precio_actual": float(p.get("current_price", 0) or 0),
+                        "valor_actual": float(p.get("market_value", 0) or 0),
+                        "pnl_pct": float(p.get("unrealized_plpc", 0) or 0) * 100,
+                        "pnl_usd": float(p.get("unrealized_pl", 0) or 0),
+                    })
+                except Exception:
+                    continue
+            datos_acc = {
+                "equity": float(balance_final.get("equity", 0) or 0),
+                "cash": float(balance_final.get("cash", 0) or 0),
+                "posiciones": posiciones_snap,
+                "pnl_dia": sum(p["pnl_usd"] for p in posiciones_snap),
+            }
+            _jdb.guardar_snapshot_diario(datos_acc, None)
+            print("   [db] snapshot acciones guardado")
+        except Exception as _e:
+            print(f"   [db] snapshot falló: {_e}")
 
 
 if __name__ == "__main__":

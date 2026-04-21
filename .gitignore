@@ -229,3 +229,10 @@ audios/respuestas/
 *.mp3
 *.wav
 *.m4a
+__pycache__/
+*.pyc
+__pycache__/
+*.pyc
+datos/jarvis_history.db
+logs/
+/tmp/
